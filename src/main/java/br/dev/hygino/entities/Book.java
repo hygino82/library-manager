@@ -1,5 +1,6 @@
 package br.dev.hygino.entities;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import br.dev.hygino.dto.InsertBookDTO;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Book implements Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	@Id
