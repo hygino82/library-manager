@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @RestController
@@ -38,5 +39,11 @@ public class BookController {
     @PutMapping("/{id}")
     ResponseEntity<BookDTO> update(@PathVariable("id") Long id, @RequestBody @Valid InsertBookDTO dto) {
         return ResponseEntity.status(200).body(bookService.update(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remove(@PathVariable("id") Long id) {
+        bookService.remove(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -56,4 +56,8 @@ public class BookService {
         entity.setTotalAmount(dto.totalAmount());
         return entity;
     }
+
+    public void remove(Long id) {
+        bookRepository.deleteById(id);
+    }
 }
