@@ -27,4 +27,11 @@ public class BookService {
 		Page<Book> page = bookRepository.findAll(pageable);
 		return page.map(x -> new BookDTO(x));
 	}
+
+	@Transactional(readOnly = true)
+	public BookDTO findById(Long id) {
+		Book entity = bookRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Book id: " + id + " not found"));
+		return new BookDTO(entity);
+	}
 }
