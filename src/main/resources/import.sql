@@ -28,3 +28,25 @@ INSERT INTO tb_student(name, address, class_name, email, phone) VALUES ('Amanda 
 INSERT INTO tb_student(name, address, class_name, email, phone) VALUES ('Pedro Costa','Avenida Sete de Setembro 123','6A','pedro.costa@setembromail.com','46984715237');
 INSERT INTO tb_student(name, address, class_name, email, phone) VALUES ('Isabela Oliveira','Rua das Esmeraldas 456','7B','isabela.oliveira@emeraldsmail.com','46984715348');
 INSERT INTO tb_student(name, address, class_name, email, phone) VALUES ('Eduardo Lima','Avenida Rio Branco 789','9A','eduardo.lima@riobrancomail.com','46984715459');
+
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Juniano Silva','juliano@getmail.com','Professor','4687452151');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Afonso Ribeiro', 'afonso@getmail.com', 'Professor', '4698532147');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Beatriz Costa', 'beatriz@getmail.com', 'Zelador', '4698532148');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Carlos Nunes', 'carlos@getmail.com', 'Secretária', '4698532149');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Daniela Ferreira', 'daniela@getmail.com', 'Pedagoga', '4698532150');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Eduardo Martins', 'eduardo@getmail.com', 'Professor', '4698532151');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Fernanda Lima', 'fernanda@getmail.com', 'Zelador', '4698532152');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Gabriel Alves', 'gabriel@getmail.com', 'Secretária', '4698532153');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Helena Duarte', 'helena@getmail.com', 'Pedagoga', '4698532154');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Igor Silva', 'igor@getmail.com', 'Professor', '4698532155');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Julia Rocha', 'julia@getmail.com', 'Zelador', '4698532156');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Lucas Pereira', 'lucas@getmail.com', 'Secretária', '4698532157');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Mariana Souza', 'mariana@getmail.com', 'Pedagoga', '4698532158');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Nicolas Correia', 'nicolas@getmail.com', 'Professor', '4698532159');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Olivia Braga', 'olivia@getmail.com', 'Zelador', '4698532160');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Pedro Almeida', 'pedro@getmail.com', 'Secretária', '4698532161');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Quirino Vieira', 'quirino@getmail.com', 'Pedagoga', '4698532162');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Rafaela Barros', 'rafaela@getmail.com', 'Professor', '4698532163');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Sergio Gonçalves', 'sergio@getmail.com', 'Zelador', '4698532164');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Tatiana Moreira', 'tatiana@getmail.com', 'Secretária', '4698532165');
+INSERT INTO tb_staff(name, email, position, phone) VALUES ('Ulisses Freitas', 'ulisses@getmail.com', 'Diretor', '4698532166');
