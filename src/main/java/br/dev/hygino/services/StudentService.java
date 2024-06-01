@@ -59,4 +59,11 @@ public class StudentService {
             throw new StudentNotFoundException("O aluno com o Id: " + id + " não foi encontrado");
         }
     }
+
+    public void remove(Long id) {
+        Student student = studentRepository.findStudentById(id)
+                .orElseThrow(() -> new StudentNotFoundException(
+                        "Impossível remover o Estudante com o Id: " + id + ", pois ele não existe"));
+        studentRepository.delete(student);
+    }
 }
