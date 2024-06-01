@@ -1,0 +1,21 @@
+meta {
+  name: Update
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8080/api/v1/student/2
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Tenório Souza Pinto",
+    "address": "Rua das Girafas 105",
+    "phone": "46985521001",
+    "email": "tenorio@getmail.com",
+    "className": "8C"
+  }
+}

@@ -10,6 +10,7 @@ import br.dev.hygino.dto.StudentInsertDTO;
 import br.dev.hygino.entities.Student;
 import br.dev.hygino.repositories.StudentRepository;
 import br.dev.hygino.services.exceptions.StudentNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @Service
@@ -46,5 +47,16 @@ public class StudentService {
         Student student = studentRepository.findStudentById(id)
                 .orElseThrow(() -> new StudentNotFoundException("O aluno com o Id: " + id + " não foi encontrado"));
         return new StudentDTO(student);
+    }
+
+    @Transactional
+    public StudentDTO update(Long id, @Valid StudentInsertDTO dto) {
+        try {
+            Student entity = studentRepository.getReferenceById(id);
+            copyDtoToEntity(dto, entity);
+            return new StudentDTO(studentRepository.save(entity));
+        } catch (EntityNotFoundException e) {
+            throw new StudentNotFoundException("O aluno com o Id: " + id + " não foi encontrado");
+        }
     }
 }
