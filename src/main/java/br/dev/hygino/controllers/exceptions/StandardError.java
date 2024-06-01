@@ -1,0 +1,12 @@
+package br.dev.hygino.controllers.exceptions;
+
+import java.time.Instant;
+
+public record StandardError(
+        Instant timestamp,
+        Integer Status,
+        String error,
+        String message,
+        String path) {
+
+}

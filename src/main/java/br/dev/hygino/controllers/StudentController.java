@@ -1,7 +1,11 @@
 package br.dev.hygino.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +29,15 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<StudentDTO> insert(@RequestBody @Valid StudentInsertDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(studentService.insert(dto));
+    }
+
+    @GetMapping
+    ResponseEntity<Page<StudentDTO>> findAll(Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.findAll(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(studentService.findById(id));
     }
 }
