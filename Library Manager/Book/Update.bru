@@ -1,0 +1,24 @@
+meta {
+  name: Update
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8080/api/v1/book/100
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "O Senhor dos Anéis",
+    "author": "J. R. R. Tolkien",
+    "publisher": "Martins Fontes",
+    "year": 2000,
+    "amount": 1211,
+    "location": "E74",
+    "isbn": "978-8533613409",
+    "gender": "Aventura"
+  }
+}

@@ -50,3 +50,10 @@ INSERT INTO tb_staff(name, email, position, phone) VALUES ('Rafaela Barros', 'ra
 INSERT INTO tb_staff(name, email, position, phone) VALUES ('Sergio Gonçalves', 'sergio@getmail.com', 'Zelador', '4698532164');
 INSERT INTO tb_staff(name, email, position, phone) VALUES ('Tatiana Moreira', 'tatiana@getmail.com', 'Secretária', '4698532165');
 INSERT INTO tb_staff(name, email, position, phone) VALUES ('Ulisses Freitas', 'ulisses@getmail.com', 'Diretor', '4698532166');
+
+INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('O cortiço', 'Aluísio Azevedo ', 20132019, 'Principis',224,'Romance',' 978-8594318831','H47');
+INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('Dom Casmurro', 'Machado de Assis', 1899, 'Principis', 150, 'Romance', '978-8594318848', 'H48');
+INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('Grande Sertão: Veredas', 'João Guimarães Rosa', 1956, 'Companhia das Letras', 200, 'Romance', '978-8535926184', 'H49');
+INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('A Hora da Estrela', 'Clarice Lispector', 1977, 'Rocco', 180, 'Romance', '978-8532529692', 'H50');
+INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('Memórias Póstumas de Brás Cubas', 'Machado de Assis', 1881, 'Principis', 130, 'Romance', '978-8594318855', 'H51');
+INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('O Guarani', 'José de Alencar', 1857, 'Martin Claret', 220, 'Romance', '978-8572329128', 'H52');
