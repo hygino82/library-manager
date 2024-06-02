@@ -1,5 +1,6 @@
 package br.dev.hygino.services;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import br.dev.hygino.dto.StudentDTO;
 import br.dev.hygino.dto.StudentInsertDTO;
 import br.dev.hygino.entities.Student;
 import br.dev.hygino.repositories.StudentRepository;
+import br.dev.hygino.services.exceptions.DatabaseException;
 import br.dev.hygino.services.exceptions.StudentNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -64,6 +66,10 @@ public class StudentService {
         Student student = studentRepository.findStudentById(id)
                 .orElseThrow(() -> new StudentNotFoundException(
                         "Impossível remover o Estudante com o Id: " + id + ", pois ele não existe"));
-        studentRepository.delete(student);
+        try {
+            studentRepository.delete(student);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Não é possivel remover um Estudante associado a um Empréstimo");
+        }
     }
 }

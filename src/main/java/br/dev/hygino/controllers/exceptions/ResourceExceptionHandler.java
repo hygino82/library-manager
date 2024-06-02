@@ -3,6 +3,7 @@ package br.dev.hygino.controllers.exceptions;
 import java.time.Instant;
 
 import br.dev.hygino.services.exceptions.BookNotFoundException;
+import br.dev.hygino.services.exceptions.DatabaseException;
 import br.dev.hygino.services.exceptions.LoanNotFoundException;
 import br.dev.hygino.services.exceptions.StaffNotFoundException;
 import br.dev.hygino.services.exceptions.StudentNotFoundException;
@@ -62,6 +63,19 @@ public class ResourceExceptionHandler {
                 Instant.now(),
                 status.value(),
                 "Loan not found",
+                e.getMessage(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
+    
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> loanNotFound(DatabaseException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(
+                Instant.now(),
+                status.value(),
+                "Remover entidade associada a um Empréstimo",
                 e.getMessage(),
                 request.getRequestURI());
 

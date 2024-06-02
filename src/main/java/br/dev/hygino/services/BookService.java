@@ -1,5 +1,6 @@
 package br.dev.hygino.services;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import br.dev.hygino.dto.BookInsertDTO;
 import br.dev.hygino.entities.Book;
 import br.dev.hygino.repositories.BookRepository;
 import br.dev.hygino.services.exceptions.BookNotFoundException;
+import br.dev.hygino.services.exceptions.DatabaseException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
@@ -68,6 +70,11 @@ public class BookService {
         Book Book = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException(
                         "Impossível remover o Livro com o Id: " + id + ", pois ele não existe"));
-        bookRepository.delete(Book);
+
+        try {
+            bookRepository.delete(Book);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Não é possivel remover um Livro associado a um Empréstimo");
+        }
     }
 }
