@@ -57,3 +57,9 @@ INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn
 INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('A Hora da Estrela', 'Clarice Lispector', 1977, 'Rocco', 180, 'Romance', '978-8532529692', 'H50');
 INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('Memórias Póstumas de Brás Cubas', 'Machado de Assis', 1881, 'Principis', 130, 'Romance', '978-8594318855', 'H51');
 INSERT INTO tb_book(title, author, release_year, publisher, amount, gender, isbn, location) VALUES ('O Guarani', 'José de Alencar', 1857, 'Martin Claret', 220, 'Romance', '978-8572329128', 'H52');
+
+INSERT INTO tb_loan(book_id, student_id, loan_date, return_date) VALUES (2, 4, '2024-05-01', '2024-06-10');
+INSERT INTO tb_loan(book_id, student_id, loan_date, return_date) VALUES (3, 8, '2024-05-03', '2024-06-12');
+INSERT INTO tb_loan(book_id, student_id, loan_date, return_date) VALUES (4, 12, '2024-05-05', '2024-06-14');
+INSERT INTO tb_loan(book_id, student_id, loan_date, return_date) VALUES (5, 16, '2024-05-07', '2024-06-16');
+INSERT INTO tb_loan(book_id, student_id, loan_date, return_date) VALUES (6, 20, '2024-05-09', '2024-06-18');

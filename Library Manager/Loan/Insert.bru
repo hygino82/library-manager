@@ -1,0 +1,19 @@
+meta {
+  name: Insert
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/v1/loan
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "bookId": 1,
+    "studentId": 2,
+    "returnDate": "2024-06-15"
+  }
+}
