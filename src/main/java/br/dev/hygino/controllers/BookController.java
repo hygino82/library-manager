@@ -1,7 +1,5 @@
 package br.dev.hygino.controllers;
 
-import br.dev.hygino.dto.ResponseBookDto;
-import br.dev.hygino.services.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -9,8 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.dev.hygino.dto.RequestBookDto;
+import br.dev.hygino.dto.ResponseBookDto;
+import br.dev.hygino.services.BookService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/book")
@@ -37,14 +43,30 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-    
+
+    @PostMapping
+    public ResponseEntity<ResponseBookDto> insert(@Valid @RequestBody RequestBookDto dto) {
+        final ResponseBookDto res = service.insert(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(res);
+    }
+
     @PatchMapping("/{id}")
-     public ResponseEntity<?> returnBook(@PathVariable Long id) {
+    public ResponseEntity<?> returnBook(@PathVariable Long id) {
         try {
             final ResponseBookDto res = service.returnBook(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(res);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RequestBookDto dto) {
+        try {
+            final ResponseBookDto res = service.update(id, dto);
+            return ResponseEntity.status(HttpStatus.OK).body(res);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }
