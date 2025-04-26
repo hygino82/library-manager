@@ -39,14 +39,14 @@ public class BookLoanService {
     public ResponseBookLoanDto insert(RequestLoanDto dto) {
         User user = userRepository.findById(dto.userId())
                 .orElseThrow(() -> new IllegalArgumentException("Não existe usuário com o Id: " + dto.userId()));
-                
+
         Book book = bookRepository.findById(dto.bookId())
                 .orElseThrow(() -> new IllegalArgumentException("Não existe livro com o Id: " + dto.userId()));
 
         if (book.getBookStatus() != BookStatus.AVALIABLE) {
-            new IllegalArgumentException("Não está disponível o livro com o Id: " + dto.bookId());
-
+            throw new IllegalArgumentException("Não está disponível o livro com o Id: " + dto.bookId());
         }
+
         book.setBookStatus(BookStatus.UNVALIABLE);
 
         BookLoan bookLoan = new BookLoan(user, book);

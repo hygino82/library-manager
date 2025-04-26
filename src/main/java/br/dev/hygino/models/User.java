@@ -49,4 +49,6 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private final List<BookLoan> bookLoans = new ArrayList<>();
+
+	private boolean hasLoan = false;
 }

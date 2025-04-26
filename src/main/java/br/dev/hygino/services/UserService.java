@@ -23,7 +23,7 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public Page<ResponseUserDto> findAllUsers(Pageable pageable) {
-		return userRepository.findAll(pageable).map(ResponseUserDto::new);
+		return userRepository.findAll(pageable).map(ResponseUserDto::from);
 	}
 
 	@Transactional
@@ -31,7 +31,7 @@ public class UserService {
 		User entity = new User();
 		dtoToEntity(dto, entity);
 		entity = userRepository.save(entity);
-		return new ResponseUserDto(entity);
+		return  ResponseUserDto.from(entity);
 	}
 
 	private void dtoToEntity(@Valid RequestUserDto dto, User entity) {
@@ -47,7 +47,7 @@ public class UserService {
 			User entity = userRepository.getReferenceById(id);
 			dtoToEntity(dto, entity);
 			entity = userRepository.save(entity);
-			return new ResponseUserDto(entity);
+			return  ResponseUserDto.from(entity);
 		} catch (EntityNotFoundException e) {
 			throw new IllegalArgumentException("Não existe usuario com o Id: " + id);
 		}
@@ -57,7 +57,7 @@ public class UserService {
 	public ResponseUserDto findUser(Long id) {
 		final User entity = userRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Não existe usuario com o Id: " + id));
-		return new ResponseUserDto(entity);
+		return  ResponseUserDto.from(entity);
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
@@ -68,6 +68,6 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public Page<ResponseUserDto> findUsersByName(String name, Pageable pageable) {
 		Page<User> res = userRepository.findUsersByName(name, pageable);
-		return res.map(ResponseUserDto::new);
+		return res.map(ResponseUserDto::from);
 	}
 }
