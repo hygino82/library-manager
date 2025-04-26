@@ -64,4 +64,10 @@ public class UserService {
 	public void removeUser(Long id) {
 		userRepository.deleteById(id);
 	}
+
+	@Transactional(readOnly = true)
+	public Page<ResponseUserDto> findUsersByName(String name, Pageable pageable) {
+		Page<User> res = userRepository.findUsersByName(name, pageable);
+		return res.map(ResponseUserDto::new);
+	}
 }

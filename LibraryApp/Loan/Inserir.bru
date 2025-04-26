@@ -5,18 +5,14 @@ meta {
 }
 
 post {
-  url: {{host}}/book
+  url: {{host}}/loan
   body: json
   auth: none
 }
 
 body:json {
   {
-    "title": "O Senhor dos Anéis",
-    "author": "J. R. R. Tolkien",
-    "personalCode": "GBR001",
-    "edition": 1,
-    "publisher": "Editora Planeta",
-    "totalPages": 1212
+    "bookId": 5,
+    "userId": 4
   }
 }

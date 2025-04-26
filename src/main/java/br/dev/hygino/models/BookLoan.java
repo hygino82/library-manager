@@ -23,6 +23,11 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class BookLoan {
 
+	public BookLoan(User user, Book book) {
+		this.book = book;
+		this.user = user;
+	}
+
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
