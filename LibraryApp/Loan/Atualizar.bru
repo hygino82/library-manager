@@ -1,0 +1,22 @@
+meta {
+  name: Atualizar
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{host}}/book/2
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "O Senhor dos Anéis",
+    "author": "J. R. R. Tolkien",
+    "personalCode": "GBR001",
+    "edition": 1,
+    "publisher": "Editora Planeta",
+    "totalPages": 1212
+  }
+}

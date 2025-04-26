@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,12 +19,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_book")
+@Table(name = "tb_user")
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Book {
+public class User {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -32,29 +33,20 @@ public class Book {
 
 	@NotBlank
 	@Size(max = 100, min = 3)
-	private String title;
+	private String name;
 
-	@NotBlank
+	@NotNull
+	private SchoolAtribute schoolAtribute;
+
+	@Email
 	@Size(max = 100, min = 3)
-	private String author;
+	@NotBlank
+	private String email;
 
 	@NotBlank
-	@Size(max = 30, min = 3)
-	private String personalCode;
+	@Size(max = 20, min = 8)
+	private String phoneNumber;
 
-	@NotNull
-	private Integer edition;
-
-	@NotBlank
-	@Size(max = 100, min = 3)
-	private String publisher;
-
-	@NotNull
-	private Integer totalPages;
-
-	@NotNull
-	private BookStatus bookStatus = BookStatus.AVALIABLE;
-
-	@OneToMany(mappedBy = "book")
+	@OneToMany(mappedBy = "user")
 	private final List<BookLoan> bookLoans = new ArrayList<>();
 }

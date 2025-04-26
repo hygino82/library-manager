@@ -1,0 +1,20 @@
+meta {
+  name: Atualizar
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{host}}/user/2
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Gorete Silva",
+    "schoolAtribute": "SETIMO",
+    "email": "goretinha.silva@email.com",
+    "phoneNumber": "21965165432"
+  }
+}
