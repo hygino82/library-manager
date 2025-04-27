@@ -42,7 +42,7 @@ public class BookService {
 			res = bookRepository.save(res);
 			return new ResponseBookDto(res);
 		} catch (EntityNotFoundException e) {
-			throw new IllegalArgumentException("Não encontrodo Livro com id: " + id);
+			throw new IllegalArgumentException("Não encontrado Livro com id: " + id);
 		}
 	}
 
