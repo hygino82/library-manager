@@ -1,10 +1,12 @@
 package br.dev.hygino;
 
-import br.dev.hygino.dto.RequestBookDto;
-import br.dev.hygino.dto.ResponseBookDto;
-import br.dev.hygino.models.Book;
-import br.dev.hygino.repositories.BookRepository;
-import br.dev.hygino.services.BookService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,11 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import br.dev.hygino.dto.RequestBookDto;
+import br.dev.hygino.dto.ResponseBookDto;
+import br.dev.hygino.models.Book;
+import br.dev.hygino.repositories.BookRepository;
+import br.dev.hygino.services.BookService;
 
 @ExtendWith(SpringExtension.class)
 public class BookServiceTest {

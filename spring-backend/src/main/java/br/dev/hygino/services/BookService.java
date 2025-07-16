@@ -16,68 +16,68 @@ import jakarta.persistence.EntityNotFoundException;
 @Service
 public class BookService {
 
-	private final BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-	public BookService(BookRepository bookRepository) {
-		this.bookRepository = bookRepository;
-	}
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
-	@Transactional(readOnly = true)
-	public Page<ResponseBookDto> findAll(Pageable pageable) {
-		return bookRepository.findAll(pageable).map(ResponseBookDto::new);
-	}
+    @Transactional(readOnly = true)
+    public Page<ResponseBookDto> findAll(String title, String author, Pageable pageable) {
+        return bookRepository.findBooksByTitleAndAuthor(title, author, pageable).map(ResponseBookDto::new);
+    }
 
-	@Transactional(readOnly = true)
-	public ResponseBookDto findById(Long id) {
-		final Book res = bookRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Não existe livro com o id: " + id));
-		return new ResponseBookDto(res);
-	}
+    @Transactional(readOnly = true)
+    public ResponseBookDto findById(Long id) {
+        final Book res = bookRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Não existe livro com o id: " + id));
+        return new ResponseBookDto(res);
+    }
 
-	@Transactional
-	public ResponseBookDto returnBook(Long id) {
-		try {
-			Book res = bookRepository.getReferenceById(id);
-			res.setBookStatus(BookStatus.AVALIABLE);
-			res = bookRepository.save(res);
-			return new ResponseBookDto(res);
-		} catch (EntityNotFoundException e) {
-			throw new IllegalArgumentException("Não encontrado Livro com id: " + id);
-		}
-	}
+    @Transactional
+    public ResponseBookDto returnBook(Long id) {
+        try {
+            Book res = bookRepository.getReferenceById(id);
+            res.setBookStatus(BookStatus.AVALIABLE);
+            res = bookRepository.save(res);
+            return new ResponseBookDto(res);
+        } catch (EntityNotFoundException e) {
+            throw new IllegalArgumentException("Não encontrado Livro com id: " + id);
+        }
+    }
 
-	@Transactional
-	public ResponseBookDto insert(RequestBookDto dto) {
-		Book entity = new Book();
-		dtoToEntity(dto, entity);
-		entity = bookRepository.save(entity);
-		return new ResponseBookDto(entity);
-	}
+    @Transactional
+    public ResponseBookDto insert(RequestBookDto dto) {
+        Book entity = new Book();
+        dtoToEntity(dto, entity);
+        entity = bookRepository.save(entity);
+        return new ResponseBookDto(entity);
+    }
 
-	private void dtoToEntity(RequestBookDto dto, Book entity) {
-		entity.setTitle(dto.title());
-		entity.setAuthor(dto.author());
-		entity.setPersonalCode(dto.personalCode());
-		entity.setEdition(dto.edition());
-		entity.setPublisher(dto.publisher());
-		entity.setTotalPages(dto.totalPages());
-	}
+    private void dtoToEntity(RequestBookDto dto, Book entity) {
+        entity.setTitle(dto.title());
+        entity.setAuthor(dto.author());
+        entity.setPersonalCode(dto.personalCode());
+        entity.setEdition(dto.edition());
+        entity.setPublisher(dto.publisher());
+        entity.setTotalPages(dto.totalPages());
+    }
 
-	@Transactional
-	public ResponseBookDto update(Long id, RequestBookDto dto) {
-		try {
-			Book entity = bookRepository.getReferenceById(id);
-			dtoToEntity(dto, entity);
-			entity = bookRepository.save(entity);
-			return new ResponseBookDto(entity);
-		} catch (EntityNotFoundException e) {
-			throw new IllegalArgumentException("Não encontrodo Livro com id: " + id);
-		}
-	}
+    @Transactional
+    public ResponseBookDto update(Long id, RequestBookDto dto) {
+        try {
+            Book entity = bookRepository.getReferenceById(id);
+            dtoToEntity(dto, entity);
+            entity = bookRepository.save(entity);
+            return new ResponseBookDto(entity);
+        } catch (EntityNotFoundException e) {
+            throw new IllegalArgumentException("Não encontrodo Livro com id: " + id);
+        }
+    }
 
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public void remove(Long id) {
-		bookRepository.deleteById(id);
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void remove(Long id) {
+        bookRepository.deleteById(id);
 
-	}
+    }
 }
