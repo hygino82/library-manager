@@ -9,10 +9,10 @@ export class AuthorController {
 
   @Post()
   create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorService.create(createAuthorDto);
+    return this.authorService.createAuthor(createAuthorDto);
   }
 
-  @Get()
+  /*@Get()
   findAll() {
     return this.authorService.findAll();
   }
@@ -35,6 +35,6 @@ export class AuthorController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.authorService.remove(+id);
-  }
+  }*/
 }
 

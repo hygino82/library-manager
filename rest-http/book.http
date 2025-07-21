@@ -1,0 +1,16 @@
+### Buscar todos
+GET http://localhost:3000/book
+
+### Buscar por Id
+GET http://localhost:3000/book/2
+
+### Inserir um livro
+POST http://localhost:3000/book
+Content-Type: application/json
+
+{
+    "authorId":1,
+    "title":"Dança da Morte",
+    "publisher":"Suma de Letras",
+    "edition":2
+}
