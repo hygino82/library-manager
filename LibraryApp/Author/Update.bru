@@ -1,0 +1,18 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{host}}/author/4
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Machado de Assis",
+    "country": "Brasil"
+  }
+}

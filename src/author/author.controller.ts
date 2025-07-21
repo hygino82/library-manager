@@ -12,9 +12,9 @@ export class AuthorController {
     return this.authorService.createAuthor(createAuthorDto);
   }
 
-  /*@Get()
+  @Get()
   findAll() {
-    return this.authorService.findAll();
+    return this.authorService.getAuthors();
   }
 
   @Get(':id')
@@ -26,6 +26,7 @@ export class AuthorController {
   update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
     const autor = this.authorService.update(+id, updateAuthorDto);
     if (autor) {
+      autor;
       return autor;
     } else {
       return { message: 'Author not found' };
@@ -35,6 +36,6 @@ export class AuthorController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.authorService.remove(+id);
-  }*/
+  }
 }
 
