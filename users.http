@@ -1,0 +1,28 @@
+### Buscar todos
+GET http://localhost:3000/author
+
+### Buscar por Id
+GET http://localhost:3000/author/2
+
+
+### Inserir um autor
+POST http://localhost:3000/author
+Content-Type: application/json
+
+{
+    "name": "Stephen King",
+    "country": "Estados Unidos"
+}
+
+
+### Atualizar um autor
+PUT http://localhost:3000/author/100
+Content-Type: application/json
+
+{
+    "name": "Stephen King",
+    "country": "Estados Unidos"
+}
+
+### Remover por Id
+DELETE  http://localhost:3000/author/2
