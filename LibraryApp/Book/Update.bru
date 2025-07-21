@@ -1,0 +1,20 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{host}}/book/2
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "authorId": 1,
+    "title": "O Iluminado Update",
+    "publisher": "Rocco",
+    "edition": 2
+  }
+}

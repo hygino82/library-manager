@@ -1,0 +1,18 @@
+meta {
+  name: Remove By Id
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{host}}/book/3
+  body: none
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Aachado de Assis",
+    "country": "Brasil"
+  }
+}
