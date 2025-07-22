@@ -1,18 +1,18 @@
 meta {
-  name: Insert
+  name: Update
   type: http
-  seq: 1
+  seq: 2
 }
 
-post {
-  url: {{host}}/author
+put {
+  url: {{host}}/author/4
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "name": "Lima Barreto",
+    "name": "Machado de Assis",
     "country": "Brasil"
   }
 }

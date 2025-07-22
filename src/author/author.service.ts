@@ -11,7 +11,7 @@ export class AuthorService {
   constructor(
     @InjectRepository(Author)
     private readonly authorRepository: Repository<Author>,
-  ) { }
+  ) {}
 
   async createAuthor(insertAuthor: CreateAuthorDto): Promise<ResponseAutorDto> {
     const author = new Author();
@@ -23,7 +23,7 @@ export class AuthorService {
 
   async getAuthors(): Promise<ResponseAutorDto[]> {
     const authors = await this.authorRepository.find();
-    return authors.map(author => new ResponseAutorDto(author));
+    return authors.map((author) => new ResponseAutorDto(author));
   }
 
   async findOne(id: number): Promise<ResponseAutorDto | null> {
@@ -31,7 +31,10 @@ export class AuthorService {
     return author ? new ResponseAutorDto(author) : null;
   }
 
-  async update(id: number, updateAuthorDto: UpdateAuthorDto): Promise<ResponseAutorDto | null> {
+  async update(
+    id: number,
+    updateAuthorDto: UpdateAuthorDto,
+  ): Promise<ResponseAutorDto | null> {
     const author = await this.authorRepository.findOneBy({ id });
 
     if (!author) {
