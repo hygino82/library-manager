@@ -1,0 +1,26 @@
+<div class="container">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Pais</th>
+        <th scope="col">Livros</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let author of authors">
+        <th scope="row">{{author.id}}</th>
+        <td>{{author.name}}</td>
+        <td>{{author.country}}</td>
+        <td>{{author.totalBooks}}</td>
+        <td>
+          <button class="btn btn-info"><i class="bi bi-info-circle-fill"></i> Info</button>
+          <button class="btn btn-warning" (click)="editAuthor(author.id)"><i class="bi bi-pencil-fill"></i> Editar</button>
+          <button class="btn btn-danger" (click)="deleteAuthor(author.id)"><i class="bi bi-trash-fill"></i> Excluir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
