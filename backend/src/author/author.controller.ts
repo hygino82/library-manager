@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Query } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
+import { PageQueryDto } from '../pagination-query.dto';
 
 @Controller('author')
 export class AuthorController {
@@ -13,9 +14,10 @@ export class AuthorController {
   }
 
   @Get()
-  findAll() {
-    return this.authorService.getAuthors();
+  findAll(@Query() query: PageQueryDto) {
+    return this.authorService.findAllPaged(query);
   }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -24,10 +26,10 @@ export class AuthorController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
-    const autor = this.authorService.update(+id, updateAuthorDto);
-    if (autor) {
-      autor;
-      return autor;
+    const author = this.authorService.update(+id, updateAuthorDto);
+    if (author) {
+      author;
+      return author;
     } else {
       return { message: 'Author not found' };
     }

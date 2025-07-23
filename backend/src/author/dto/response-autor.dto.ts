@@ -1,6 +1,6 @@
 import { Author } from '../entities/author.entity';
 
-export class ResponseAutorDto {
+export class ResponseAuthorDto {
   id: number;
   name: string;
   country: string;
