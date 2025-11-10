@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/user")
-@Tag(name = "Usuários", description = "Operações relacionadas a usuários")
+@Tag(name = "Usuários", description = "Operações relacionadas aos usuários")
 public class UserController {
 
 	private final UserService service;

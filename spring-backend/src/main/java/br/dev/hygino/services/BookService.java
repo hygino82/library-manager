@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import br.dev.hygino.dto.RequestBookDto;
 import br.dev.hygino.dto.ResponseBookDto;
 import br.dev.hygino.models.Book;
-import br.dev.hygino.models.BookStatus;
 import br.dev.hygino.repositories.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -34,7 +33,7 @@ public class BookService {
         return new ResponseBookDto(res);
     }
 
-    @Transactional
+    /*@Transactional
     public ResponseBookDto returnBook(Long id) {
         try {
             Book res = bookRepository.getReferenceById(id);
@@ -44,7 +43,7 @@ public class BookService {
         } catch (EntityNotFoundException e) {
             throw new IllegalArgumentException("Não encontrado Livro com id: " + id);
         }
-    }
+    }*/
 
     @Transactional
     public ResponseBookDto insert(RequestBookDto dto) {
@@ -78,6 +77,5 @@ public class BookService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public void remove(Long id) {
         bookRepository.deleteById(id);
-
     }
 }

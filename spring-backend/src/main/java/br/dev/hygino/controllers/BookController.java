@@ -3,6 +3,8 @@ package br.dev.hygino.controllers;
 import br.dev.hygino.dto.RequestBookDto;
 import br.dev.hygino.dto.ResponseBookDto;
 import br.dev.hygino.services.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/book")
+@Tag(name = "Livros", description = "Operações relacionadas aos livros")
 public class BookController {
 
     private final BookService service;
@@ -21,6 +24,7 @@ public class BookController {
     }
 
     @GetMapping
+    @Operation(summary = "Busca de livros", description = "Retorna uma página de livros buscando pelo título e autor")
     public ResponseEntity<Page<ResponseBookDto>> findAll(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author,
@@ -35,6 +39,7 @@ public class BookController {
 
 
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar livro", description = "Busca um livro pelo Id")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         try {
             final ResponseBookDto res = service.findById(id);
@@ -45,12 +50,13 @@ public class BookController {
     }
 
     @PostMapping
+    @Operation(summary = "Inserir livro", description = "Adiciona um livro")
     public ResponseEntity<ResponseBookDto> insert(@Valid @RequestBody RequestBookDto dto) {
         final ResponseBookDto res = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
-    @PatchMapping("/{id}")
+    /*@PatchMapping("/{id}")
     public ResponseEntity<?> returnBook(@PathVariable Long id) {
         try {
             final ResponseBookDto res = service.returnBook(id);
@@ -58,9 +64,10 @@ public class BookController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-    }
+    }*/
 
     @PutMapping("/{id}")
+    @Operation(summary = "Atualizar livro", description = "Atualizar dados de um livro")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RequestBookDto dto) {
         try {
             final ResponseBookDto res = service.update(id, dto);
@@ -71,6 +78,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Remover livro", description = "Remove um livro pelo Id")
     public ResponseEntity<Void> remove(@PathVariable Long id) {
         service.remove(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
