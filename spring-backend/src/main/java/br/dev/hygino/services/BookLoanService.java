@@ -1,10 +1,10 @@
 package br.dev.hygino.services;
 
+import java.time.LocalDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import br.dev.hygino.dto.RequestLoanDto;
 import br.dev.hygino.dto.ResponseBookLoanDto;
 import br.dev.hygino.models.Book;
@@ -23,7 +23,7 @@ public class BookLoanService {
     private final BookRepository bookRepository;
 
     public BookLoanService(BookLoanRepository bookLoanRepository, UserRepository userRepository,
-            BookRepository bookRepository) {
+                           BookRepository bookRepository) {
         this.bookLoanRepository = bookLoanRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
@@ -31,26 +31,52 @@ public class BookLoanService {
 
     @Transactional(readOnly = true)
     public Page<ResponseBookLoanDto> findAllLoans(Pageable pageable) {
-        return bookLoanRepository.findAll(pageable)
-                .map(ResponseBookLoanDto::new);
+        return bookLoanRepository.findAll(pageable).map(ResponseBookLoanDto::new);
     }
 
     @Transactional
     public ResponseBookLoanDto insert(RequestLoanDto dto) {
         User user = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new IllegalArgumentException("Não existe usuário com o Id: " + dto.userId()));
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com ID: " + dto.userId()));
 
-        Book book = bookRepository.findById(dto.bookId())
-                .orElseThrow(() -> new IllegalArgumentException("Não existe livro com o Id: " + dto.userId()));
-
-        if (book.getBookStatus() != BookStatus.AVALIABLE) {
-            throw new IllegalArgumentException("Não está disponível o livro com o Id: " + dto.bookId());
+        if (user.isHasLoan()) {
+            throw new IllegalArgumentException("O usuário já possui um empréstimo ativo.");
         }
 
-        book.setBookStatus(BookStatus.UNVALIABLE);
+        Book book = bookRepository.findById(dto.bookId())
+                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado com ID: " + dto.bookId()));
+
+        if (book.getBookStatus() != BookStatus.AVALIABLE) {
+            throw new IllegalArgumentException("O livro com ID " + dto.bookId() + " não está disponível para empréstimo.");
+        }
+
+        user.setHasLoan(true);
+        book.setBookStatus(BookStatus.IN_USE);
 
         BookLoan bookLoan = new BookLoan(user, book);
-        bookLoan = bookLoanRepository.save(bookLoan);
+        bookLoanRepository.save(bookLoan);
+
+        return new ResponseBookLoanDto(bookLoan);
+    }
+
+    @Transactional
+    public ResponseBookLoanDto returnBook(Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado com ID: " + bookId));
+
+        BookLoan bookLoan = bookLoanRepository.findLoanByBook(book)
+                .orElseThrow(() -> new IllegalArgumentException("Nenhum empréstimo ativo encontrado para o livro com ID: " + bookId));
+
+        // Atualiza status
+        book.setBookStatus(BookStatus.AVALIABLE);
+        bookLoan.setEndDate(LocalDate.now());
+        User user = bookLoan.getUser();
+        user.setHasLoan(false);
+
+        // Salva mudanças explicitamente
+        bookRepository.save(book);
+        userRepository.save(user);
+        bookLoanRepository.save(bookLoan);
 
         return new ResponseBookLoanDto(bookLoan);
     }

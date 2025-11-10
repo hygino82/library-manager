@@ -3,6 +3,7 @@ package br.dev.hygino.dto;
 import java.time.LocalDate;
 
 import br.dev.hygino.models.BookLoan;
+import br.dev.hygino.models.BookStatus;
 
 public record ResponseBookLoanDto(
         Long id,
@@ -12,7 +13,8 @@ public record ResponseBookLoanDto(
         String userName,
         LocalDate startDate,
         LocalDate endDate,
-        String status) {
+        BookStatus bookStatus,
+        boolean userHasLoan) {
     public ResponseBookLoanDto(BookLoan obj) {
         this(
                 obj.getId(),
@@ -22,6 +24,7 @@ public record ResponseBookLoanDto(
                 obj.getUser().getName(),
                 obj.getStartDate(),
                 obj.getEndDate(),
-                obj.getBook().getBookStatus().name());
+                obj.getBook().getBookStatus(),
+                obj.getUser().isHasLoan());
     }
 }

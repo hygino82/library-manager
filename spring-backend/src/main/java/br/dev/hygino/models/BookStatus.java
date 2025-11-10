@@ -3,5 +3,6 @@ package br.dev.hygino.models;
 public enum BookStatus {
     RESERVED,
     AVALIABLE,
-    UNVALIABLE;
+    UNVALIABLE,
+    IN_USE;
 }
