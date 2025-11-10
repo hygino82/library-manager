@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import br.dev.hygino.dto.RequestUserDto;
 import br.dev.hygino.dto.ResponseUserDto;
 import br.dev.hygino.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/user")
+@Tag(name = "Usuários", description = "Operações relacionadas a usuários")
 public class UserController {
 
 	private final UserService service;
@@ -29,22 +32,21 @@ public class UserController {
 		this.service = service;
 	}
 
-	/*@GetMapping
-	public ResponseEntity<Page<ResponseUserDto>> findAllUsers(Pageable pageable) {
-		return ResponseEntity.status(HttpStatus.OK).body(service.findAllUsers(pageable));
-	}*/
-
 	@GetMapping
-	public ResponseEntity<Page<ResponseUserDto>> findUsersByName(@Param(value = "name") String name,Pageable pageable) {
-		return ResponseEntity.status(HttpStatus.OK).body(service.findUsersByName(name,pageable));
+	@Operation(summary = "Busca de usuários", description = "Retorna uma página de usuários")
+	public ResponseEntity<Page<ResponseUserDto>> findUsersByName(@Param(value = "name") String name,
+			Pageable pageable) {
+		return ResponseEntity.status(HttpStatus.OK).body(service.findUsersByName(name, pageable));
 	}
 
 	@PostMapping
+	@Operation(summary = "Inserir usuário", description = "Adiciona um usuário")
 	public ResponseEntity<ResponseUserDto> insertUser(@RequestBody @Valid RequestUserDto dto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.insert(dto));
 	}
 
 	@PutMapping("/{id}")
+	@Operation(summary = "Atualizar usuário", description = "Atualizar dados de um usuário")
 	public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid RequestUserDto dto) {
 		try {
 			return ResponseEntity.status(HttpStatus.CREATED).body(service.updateUser(id, dto));
@@ -54,6 +56,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
+	@Operation(summary = "Buscar usuário", description = "Busca um usuário pelo Id")
 	public ResponseEntity<?> findUser(@PathVariable Long id) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(service.findUser(id));
@@ -63,6 +66,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Remover usuário", description = "Remove um usuário pelo Id")
 	public ResponseEntity<Void> removeUser(@PathVariable Long id) {
 		service.removeUser(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

@@ -19,3 +19,9 @@ INSERT INTO tb_book (BOOK_STATUS, EDITION, TOTAL_PAGES, ID, AUTHOR, PERSONAL_COD
 INSERT INTO tb_book (BOOK_STATUS, EDITION, TOTAL_PAGES, ID, AUTHOR, PERSONAL_CODE, PUBLISHER, TITLE) VALUES (1, 1, 272, 10, 'Lima Barreto', 'BR1010', 'Penguin Companhia', 'Triste Fim de Policarpo Quaresma');
 
 INSERT INTO tb_book (BOOK_STATUS, EDITION, TOTAL_PAGES, ID, AUTHOR, PERSONAL_CODE, PUBLISHER, TITLE) VALUES (2, 1, 247, 11, 'Machado de Assis', 'BR100125', 'Editora Record', 'Quincas Borba');
+
+INSERT INTO tb_user (name, school_atribute, phone_number, email, has_loan) VALUES ('Juvenal Santos', 0, '7823739244', 'juvenal@email.com', false);
+INSERT INTO tb_user (name, school_atribute, phone_number, email, has_loan) VALUES ('Maria Oliveira', 1, '7812345678', 'maria.oliveira@email.com', false);
+INSERT INTO tb_user (name, school_atribute, phone_number, email, has_loan) VALUES ('Carlos Souza', 2, '7898765432', 'carlos.souza@email.com', false);
+INSERT INTO tb_user (name, school_atribute, phone_number, email, has_loan) VALUES ('Ana Pereira', 1, '7823456789', 'ana.pereira@email.com', false);
+INSERT INTO tb_user (name, school_atribute, phone_number, email, has_loan) VALUES ('Rafael Lima', 0, '7876543210', 'rafael.lima@email.com', false);
