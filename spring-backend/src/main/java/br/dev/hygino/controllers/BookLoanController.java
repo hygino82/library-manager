@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import br.dev.hygino.dto.RequestLoanDto;
 import br.dev.hygino.dto.ResponseBookLoanDto;
 import br.dev.hygino.services.BookLoanService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/loan")
+@Tag(name = "Empréstimos", description = "Operações relacionadas ao empréstimo de livros")
 public class BookLoanController {
 
 	private final BookLoanService service;
@@ -28,12 +31,14 @@ public class BookLoanController {
 	}
 
 	@GetMapping
+	@Operation(summary = "Buscar empréstimos de livros", description = "Busca paginada de empréstimos de livros")
 	public ResponseEntity<Page<ResponseBookLoanDto>> findAllLoans(Pageable pageable) {
 		final Page<ResponseBookLoanDto> res = service.findAllLoans(pageable);
 		return ResponseEntity.ok(res);
 	}
 
 	@PostMapping
+	@Operation(summary = "Emprestar livro", description = "Realiza o empréstimo de um livro")
 	public ResponseEntity<?> insert(@RequestBody @Valid RequestLoanDto dto) {
 		try {
 			final ResponseBookLoanDto res = service.insert(dto);
@@ -43,9 +48,17 @@ public class BookLoanController {
 		}
 	}
 
-	@PatchMapping("/{bookId}")
+	@PatchMapping("return/{bookId}")
+	@Operation(summary = "Devolver livro", description = "Realiza a devolução de um livro")
 	public ResponseEntity<?> returnBook(@PathVariable Long bookId) {
-		final var result = service.returnBook(bookId);
+		final ResponseBookLoanDto result = service.returnBook(bookId);
+		return ResponseEntity.ok(result);
+	}
+	
+	@PatchMapping("renew/{bookId}")
+	@Operation(summary = "Renovar livro", description = "Realiza a renovação de um livro")
+	public ResponseEntity<?> renewBook(@PathVariable Long bookId) {
+		final ResponseBookLoanDto result = service.renewBook(bookId);
 		return ResponseEntity.ok(result);
 	}
 }

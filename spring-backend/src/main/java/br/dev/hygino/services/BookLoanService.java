@@ -80,4 +80,19 @@ public class BookLoanService {
 
         return new ResponseBookLoanDto(bookLoan);
     }
+
+    @Transactional
+	public ResponseBookLoanDto renewBook(Long bookId) {
+    	 Book book = bookRepository.findById(bookId)
+                 .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado com ID: " + bookId));
+
+         BookLoan bookLoan = bookLoanRepository.findLoanByBook(book)
+                 .orElseThrow(() -> new IllegalArgumentException("Nenhum empréstimo ativo encontrado para o livro com ID: " + bookId));
+         
+         bookLoan.setEndDate(bookLoan.getEndDate().plusDays(5));
+         
+         bookLoanRepository.save(bookLoan);
+
+         return new ResponseBookLoanDto(bookLoan);
+	}
 }
