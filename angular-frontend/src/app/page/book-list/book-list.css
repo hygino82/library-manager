@@ -1,0 +1,14 @@
+.margem-botao {
+  display: flex;
+  gap: 5px;
+}
+
+.menu-busca {
+  display: flex;
+  flex-direction: column;   /* elementos um abaixo do outro */
+  justify-content: center;  /* centraliza verticalmente */
+  align-items: center;      /* centraliza horizontalmente */
+}
+.menu-busca input {
+  margin-bottom: 0.5rem;
+}

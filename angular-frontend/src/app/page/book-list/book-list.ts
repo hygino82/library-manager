@@ -1,57 +1,40 @@
-import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import {Component, OnInit} from '@angular/core';
+import {ButtonModule} from 'primeng/button';
+import {TableModule} from 'primeng/table';
+import {App} from '../../app';
+import {BookService} from '../../services/book.service';
+import {Book} from '../../../custom.types';
 
 @Component({
   selector: 'app-book-list',
-  imports: [TableModule,ButtonModule],
+  imports: [TableModule, ButtonModule],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
 })
-export class BookList {
-  selectedBook?: Book;  // A linha selecionada
+export class BookList implements OnInit {
 
-  books: Book[] = [
-    {
-      id: 1,
-      title: 'The Great Gatsby',
-      author: 'F. Scott Fitzgerald',
-      personalCode: 'GG1925',
-      edition: 1,
-      publisher: 'Scribner',
-      totalPages: 180,
-      bookStatus: 'Available',
-    },
-    {
-      id: 2,
-      title: '1984',
-      author: 'George Orwell',
-      personalCode: 'N1984',
-      edition: 1,
-      publisher: 'Secker & Warburg',
-      totalPages: 328,
-      bookStatus: 'Checked Out',
-    },
-    {
-      id: 3,
-      title: 'To Kill a Mockingbird',
-      author: 'Harper Lee',
-      personalCode: 'TKM1960',
-      edition: 1,
-      publisher: 'J.B. Lippincott & Co.',
-      totalPages: 281,
-      bookStatus: 'Available',
-    },
-  ];
+  constructor(private readonly service: BookService) {
+  }
+
+  ngOnInit(): void {
+    this.service.getBooks(this.title, this.author).subscribe({
+      next: (result) => {
+        this.books = result.content; // acessa o conteúdo da página
+        console.log(this.books);
+      },
+      error: (err) => {
+        console.error('Erro ao carregar livros', err);
+      }
+    });
+  }
+
+
+  selectedBook?: Book;  // A linha selecionada
+  title: string = '';
+  author: string = '';
+
+  books: Book[] = [];
+
 }
 
-export type Book = {
-  id: number;
-  title: string;
-  author: string;
-  personalCode: string;
-  edition: number;
-  publisher: string;
-  totalPages: number;
-  bookStatus: string;
-};
+
