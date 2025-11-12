@@ -1,10 +1,17 @@
 <div class="menu-busca">
   <label for="titulo">Título</label><br>
-  <input type="text" name="titulo" id="titulo" [value]="title"><br>
-  <label for="autor">Author</label><br>
-  <input type="text" name="autor" id="autor" [value]="author"> <br>
-  <p-button label="Buscar" styleClass="p-button-primary"/>
+  <input type="text" id="titulo" [(ngModel)]="title"><br>
+
+  <label for="autor">Autor</label><br>
+  <input type="text" id="autor" [(ngModel)]="author"><br>
+
+  <p-button
+    label="Buscar"
+    styleClass="p-button-primary"
+    (click)="getBooks()"
+  />
 </div>
+
 
 <div class="listagem-livros">
   <p-table
@@ -21,6 +28,7 @@
         <th>Título</th>
         <th>Autor</th>
         <th>Páginas</th>
+        <th>Código</th>
         <th>Ações</th>
       </tr>
     </ng-template>
@@ -32,12 +40,18 @@
         <td>{{ book.title }}</td>
         <td>{{ book.author }}</td>
         <td>{{ book.totalPages }}</td>
+        <td>{{ book.personalCode }}</td>
         <td>
           <div class="margem-botao">
-            <p-button styleClass="p-button-primary p-button-icon-only">
+            <p-button styleClass="p-button-primary p-button-icon-only"
+                      pTooltip="Informação"
+                      tooltipPosition="top">
               <i class="pi pi-question-circle"></i>
             </p-button>
-            <p-button styleClass="p-button-danger p-button-icon-only">
+            <p-button styleClass="p-button-danger p-button-icon-only"
+                      pTooltip="Remover"
+                      tooltipPosition="top"
+                      (click)="removeBook(book.id)">
               <i class="pi pi-trash"></i>
             </p-button>
           </div>

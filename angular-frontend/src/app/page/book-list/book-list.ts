@@ -4,12 +4,15 @@ import {TableModule} from 'primeng/table';
 import {App} from '../../app';
 import {BookService} from '../../services/book.service';
 import {Book} from '../../../custom.types';
+import {FormsModule} from '@angular/forms';
+import {Tooltip} from 'primeng/tooltip';
 
 @Component({
   selector: 'app-book-list',
-  imports: [TableModule, ButtonModule],
+  imports: [TableModule, ButtonModule, FormsModule, Tooltip],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
+  standalone: true
 })
 export class BookList implements OnInit {
 
@@ -17,9 +20,13 @@ export class BookList implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getBooks();
+  }
+
+  getBooks() {
     this.service.getBooks(this.title, this.author).subscribe({
       next: (result) => {
-        this.books = result.content; // acessa o conteúdo da página
+        this.books = result.content; // atualiza o array
         console.log(this.books);
       },
       error: (err) => {
@@ -28,6 +35,20 @@ export class BookList implements OnInit {
     });
   }
 
+  removeBook(id: number) {
+    this.service.removeBook(id).subscribe({
+      next: () => {
+        // A remoção foi bem-sucedida! Agora, vamos recarregar a lista.
+        console.log(`Livro com ID ${id} removido com sucesso.`);
+        this.getBooks();
+      },
+      error: (err) => {
+        // Trate o erro, se a remoção falhar
+        console.error(`Erro ao remover livro com ID ${id}:`, err);
+        // Opcionalmente, você pode querer exibir uma mensagem para o usuário aqui
+      }
+    });
+  }
 
   selectedBook?: Book;  // A linha selecionada
   title: string = '';

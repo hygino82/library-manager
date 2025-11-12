@@ -8,9 +8,14 @@ import {BookPage} from '../../custom.types';
   providedIn: 'root',
 })
 export class BookService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  getBooks(title:string,author:string): Observable<BookPage> {
+  getBooks(title: string, author: string): Observable<BookPage> {
     return this.http.get<BookPage>(`${BASE_URL}/book?title=${title}&author=${author}`, {});
+  }
+
+  removeBook(id: number) {
+    return this.http.delete(`${BASE_URL}/book/${id}`);
   }
 }
