@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.dev.hygino.dto.RequestBookDto;
+import br.dev.hygino.dto.ResponseBookDetailsDto;
 import br.dev.hygino.dto.ResponseBookDto;
 import br.dev.hygino.models.Book;
 import br.dev.hygino.repositories.BookRepository;
@@ -27,10 +28,10 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseBookDto findById(Long id) {
+    public ResponseBookDetailsDto findById(Long id) {
         final Book res = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Não existe livro com o id: " + id));
-        return new ResponseBookDto(res);
+        return new ResponseBookDetailsDto(res);
     }
 
     /*@Transactional

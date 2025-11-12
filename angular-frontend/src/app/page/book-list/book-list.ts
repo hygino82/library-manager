@@ -50,6 +50,19 @@ export class BookList implements OnInit {
     });
   }
 
+  getBook(id: number) {
+    this.service.getBook(id).subscribe({
+      next: (book) => {
+        this.selectedBook = book;
+        console.log(this.selectedBook);
+      },
+      error: (err) => {
+        console.error('Erro ao buscar o livro:', err);
+      }
+    });
+  }
+
+
   selectedBook?: Book;  // A linha selecionada
   title: string = '';
   author: string = '';

@@ -7,6 +7,8 @@ export type Book = {
   publisher: string;
   totalPages: number;
   bookStatus: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type BookPage = {

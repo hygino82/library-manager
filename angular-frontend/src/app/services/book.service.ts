@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {BASE_URL} from '../../utils';
-import {BookPage} from '../../custom.types';
+import {Book, BookPage} from '../../custom.types';
 
 @Injectable({
   providedIn: 'root',
@@ -17,5 +17,9 @@ export class BookService {
 
   removeBook(id: number) {
     return this.http.delete(`${BASE_URL}/book/${id}`);
+  }
+
+  getBook(id: number) {
+    return this.http.get<Book>(`${BASE_URL}/book/${id}`);
   }
 }

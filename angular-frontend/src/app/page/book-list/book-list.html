@@ -45,7 +45,8 @@
           <div class="margem-botao">
             <p-button styleClass="p-button-primary p-button-icon-only"
                       pTooltip="Informação"
-                      tooltipPosition="top">
+                      tooltipPosition="top"
+                      (click)="getBook(book.id)">
               <i class="pi pi-question-circle"></i>
             </p-button>
             <p-button styleClass="p-button-danger p-button-icon-only"

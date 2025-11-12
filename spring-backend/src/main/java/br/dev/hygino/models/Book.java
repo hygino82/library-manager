@@ -1,5 +1,6 @@
 package br.dev.hygino.models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,4 +56,7 @@ public class Book {
 
 	@OneToMany(mappedBy = "book")
 	private final List<BookLoan> bookLoans = new ArrayList<>();
+
+	private final LocalDateTime createdAt = LocalDateTime.now();
+	private LocalDateTime updatedAt;
 }
