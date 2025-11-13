@@ -37,17 +37,17 @@ public class BookLoanService {
     @Transactional
     public ResponseBookLoanDto insert(RequestLoanDto dto) {
         User user = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado com ID: " + dto.userId()));
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
 
         if (user.isHasLoan()) {
-            throw new IllegalArgumentException("O usuário já possui um empréstimo ativo.");
+            throw new IllegalArgumentException("O usuário já possui um empréstimo ativo!");
         }
 
         Book book = bookRepository.findById(dto.bookId())
-                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado com ID: " + dto.bookId()));
+                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
 
-        if (book.getBookStatus() != BookStatus.AVALIABLE) {
-            throw new IllegalArgumentException("O livro com ID " + dto.bookId() + " não está disponível para empréstimo.");
+        if (book.getBookStatus() != BookStatus.AVAILABLE) {
+            throw new IllegalArgumentException("O livro com não está disponível para empréstimo!");
         }
 
         user.setHasLoan(true);
@@ -68,7 +68,7 @@ public class BookLoanService {
                 .orElseThrow(() -> new IllegalArgumentException("Nenhum empréstimo ativo encontrado para o livro com ID: " + bookId));
 
         // Atualiza status
-        book.setBookStatus(BookStatus.AVALIABLE);
+        book.setBookStatus(BookStatus.AVAILABLE);
         bookLoan.setEndDate(LocalDate.now());
         User user = bookLoan.getUser();
         user.setHasLoan(false);

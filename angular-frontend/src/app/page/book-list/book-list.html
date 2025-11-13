@@ -5,11 +5,22 @@
   <label for="autor">Autor</label><br>
   <input type="text" id="autor" [(ngModel)]="author"><br>
 
+  <label for="disponivel">Disponível</label>
+  <p-checkbox
+    id="disponivel"
+    inputId="availableOnly"
+    [(ngModel)]="showAvailableOnly"
+    binary="true"
+  >
+  </p-checkbox>
+
   <p-button
+    [style]="{ 'margin-top': '30px' }"
     label="Buscar"
     styleClass="p-button-primary"
-    (click)="getBooks()"
-  />
+    (click)="getBooks()">
+  </p-button>
+
 </div>
 
 
@@ -55,6 +66,27 @@
                       (click)="removeBook(book.id)">
               <i class="pi pi-trash"></i>
             </p-button>
+
+            @if (book.bookStatus === 'AVAILABLE') {
+              <p-button
+                [style]="{'background-color': 'orange', 'border': 'none', 'color': 'white'}"
+                styleClass="p-button-icon-only"
+                pTooltip="Emprestar livro"
+                tooltipPosition="top"
+                (click)="borrowBook(book)">
+                <i class="pi pi-book"></i>
+              </p-button>
+            } @else {
+              <p-button
+                [style]="{'background-color': 'brown', 'border': 'none', 'color': 'white'}"
+                styleClass="p-button-secondary p-button-icon-only"
+                pTooltip="Indisponível"
+                tooltipPosition="top"
+                disabled="true">
+                <i class="pi pi-lock"></i>
+              </p-button>
+            }
+
           </div>
         </td>
       </tr>

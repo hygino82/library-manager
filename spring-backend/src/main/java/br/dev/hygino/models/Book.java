@@ -1,26 +1,22 @@
 package br.dev.hygino.models;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_book")
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 public class Book {
 
@@ -52,11 +48,23 @@ public class Book {
 	private Integer totalPages;
 
 	@NotNull
-	private BookStatus bookStatus = BookStatus.AVALIABLE;
+	private BookStatus bookStatus = BookStatus.AVAILABLE;
 
 	@OneToMany(mappedBy = "book")
 	private final List<BookLoan> bookLoans = new ArrayList<>();
 
 	private final LocalDateTime createdAt = LocalDateTime.now();
 	private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

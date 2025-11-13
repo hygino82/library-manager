@@ -6,10 +6,12 @@ import {BookService} from '../../services/book.service';
 import {Book} from '../../../custom.types';
 import {FormsModule} from '@angular/forms';
 import {Tooltip} from 'primeng/tooltip';
+import {NgIf} from '@angular/common';
+import {Checkbox} from 'primeng/checkbox';
 
 @Component({
   selector: 'app-book-list',
-  imports: [TableModule, ButtonModule, FormsModule, Tooltip],
+  imports: [TableModule, ButtonModule, FormsModule, Tooltip, Checkbox],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
   standalone: true
@@ -62,7 +64,11 @@ export class BookList implements OnInit {
     });
   }
 
+  borrowBook(book: Book) {
+    console.log(`Livro ${book.title} emprestado!`);
+  }
 
+  showAvailableOnly = true;
   selectedBook?: Book;  // A linha selecionada
   title: string = '';
   author: string = '';
