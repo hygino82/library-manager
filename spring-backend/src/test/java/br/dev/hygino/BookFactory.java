@@ -22,7 +22,7 @@ public final class BookFactory {
                 "Sextante",
                 1212,
                 BookStatus.AVAILABLE,
-                LocalDateTime.of(LocalDate.of(2025, 5, 15), LocalTime.of(14, 12, 3)));
+                LocalDateTime.of(LocalDate.of(2025, 5, 15), LocalTime.of(14, 12, 3)), null);
     }
 
     public static Book createBookEntityInUse() {
@@ -35,7 +35,7 @@ public final class BookFactory {
                 "Principis",
                 122,
                 BookStatus.IN_USE,
-                LocalDateTime.of(LocalDate.of(2025, 5, 15), LocalTime.of(14, 12, 3)));
+                LocalDateTime.of(LocalDate.of(2025, 5, 15), LocalTime.of(14, 12, 3)), null);
     }
 
     public static RequestBookDto createNewBook() {

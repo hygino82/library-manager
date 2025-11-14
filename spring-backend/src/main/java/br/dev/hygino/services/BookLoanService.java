@@ -47,7 +47,7 @@ public class BookLoanService {
                 .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
 
         if (book.getBookStatus() != BookStatus.AVAILABLE) {
-            throw new IllegalArgumentException("O livro com não está disponível para empréstimo!");
+            throw new IllegalArgumentException("O livro não está disponível para empréstimo!");
         }
 
         user.setHasLoan(true);

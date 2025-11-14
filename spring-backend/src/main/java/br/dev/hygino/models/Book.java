@@ -20,41 +20,41 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Book {
 
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotBlank
-	@Size(max = 100, min = 3)
-	private String title;
+    @NotBlank
+    @Size(max = 100, min = 3)
+    private String title;
 
-	@NotBlank
-	@Size(max = 100, min = 3)
-	private String author;
+    @NotBlank
+    @Size(max = 100, min = 3)
+    private String author;
 
-	@NotBlank
-	@Size(max = 30, min = 3)
-	private String personalCode;
+    @NotBlank
+    @Size(max = 30, min = 3)
+    private String personalCode;
 
-	@NotNull
-	private Integer edition;
+    @NotNull
+    private Integer edition;
 
-	@NotBlank
-	@Size(max = 100, min = 3)
-	private String publisher;
+    @NotBlank
+    @Size(max = 100, min = 3)
+    private String publisher;
 
-	@NotNull
-	private Integer totalPages;
+    @NotNull
+    private Integer totalPages;
 
-	@NotNull
-	private BookStatus bookStatus = BookStatus.AVAILABLE;
+    @NotNull
+    private BookStatus bookStatus = BookStatus.AVAILABLE;
 
-	@OneToMany(mappedBy = "book")
-	private final List<BookLoan> bookLoans = new ArrayList<>();
+    @OneToMany(mappedBy = "book")
+    private final List<BookLoan> bookLoans = new ArrayList<>();
 
-	private final LocalDateTime createdAt = LocalDateTime.now();
-	private LocalDateTime updatedAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @Override
     public boolean equals(Object o) {

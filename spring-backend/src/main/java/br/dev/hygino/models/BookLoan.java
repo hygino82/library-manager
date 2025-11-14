@@ -2,6 +2,7 @@ package br.dev.hygino.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookLoan {
+@AllArgsConstructor
+public final class BookLoan {
 
 	public BookLoan(User user, Book book) {
 		this.book = book;

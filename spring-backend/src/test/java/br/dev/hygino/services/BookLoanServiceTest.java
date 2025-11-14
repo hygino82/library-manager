@@ -1,6 +1,7 @@
 package br.dev.hygino.services;
 
 import br.dev.hygino.BookFactory;
+import br.dev.hygino.BookLoanFactory;
 import br.dev.hygino.UserFactory;
 import br.dev.hygino.dto.RequestLoanDto;
 import br.dev.hygino.dto.ResponseBookLoanDto;
@@ -18,6 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
@@ -70,11 +73,13 @@ class BookLoanServiceTest {
         when(userRepository.findById(userNotExistingId)).thenReturn(Optional.empty());
 
         when(bookLoanRepository.save(any())).thenReturn(new BookLoan(userEntityWithoutBookLoan, bookEntityAvailable));
+        when(bookLoanRepository.findAll(PageRequest.of(0, 2))).thenReturn(BookLoanFactory.createBookLoanPage());
 
         bookLoanService = new BookLoanService(bookLoanRepository, userRepository, bookRepository);
     }
 
     @Test
+    @DisplayName("Deve retornar um empréstimo quando o usuário não tiver livros emprestados e o livro estiver disponível")
     void whenUserHasNoLoanAndTheBookIsAvailableReturnLoan() {
         ResponseBookLoanDto res = bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookAvailableId));
         Assertions.assertNotNull(res);
@@ -110,7 +115,19 @@ class BookLoanServiceTest {
     @DisplayName("Deve lançar IllegalArgumentException quando o livro estiver emprestado")
     void shouldThrowExceptionWhenBookInUse() throws RuntimeException {
         IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class, () -> bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookInUseId)));
-        Assertions.assertEquals("O livro com não está disponível para empréstimo!", res.getMessage());
+        Assertions.assertEquals("O livro não está disponível para empréstimo!", res.getMessage());
     }
 
+    @Test
+    @DisplayName("O método findAll deve retornar uma página")
+    void findAllShouldReturnPage() {
+        final PageRequest pageable = PageRequest.of(0, 2);
+        final Page<BookLoan> res = bookLoanRepository.findAll(pageable);
+        Assertions.assertNotNull(res);
+        Assertions.assertEquals(2, res.getContent().size());
+        Assertions.assertEquals("O Guarani", res.getContent().get(0).getBook().getTitle());
+        Assertions.assertEquals("Iracema", res.getContent().get(1).getBook().getTitle());
+        Assertions.assertEquals("Juvenal Mendes", res.getContent().get(0).getUser().getName());
+        Assertions.assertEquals("Gorete Medeiros", res.getContent().get(1).getUser().getName());
+    }
 }
