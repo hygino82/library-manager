@@ -122,12 +122,12 @@ class BookLoanServiceTest {
     @DisplayName("O método findAll deve retornar uma página")
     void findAllShouldReturnPage() {
         final PageRequest pageable = PageRequest.of(0, 2);
-        final Page<BookLoan> res = bookLoanRepository.findAll(pageable);
+        final Page<ResponseBookLoanDto> res = bookLoanService.findAllLoans(pageable);
         Assertions.assertNotNull(res);
         Assertions.assertEquals(2, res.getContent().size());
-        Assertions.assertEquals("O Guarani", res.getContent().get(0).getBook().getTitle());
-        Assertions.assertEquals("Iracema", res.getContent().get(1).getBook().getTitle());
-        Assertions.assertEquals("Juvenal Mendes", res.getContent().get(0).getUser().getName());
-        Assertions.assertEquals("Gorete Medeiros", res.getContent().get(1).getUser().getName());
+        Assertions.assertEquals("O Guarani", res.getContent().get(0).bookTitle());
+        Assertions.assertEquals("Iracema", res.getContent().get(1).bookTitle());
+        Assertions.assertEquals("Juvenal Mendes", res.getContent().get(0).userName());
+        Assertions.assertEquals("Gorete Medeiros", res.getContent().get(1).userName());
     }
 }
