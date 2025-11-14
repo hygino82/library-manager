@@ -74,6 +74,11 @@ class BookLoanServiceTest {
 
         when(bookLoanRepository.save(any())).thenReturn(new BookLoan(userEntityWithoutBookLoan, bookEntityAvailable));
         when(bookLoanRepository.findAll(PageRequest.of(0, 2))).thenReturn(BookLoanFactory.createBookLoanPage());
+        
+        Book returnBook=BookFactory.createBookEntityInUse();
+        returnBook.setBookStatus(BookStatus.AVAILABLE);
+        
+        //when(bookLoanRepository.findLoanByBook(bookEntityInUse)).thenReturn(Optional.of());
 
         bookLoanService = new BookLoanService(bookLoanRepository, userRepository, bookRepository);
     }
@@ -130,4 +135,10 @@ class BookLoanServiceTest {
         Assertions.assertEquals("Juvenal Mendes", res.getContent().get(0).userName());
         Assertions.assertEquals("Gorete Medeiros", res.getContent().get(1).userName());
     }
+    
+    /*@Test
+    @DisplayName("Ao vevolver um livro deve desmarcar ele e deixar o usuário sem empréstimo ativo")
+    void s() {
+    	final var res=bookLoanService.renewBook(null)
+    }*/
 }
