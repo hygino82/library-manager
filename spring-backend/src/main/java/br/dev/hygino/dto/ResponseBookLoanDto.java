@@ -14,7 +14,8 @@ public record ResponseBookLoanDto(
         LocalDate startDate,
         LocalDate endDate,
         BookStatus bookStatus,
-        boolean userHasLoan) {
+        boolean userHasLoan,
+        boolean hasActiveLoan) {
     public ResponseBookLoanDto(BookLoan obj) {
         this(
                 obj.getId(),
@@ -25,6 +26,7 @@ public record ResponseBookLoanDto(
                 obj.getStartDate(),
                 obj.getEndDate(),
                 obj.getBook().getBookStatus(),
-                obj.getUser().isHasLoan());
+                obj.getUser().isHasLoan(),
+                obj.isActive());
     }
 }

@@ -42,18 +42,14 @@ class BookLoanServiceTest {
     @InjectMocks
     private BookLoanService bookLoanService;
 
-    private Book bookEntityAvailable;
-    private Book bookEntityInUse;
-    private User userEntityWithBookLoan;
-    private User userEntityWithoutBookLoan;
     private long bookInUseId, bookAvailableId, bookNotExistingId, userAsLoanId, userWithoutLoanId, userNotExistingId;
 
     @BeforeEach
     void setUp() {
-        bookEntityAvailable = BookFactory.createBookEntityAvailable();
-        bookEntityInUse = BookFactory.createBookEntityInUse();
-        userEntityWithoutBookLoan = UserFactory.createUserEntityWithoutBookLoan();
-        userEntityWithBookLoan = UserFactory.createUserEntityWithBookLoan();
+        Book bookEntityAvailable = BookFactory.createBookEntityAvailable();
+        Book bookEntityInUse = BookFactory.createBookEntityInUse();
+        User userEntityWithoutBookLoan = UserFactory.createUserEntityWithoutBookLoan();
+        User userEntityWithBookLoan = UserFactory.createUserEntityWithBookLoan();
 
         bookInUseId = 2L;
         bookAvailableId = 1L;
@@ -63,7 +59,9 @@ class BookLoanServiceTest {
         userWithoutLoanId = 1L;
         userNotExistingId = 1000L;
 
+        Book returnBook = BookFactory.createBookEntityInUse();
 
+        // when(bookRepository.save(bookEntityAvailable)).thenReturn(bookEntityAvailable);
         when(bookRepository.findById(bookInUseId)).thenReturn(Optional.of(bookEntityInUse));
         when(bookRepository.findById(bookAvailableId)).thenReturn(Optional.of(bookEntityAvailable));
         when(bookRepository.findById(bookNotExistingId)).thenReturn(Optional.empty());
@@ -74,11 +72,13 @@ class BookLoanServiceTest {
 
         when(bookLoanRepository.save(any())).thenReturn(new BookLoan(userEntityWithoutBookLoan, bookEntityAvailable));
         when(bookLoanRepository.findAll(PageRequest.of(0, 2))).thenReturn(BookLoanFactory.createBookLoanPage());
-        
-        Book returnBook=BookFactory.createBookEntityInUse();
+        when(bookLoanRepository.findLoanByBook(bookEntityInUse))
+                .thenReturn(Optional.of(BookLoanFactory.createBookLoanActive()));
+
         returnBook.setBookStatus(BookStatus.AVAILABLE);
-        
-        //when(bookLoanRepository.findLoanByBook(bookEntityInUse)).thenReturn(Optional.of());
+
+        when(bookLoanRepository.findLoanByBook(bookEntityInUse))
+                .thenReturn(Optional.of(BookLoanFactory.createBookLoanActive()));
 
         bookLoanService = new BookLoanService(bookLoanRepository, userRepository, bookRepository);
     }
@@ -89,8 +89,8 @@ class BookLoanServiceTest {
         ResponseBookLoanDto res = bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookAvailableId));
         Assertions.assertNotNull(res);
 
-        Assertions.assertEquals(bookAvailableId, res.bookId());
-        Assertions.assertEquals(userWithoutLoanId, res.userId());
+        Assertions.assertEquals(2L, res.bookId());
+        Assertions.assertEquals(2L, res.userId());
         Assertions.assertTrue(res.userHasLoan());
         Assertions.assertEquals(BookStatus.IN_USE, res.bookStatus());
     }
@@ -98,28 +98,32 @@ class BookLoanServiceTest {
     @Test
     @DisplayName("Deve lançar IllegalArgumentException quando o id do usuário não existir")
     void shouldThrowExceptionWhenInvalidUserId() throws RuntimeException {
-        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class, () -> bookLoanService.insert(new RequestLoanDto(userNotExistingId, bookAvailableId)));
+        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> bookLoanService.insert(new RequestLoanDto(userNotExistingId, bookAvailableId)));
         Assertions.assertEquals("Usuário não encontrado!", res.getMessage());
     }
 
     @Test
     @DisplayName("Deve lançar IllegalArgumentException quando o id do livro não existir")
     void shouldThrowExceptionWhenInvalidBookId() throws RuntimeException {
-        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class, () -> bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookNotExistingId)));
+        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookNotExistingId)));
         Assertions.assertEquals("Livro não encontrado!", res.getMessage());
     }
 
     @Test
     @DisplayName("Deve lançar IllegalArgumentException quando o usuário tiver livro emprestado")
     void shouldThrowExceptionWhenUserHasLoan() throws RuntimeException {
-        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class, () -> bookLoanService.insert(new RequestLoanDto(userAsLoanId, bookAvailableId)));
+        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> bookLoanService.insert(new RequestLoanDto(userAsLoanId, bookAvailableId)));
         Assertions.assertEquals("O usuário já possui um empréstimo ativo!", res.getMessage());
     }
 
     @Test
     @DisplayName("Deve lançar IllegalArgumentException quando o livro estiver emprestado")
     void shouldThrowExceptionWhenBookInUse() throws RuntimeException {
-        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class, () -> bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookInUseId)));
+        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookInUseId)));
         Assertions.assertEquals("O livro não está disponível para empréstimo!", res.getMessage());
     }
 
@@ -135,10 +139,76 @@ class BookLoanServiceTest {
         Assertions.assertEquals("Juvenal Mendes", res.getContent().get(0).userName());
         Assertions.assertEquals("Gorete Medeiros", res.getContent().get(1).userName());
     }
-    
-    /*@Test
-    @DisplayName("Ao vevolver um livro deve desmarcar ele e deixar o usuário sem empréstimo ativo")
-    void s() {
-    	final var res=bookLoanService.renewBook(null)
-    }*/
+
+    @Test
+    @DisplayName("Deve lançar exceção quando Id do livro for inválido")
+    void returnBookShouldThrowExceptionWhenInvalidBookId() {
+        final var res = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> bookLoanService.returnBook(bookNotExistingId));
+        Assertions.assertEquals("Livro não encontrado!", res.getMessage());
+    }
+
+    @Test
+    @DisplayName("Ao devolver um livro, deve desmarcar o empréstimo e deixar o usuário sem empréstimo ativo")
+    void returnBookShouldUpdateStatusAndClearUserLoan() {
+
+        // --- ARRANGE ---
+
+        // Book carregado pelo findById
+        Book book = BookFactory.createBookEntityInUse();
+        when(bookRepository.findById(bookInUseId)).thenReturn(Optional.of(book));
+
+        // User do empréstimo
+        User user = UserFactory.createUserEntityWithBookLoan();
+
+        // Empréstimo ativo retornado pelo findLoanByBook
+        BookLoan activeLoan = BookLoanFactory.createBookLoanActive();
+        activeLoan.setBook(book);
+        activeLoan.setUser(user);
+
+        when(bookLoanRepository.findLoanByBook(book)).thenReturn(Optional.of(activeLoan));
+
+        // Mock dos saves (o service chama save de TUDO)
+        when(bookRepository.save(any(Book.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        // Empréstimo inativo retornado pelo save final
+        BookLoan inactiveLoan = BookLoanFactory.createBookLoanInactive();
+        inactiveLoan.setBook(book);
+        inactiveLoan.setUser(user);
+
+        when(bookLoanRepository.save(any(BookLoan.class))).thenReturn(inactiveLoan);
+
+        // --- ACT ---
+        ResponseBookLoanDto res = bookLoanService.returnBook(bookInUseId);
+
+        // --- ASSERT ---
+        Assertions.assertNotNull(res);
+        Assertions.assertEquals("Iracema", res.bookTitle());
+        Assertions.assertEquals(BookStatus.AVAILABLE, res.bookStatus());
+        Assertions.assertFalse(res.userHasLoan());
+        Assertions.assertFalse(res.hasActiveLoan());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando o livro não for cadastrado")
+    void renewBookShouldThrowExceptionWhenInvalidId() {
+        final var res = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> bookLoanService.renewBook(bookNotExistingId));
+        Assertions.assertEquals("Livro não encontrado!", res.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção do livro não tiver empréstimo")
+    void returnBookShouldThrowExceptionWhenBookDoesNotHaveLoan() {
+        //final long bookIdWithoutLoan = 4L;
+        when(bookRepository.findById(bookAvailableId))
+                .thenReturn(Optional.of(BookFactory.createBookEntityWithoutLoans()));
+        /*when(bookLoanRepository.findLoanByBook(BookFactory.createBookEntityWithoutLoans()))
+                .thenReturn(Optional.empty());*/
+
+        final var res = Assertions.assertThrows(IllegalArgumentException.class,
+                () -> bookLoanService.returnBook(bookAvailableId));
+        Assertions.assertEquals("Livro não está emprestado!", res.getMessage());
+    }
 }

@@ -1,6 +1,8 @@
 package br.dev.hygino.services;
 
-import java.time.LocalDate;
+import java.util.List;
+
+import br.dev.hygino.notifies.BookReturn;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,81 +20,90 @@ import br.dev.hygino.repositories.UserRepository;
 @Service
 public class BookLoanService {
 
-    private final BookLoanRepository bookLoanRepository;
-    private final UserRepository userRepository;
-    private final BookRepository bookRepository;
+	private final BookLoanRepository bookLoanRepository;
+	private final UserRepository userRepository;
+	private final BookRepository bookRepository;
 
-    public BookLoanService(BookLoanRepository bookLoanRepository, UserRepository userRepository,
-                           BookRepository bookRepository) {
-        this.bookLoanRepository = bookLoanRepository;
-        this.userRepository = userRepository;
-        this.bookRepository = bookRepository;
-    }
+	public BookLoanService(BookLoanRepository bookLoanRepository, UserRepository userRepository,
+			BookRepository bookRepository) {
+		this.bookLoanRepository = bookLoanRepository;
+		this.userRepository = userRepository;
+		this.bookRepository = bookRepository;
+	}
 
-    @Transactional(readOnly = true)
-    public Page<ResponseBookLoanDto> findAllLoans(Pageable pageable) {
-        return bookLoanRepository.findAll(pageable).map(ResponseBookLoanDto::new);
-    }
+	@Transactional(readOnly = true)
+	public Page<ResponseBookLoanDto> findAllLoans(Pageable pageable) {
+		return bookLoanRepository.findAll(pageable).map(ResponseBookLoanDto::new);
+	}
 
-    @Transactional
-    public ResponseBookLoanDto insert(RequestLoanDto dto) {
-        User user = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
+	@Transactional
+	public ResponseBookLoanDto insert(RequestLoanDto dto) {
+		User user = userRepository.findById(dto.userId())
+				.orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
 
-        if (user.isHasLoan()) {
-            throw new IllegalArgumentException("O usuário já possui um empréstimo ativo!");
-        }
+		if (user.isHasLoan()) {
+			throw new IllegalArgumentException("O usuário já possui um empréstimo ativo!");
+		}
 
-        Book book = bookRepository.findById(dto.bookId())
-                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
+		Book book = bookRepository.findById(dto.bookId())
+				.orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
 
-        if (book.getBookStatus() != BookStatus.AVAILABLE) {
-            throw new IllegalArgumentException("O livro não está disponível para empréstimo!");
-        }
+		if (book.getBookStatus() != BookStatus.AVAILABLE) {
+			throw new IllegalArgumentException("O livro não está disponível para empréstimo!");
+		}
 
-        user.setHasLoan(true);
-        book.setBookStatus(BookStatus.IN_USE);
+		user.setHasLoan(true);
+		book.setBookStatus(BookStatus.IN_USE);
 
-        BookLoan bookLoan = new BookLoan(user, book);
-        bookLoanRepository.save(bookLoan);
+		BookLoan bookLoan = new BookLoan(user, book);
+		bookLoanRepository.save(bookLoan);
 
-        return new ResponseBookLoanDto(bookLoan);
-    }
+		return new ResponseBookLoanDto(bookLoan);
+	}
 
-    @Transactional
-    public ResponseBookLoanDto returnBook(Long bookId) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado com ID: " + bookId));
+	@Transactional
+	public ResponseBookLoanDto returnBook(Long bookId) {
+		Book book = bookRepository.findById(bookId)
+				.orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
 
-        BookLoan bookLoan = bookLoanRepository.findLoanByBook(book)
-                .orElseThrow(() -> new IllegalArgumentException("Nenhum empréstimo ativo encontrado para o livro com ID: " + bookId));
+		if (book.getBookStatus() == BookStatus.AVAILABLE) {
+			throw new IllegalArgumentException("Livro não está emprestado!");
+		}
 
-        // Atualiza status
-        book.setBookStatus(BookStatus.AVAILABLE);
-        bookLoan.setEndDate(LocalDate.now());
-        User user = bookLoan.getUser();
-        user.setHasLoan(false);
+		BookLoan bookLoan = bookLoanRepository.findLoanByBook(book)
+				.orElseThrow(() -> new IllegalArgumentException("Nenhum empréstimo encontrado para o livro!"));
 
-        // Salva mudanças explicitamente
-        bookRepository.save(book);
-        userRepository.save(user);
-        bookLoanRepository.save(bookLoan);
+		User user = bookLoan.getUser();
 
-        return new ResponseBookLoanDto(bookLoan);
-    }
+		List<BookReturn> returnNotifications = List.of(bookLoan, bookLoan.getBook(), bookLoan.getUser());
 
-    @Transactional
+		// executa as notificações de retorno do livro
+		returnNotifications.forEach(BookReturn::executeReturn);
+		// bookLoan.setActive(false);
+		// Salva mudanças explicitamente
+		bookRepository.save(book);
+		userRepository.save(user);
+		bookLoan = bookLoanRepository.save(bookLoan);
+
+		return new ResponseBookLoanDto(bookLoan);
+	}
+
+	@Transactional
 	public ResponseBookLoanDto renewBook(Long bookId) {
-    	 Book book = bookRepository.findById(bookId)
-                 .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado com ID: " + bookId));
+		Book book = bookRepository.findById(bookId)
+				.orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
 
-         BookLoan bookLoan = bookLoanRepository.findLoanByBook(book)
-                 .orElseThrow(() -> new IllegalArgumentException("Nenhum empréstimo ativo encontrado para o livro com ID: " + bookId));
-         
-         bookLoan.setEndDate(bookLoan.getEndDate().plusDays(5));
-         
-         bookLoanRepository.save(bookLoan);
+		BookLoan bookLoan = bookLoanRepository.findLoanByBook(book)
+				.orElseThrow(() -> new IllegalArgumentException("Nenhum empréstimo ativo encontrado para o livro!"));
 
-         return new ResponseBookLoanDto(bookLoan);
+		if (!bookLoan.isActive()) {
+			throw new IllegalArgumentException("O livro já foi devolvido!");
+		}
+
+		bookLoan.setEndDate(bookLoan.getEndDate().plusDays(5));
+
+		bookLoanRepository.save(bookLoan);
+
+		return new ResponseBookLoanDto(bookLoan);
 	}
 }

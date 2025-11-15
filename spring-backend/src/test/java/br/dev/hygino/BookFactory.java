@@ -14,13 +14,13 @@ public final class BookFactory {
 
     public static Book createBookEntityAvailable() {
         return new Book(
-                1L,
-                "O Senhor dos anéis",
-                "J. R. R. Tolkien",
-                "eng01",
-                1,
-                "Sextante",
-                1212,
+                2L,
+                "Iracema",
+                "José de Alencar",
+                "br001",
+                2,
+                "Principis",
+                122,
                 BookStatus.AVAILABLE,
                 LocalDateTime.of(LocalDate.of(2025, 5, 15), LocalTime.of(14, 12, 3)), null);
     }
@@ -46,5 +46,18 @@ public final class BookFactory {
                 1,
                 "Sextante",
                 1212);
+    }
+    
+    public static Book createBookEntityWithoutLoans() {
+        return new Book(
+                4L,
+                "O Alienista",
+                "Machado de Assis",
+                "br004",
+                1,
+                "Sextante",
+                182,
+                BookStatus.AVAILABLE,
+                LocalDateTime.of(LocalDate.of(2025, 5, 15), LocalTime.of(14, 12, 3)), null);
     }
 }

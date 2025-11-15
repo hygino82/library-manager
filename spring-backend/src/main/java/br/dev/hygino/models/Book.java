@@ -1,11 +1,12 @@
 package br.dev.hygino.models;
 
+import br.dev.hygino.notifies.BookReturn;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+public final class Book implements BookReturn {
 
     @EqualsAndHashCode.Include
     @Id
@@ -66,5 +67,10 @@ public class Book {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public void executeReturn() {
+        bookStatus = BookStatus.AVAILABLE;
     }
 }

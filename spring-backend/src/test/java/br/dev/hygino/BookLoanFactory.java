@@ -39,10 +39,23 @@ public class BookLoanFactory {
 		return new PageImpl<>(list);
 	}
 
-	public static BookLoan createBookLoan = new BookLoan(
-			1L, 
-			UserFactory.createUserEntityWithBookLoan(),
-			BookFactory.createBookEntityInUse(),
-			LocalDate.now(), 
-			LocalDate.now().plusDays(10));
+	public static BookLoan createBookLoanActive() {
+		return new BookLoan(
+				1L, 
+				UserFactory.createUserEntityWithBookLoan(),
+				BookFactory.createBookEntityInUse(),
+				true,
+				LocalDate.of(2025, 11, 15),
+				LocalDate.of(2025, 11, 25));
+	}
+
+    public static BookLoan createBookLoanInactive(){
+        return new BookLoan(
+                5L,
+                UserFactory.createUserEntityWithoutBookLoan(),
+                BookFactory.createBookEntityAvailable(),
+                false,
+                LocalDate.of(2025, 11, 15),
+                LocalDate.of(2025, 11, 25));
+    }
 }

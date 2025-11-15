@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: 89631139
+      MYSQL_DATABASE: library_app
+      MYSQL_USER: hygino
+      MYSQL_PASSWORD: 89631139
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mysql_network
+
+volumes:
+  mysql_data:
+
+networks:
+  mysql_network:
+    driver: bridge
