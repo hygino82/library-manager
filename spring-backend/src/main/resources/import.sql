@@ -17,5 +17,5 @@ INSERT INTO tb_user (name, school_atribute, phone_number, email, has_loan) VALUE
 INSERT INTO tb_user (name, school_atribute, phone_number, email, has_loan) VALUES ('Ana Pereira', 1, '7823456789', 'ana.pereira@email.com', false);
 INSERT INTO tb_user (name, school_atribute, phone_number, email, has_loan) VALUES ('Rafael Lima', 0, '7876543210', 'rafael.lima@email.com', false);
 
-insert into tb_book_loan(end_date, start_date, book_id, user_id ) values ('2025-11-20',	'2025-11-10', 3, 1);
-insert into tb_book_loan(end_date, start_date, book_id, user_id ) values ('2025-11-20',	'2025-11-10', 5, 2);
+insert into tb_book_loan(end_date, start_date, book_id, user_id, active) values ('2025-11-20',	'2025-11-10', 3, 1, true);
+insert into tb_book_loan(end_date, start_date, book_id, user_id, active) values ('2025-11-20',	'2025-11-10', 5, 2, true);

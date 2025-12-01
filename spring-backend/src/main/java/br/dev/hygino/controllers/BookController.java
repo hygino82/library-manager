@@ -1,5 +1,6 @@
 package br.dev.hygino.controllers;
 
+import br.dev.hygino.dto.BookReportDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -66,16 +67,6 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
-    /*@PatchMapping("/{id}")
-    public ResponseEntity<?> returnBook(@PathVariable Long id) {
-        try {
-            final ResponseBookDto res = service.returnBook(id);
-            return ResponseEntity.status(HttpStatus.CREATED).body(res);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }*/
-
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar livro", description = "Atualizar dados de um livro")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RequestBookDto dto) {
@@ -92,5 +83,11 @@ public class BookController {
     public ResponseEntity<Void> remove(@PathVariable Long id) {
         service.remove(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("report")
+    @Operation(summary = "Relatórios dos livros", description = "Relatórios dos livros cadastrados")
+    public ResponseEntity<BookReportDto> getBookReport() {
+        return ResponseEntity.ok(service.getBookReport());
     }
 }
