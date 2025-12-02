@@ -1,8 +1,8 @@
 package br.dev.hygino.dto;
 
-import java.time.LocalDateTime;
+import br.dev.hygino.models.BookStatus;
 
-import br.dev.hygino.models.Book;
+import java.time.LocalDateTime;
 
 public record ResponseBookDetailsDto(
         Long id,
@@ -12,23 +12,8 @@ public record ResponseBookDetailsDto(
         Integer edition,
         String publisher,
         Integer totalPages,
-        String bookStatus,
+        BookStatus bookStatus,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
-
-    public ResponseBookDetailsDto(Book obj) {
-        this(
-                obj.getId(),
-                obj.getTitle(),
-                obj.getAuthor(),
-                obj.getPersonalCode(),
-                obj.getEdition(),
-                obj.getPublisher(),
-                obj.getTotalPages(),
-                obj.getBookStatus().name(),
-                obj.getCreatedAt(),
-                obj.getUpdatedAt()
-        );
-    }
 }

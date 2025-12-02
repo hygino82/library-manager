@@ -1,6 +1,7 @@
 package br.dev.hygino.services;
 
 import br.dev.hygino.dto.BookReportDto;
+import br.dev.hygino.mappers.BookMapper;
 import br.dev.hygino.models.BookStatus;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -22,9 +23,11 @@ import java.time.LocalDateTime;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
+        this.bookMapper = bookMapper;
     }
 
     @Transactional(readOnly = true)
@@ -36,15 +39,16 @@ public class BookService {
     public ResponseBookDetailsDto findById(Long id) {
         final Book res = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Não existe livro com o id: " + id));
-        return new ResponseBookDetailsDto(res);
+        return bookMapper.toBookResponse(res);
     }
 
     @Transactional
     public ResponseBookDto insert(RequestBookDto dto) {
-        Book entity = new Book();
-        dtoToEntity(dto, entity);
+        Book entity=bookMapper.toBookEntity(dto);
+        //Book entity = new Book();
+        //dtoToEntity(dto, entity);
         entity = bookRepository.save(entity);
-        return new ResponseBookDto(entity);
+        return bookMapper.toBookMinResponse(entity);
     }
 
     private void dtoToEntity(RequestBookDto dto, Book entity) {

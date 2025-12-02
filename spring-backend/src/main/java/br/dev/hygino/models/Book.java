@@ -19,7 +19,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public final class Book implements BookReturn {
+public  class Book implements BookReturn {
 
     @EqualsAndHashCode.Include
     @Id
