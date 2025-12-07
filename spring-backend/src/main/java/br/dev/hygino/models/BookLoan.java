@@ -17,51 +17,57 @@ import java.util.UUID;
 @AllArgsConstructor
 public final class BookLoan implements BookReturn {
 
-    public BookLoan(User user, Book book) {
-        this.book = book;
-        this.user = user;
-    }
+	public BookLoan(User user, Book book) {
+		this.book = book;
+		this.user = user;
+	}
 
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+	public BookLoan(@NotNull UUID id, @NotNull User user, @NotNull Book book) {
+		this.id = id;
+		this.user = user;
+		this.book = book;
+	}
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    //@Setter(AccessLevel.PRIVATE)
-    private boolean active = true;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "book_id")
+	private Book book;
 
-    @NotNull
-    private LocalDate startDate = LocalDate.now();
+	// @Setter(AccessLevel.PRIVATE)
+	private boolean active = true;
 
-    @NotNull
-    private LocalDate endDate = LocalDate.now().plusDays(10);
+	@NotNull
+	private LocalDate startDate = LocalDate.now();
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
-            return false;
-        BookLoan bookLoan = (BookLoan) o;
-        return Objects.equals(id, bookLoan.id);
-    }
+	@NotNull
+	private LocalDate endDate = LocalDate.now().plusDays(10);
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass())
+			return false;
+		BookLoan bookLoan = (BookLoan) o;
+		return Objects.equals(id, bookLoan.id);
+	}
 
-    @Override
-    public void executeReturn() {
-        active = false;
-        endDate = LocalDate.now();
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
+
+	@Override
+	public void executeReturn() {
+		active = false;
+		endDate = LocalDate.now();
+	}
 }

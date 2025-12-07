@@ -18,21 +18,24 @@ public final class BookFactory {
 	}
 
 	// Iracema
-	private static UUID idWithLoan = genId("eda7e654-e28a-4b56-a2f0-e87c6b3d4c07");
+	private static final UUID idWithLoan = genId("eda7e654-e28a-4b56-a2f0-e87c6b3d4c07");
 
 	// A Lord of Rings
-	private static UUID idWithoutLoan = genId("91173563-8b2b-42d9-b934-d3604ff6f68a");
+	private static final UUID idWithoutLoan = genId("91173563-8b2b-42d9-b934-d3604ff6f68a");
+	
+	public static UUID activeLoanId = UUID.fromString("6b04ba62-2d6e-4054-b1f8-ca263f7d5b18");
+	public static UUID inactiveLoanId = UUID.fromString("67c07b66-b6c0-4b12-94d6-bb53fed078d9");
 
 	private BookFactory() {
 	}
 
 	public static Book createBookEntityAvailable() {
-		return new Book(idWithoutLoan, "Iracema", "José de Alencar", "br001", 2, "Principis", 122, BookStatus.AVAILABLE,
+		return new Book(activeLoanId, "Iracema", "José de Alencar", "br001", 2, "Principis", 122, BookStatus.AVAILABLE,
 				LocalDateTime.of(LocalDate.of(2025, 5, 15), LocalTime.of(14, 12, 3)), null);
 	}
 
 	public static Book createBookEntityInUse() {
-		return new Book(idWithLoan, "Iracema", "José de Alencar", "br001", 2, "Principis", 122, BookStatus.IN_USE,
+		return new Book(inactiveLoanId, "Iracema", "José de Alencar", "br001", 2, "Principis", 122, BookStatus.IN_USE,
 				LocalDateTime.of(LocalDate.of(2025, 5, 15), LocalTime.of(14, 12, 3)), null);
 	}
 
