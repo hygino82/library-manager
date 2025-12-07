@@ -77,7 +77,7 @@ public class BookService {
     @Transactional(propagation = Propagation.SUPPORTS)
     public void remove(UUID id) {
         try {
-            bookRepository.deleteById(id);//TODO criar exception handler
+            bookRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
             throw new BorrowBookException("Não pode excluir um livro com empréstimo");
         }
