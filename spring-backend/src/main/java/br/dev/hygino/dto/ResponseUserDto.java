@@ -1,11 +1,12 @@
 package br.dev.hygino.dto;
 
 import java.util.List;
+import java.util.UUID;
 
 import br.dev.hygino.models.User;
 
 public record ResponseUserDto(
-        Long id,
+        UUID id,
         String name,
         String schoolAtribute,
         String email,

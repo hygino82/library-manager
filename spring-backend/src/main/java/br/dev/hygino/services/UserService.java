@@ -1,15 +1,19 @@
 package br.dev.hygino.services;
 
+import java.util.UUID;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.dev.hygino.dto.RequestUserDto;
 import br.dev.hygino.dto.ResponseUserDto;
 import br.dev.hygino.models.User;
 import br.dev.hygino.repositories.UserRepository;
+import br.dev.hygino.services.exceptions.UserHasBookLoanException;
+import br.dev.hygino.services.exceptions.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
@@ -31,7 +35,7 @@ public class UserService {
 		User entity = new User();
 		dtoToEntity(dto, entity);
 		entity = userRepository.save(entity);
-		return  ResponseUserDto.from(entity);
+		return ResponseUserDto.from(entity);
 	}
 
 	private void dtoToEntity(@Valid RequestUserDto dto, User entity) {
@@ -42,27 +46,37 @@ public class UserService {
 	}
 
 	@Transactional
-	public ResponseUserDto updateUser(Long id, @Valid RequestUserDto dto) {
+	public ResponseUserDto updateUser(UUID id, @Valid RequestUserDto dto) {
 		try {
 			User entity = userRepository.getReferenceById(id);
 			dtoToEntity(dto, entity);
 			entity = userRepository.save(entity);
-			return  ResponseUserDto.from(entity);
+			return ResponseUserDto.from(entity);
 		} catch (EntityNotFoundException e) {
 			throw new IllegalArgumentException("Não existe usuario com o Id: " + id);
 		}
 	}
 
 	@Transactional(readOnly = true)
-	public ResponseUserDto findUser(Long id) {
+	public ResponseUserDto findUser(UUID id) {
 		final User entity = userRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Não existe usuario com o Id: " + id));
-		return  ResponseUserDto.from(entity);
+		return ResponseUserDto.from(entity);
 	}
 
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public void removeUser(Long id) {
-		userRepository.deleteById(id);
+	@Transactional
+	public void removeUser(UUID id) {
+
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado: " + id));
+
+		try {
+			userRepository.delete(user);
+			userRepository.flush(); // <-- faz a exceção acontecer AQUI
+		} catch (DataIntegrityViolationException e) {
+			throw new UserHasBookLoanException(
+					"Não é possível excluir o usuário, pois ele está associado a empréstimos.");
+		}
 	}
 
 	@Transactional(readOnly = true)

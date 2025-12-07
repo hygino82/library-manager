@@ -1,4 +1,4 @@
-package br.dev.hygino.services;
+package br.dev.hygino.services.exceptions;
 
 import java.io.Serial;
 

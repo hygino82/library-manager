@@ -1,6 +1,9 @@
 package br.dev.hygino.controllers;
 
 import br.dev.hygino.dto.BookReportDto;
+
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -51,7 +54,7 @@ public class BookController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar livro", description = "Busca um livro pelo Id")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable UUID id) {
         try {
             final ResponseBookDetailsDto res = service.findById(id);
             return ResponseEntity.status(HttpStatus.CREATED).body(res);
@@ -69,7 +72,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar livro", description = "Atualizar dados de um livro")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RequestBookDto dto) {
+    public ResponseEntity<?> update(@PathVariable UUID id, @Valid @RequestBody RequestBookDto dto) {
         try {
             final ResponseBookDto res = service.update(id, dto);
             return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -80,7 +83,7 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Remover livro", description = "Remove um livro pelo Id")
-    public ResponseEntity<Void> remove(@PathVariable Long id) {
+    public ResponseEntity<Void> remove(@PathVariable UUID id) {
         service.remove(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -1,14 +1,15 @@
 package br.dev.hygino.dto;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import br.dev.hygino.models.BookLoan;
 import br.dev.hygino.models.BookStatus;
 
 public record ResponseBookLoanDto(
-        Long id,
-        Long bookId,
-        Long userId,
+        UUID id,
+        UUID bookId,
+        UUID userId,
         String bookTitle,
         String userName,
         LocalDate startDate,

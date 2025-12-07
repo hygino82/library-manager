@@ -15,9 +15,11 @@ import br.dev.hygino.dto.ResponseBookDetailsDto;
 import br.dev.hygino.dto.ResponseBookDto;
 import br.dev.hygino.models.Book;
 import br.dev.hygino.repositories.BookRepository;
+import br.dev.hygino.services.exceptions.BorrowBookException;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class BookService {
@@ -36,7 +38,7 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseBookDetailsDto findById(Long id) {
+    public ResponseBookDetailsDto findById(UUID id) {
         final Book res = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Não existe livro com o id: " + id));
         return bookMapper.toBookResponse(res);
@@ -61,7 +63,7 @@ public class BookService {
     }
 
     @Transactional
-    public ResponseBookDto update(Long id, RequestBookDto dto) {
+    public ResponseBookDto update(UUID id, RequestBookDto dto) {
         try {
             Book entity = bookRepository.getReferenceById(id);
             dtoToEntity(dto, entity);
@@ -73,7 +75,7 @@ public class BookService {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    public void remove(Long id) {
+    public void remove(UUID id) {
         try {
             bookRepository.deleteById(id);//TODO criar exception handler
         } catch (DataIntegrityViolationException e) {

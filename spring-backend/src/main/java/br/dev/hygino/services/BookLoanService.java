@@ -1,6 +1,7 @@
 package br.dev.hygino.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import br.dev.hygino.notifies.BookReturn;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import br.dev.hygino.models.User;
 import br.dev.hygino.repositories.BookLoanRepository;
 import br.dev.hygino.repositories.BookRepository;
 import br.dev.hygino.repositories.UserRepository;
+import br.dev.hygino.services.exceptions.BookLoanNotFoundException;
 
 @Service
 public class BookLoanService {
@@ -62,7 +64,7 @@ public class BookLoanService {
 	}
 
 	@Transactional
-	public ResponseBookLoanDto returnBook(Long bookId) {
+	public ResponseBookLoanDto returnBook(UUID bookId) {
 		Book book = bookRepository.findById(bookId)
 				.orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
 
@@ -89,7 +91,7 @@ public class BookLoanService {
 	}
 
 	@Transactional
-	public ResponseBookLoanDto renewBook(Long bookId) {
+	public ResponseBookLoanDto renewBook(UUID bookId) {
 		Book book = bookRepository.findById(bookId)
 				.orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
 
@@ -105,5 +107,12 @@ public class BookLoanService {
 		bookLoanRepository.save(bookLoan);
 
 		return new ResponseBookLoanDto(bookLoan);
+	}
+
+	@Transactional(readOnly = true)
+	public ResponseBookLoanDto findLoanById(UUID id) {
+		final Book book = bookRepository.findById(id)
+				.orElseThrow(() -> new BookLoanNotFoundException("Livro não encontrado!"));
+		return new ResponseBookLoanDto(null);
 	}
 }

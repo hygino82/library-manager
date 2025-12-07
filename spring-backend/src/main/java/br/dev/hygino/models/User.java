@@ -10,6 +10,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import br.dev.hygino.notifies.BookReturn;
 
@@ -21,8 +22,8 @@ import br.dev.hygino.notifies.BookReturn;
 @AllArgsConstructor
 public final class User implements BookReturn {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
 	@NotBlank
 	@Size(max = 100, min = 3)

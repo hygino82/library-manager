@@ -1,9 +1,11 @@
 package br.dev.hygino.dto;
 
+import java.util.UUID;
+
 import br.dev.hygino.models.Book;
 
 public record ResponseBookDto(
-        Long id,
+        UUID id,
         String title,
         String author,
         String personalCode,

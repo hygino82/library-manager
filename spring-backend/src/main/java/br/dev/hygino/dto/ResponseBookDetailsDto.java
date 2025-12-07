@@ -3,9 +3,10 @@ package br.dev.hygino.dto;
 import br.dev.hygino.models.BookStatus;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record ResponseBookDetailsDto(
-        Long id,
+        UUID id,
         String title,
         String author,
         String personalCode,

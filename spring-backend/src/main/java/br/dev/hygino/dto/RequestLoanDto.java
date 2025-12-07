@@ -1,8 +1,10 @@
 package br.dev.hygino.dto;
 
+import java.util.UUID;
+
 import jakarta.validation.constraints.NotNull;
 
 public record RequestLoanDto(
-        @NotNull Long userId,
-        @NotNull Long bookId) {
+        @NotNull UUID userId,
+        @NotNull UUID bookId) {
 }

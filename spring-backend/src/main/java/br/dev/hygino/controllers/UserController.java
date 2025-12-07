@@ -1,5 +1,7 @@
 package br.dev.hygino.controllers;
 
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -47,7 +49,7 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	@Operation(summary = "Atualizar usuário", description = "Atualizar dados de um usuário")
-	public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid RequestUserDto dto) {
+	public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody @Valid RequestUserDto dto) {
 		try {
 			return ResponseEntity.status(HttpStatus.CREATED).body(service.updateUser(id, dto));
 		} catch (IllegalArgumentException e) {
@@ -57,7 +59,7 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	@Operation(summary = "Buscar usuário", description = "Busca um usuário pelo Id")
-	public ResponseEntity<?> findUser(@PathVariable Long id) {
+	public ResponseEntity<?> findUser(@PathVariable UUID id) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(service.findUser(id));
 		} catch (IllegalArgumentException e) {
@@ -67,7 +69,7 @@ public class UserController {
 
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Remover usuário", description = "Remove um usuário pelo Id")
-	public ResponseEntity<Void> removeUser(@PathVariable Long id) {
+	public ResponseEntity<?> removeUser(@PathVariable UUID id) {
 		service.removeUser(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

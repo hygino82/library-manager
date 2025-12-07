@@ -1,5 +1,7 @@
 package br.dev.hygino.controllers;
 
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -50,15 +52,21 @@ public class BookLoanController {
 
 	@PatchMapping("return/{bookId}")
 	@Operation(summary = "Devolver livro", description = "Realiza a devolução de um livro")
-	public ResponseEntity<?> returnBook(@PathVariable Long bookId) {
+	public ResponseEntity<?> returnBook(@PathVariable UUID bookId) {
 		final ResponseBookLoanDto result = service.returnBook(bookId);
 		return ResponseEntity.ok(result);
 	}
-	
+
 	@PatchMapping("renew/{bookId}")
 	@Operation(summary = "Renovar livro", description = "Realiza a renovação de um livro")
-	public ResponseEntity<?> renewBook(@PathVariable Long bookId) {
+	public ResponseEntity<?> renewBook(@PathVariable UUID bookId) {
 		final ResponseBookLoanDto result = service.renewBook(bookId);
 		return ResponseEntity.ok(result);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<?> findLoanById(@PathVariable UUID id) {
+		final ResponseBookLoanDto res = service.findLoanById(id);
+		return ResponseEntity.ok(res);
 	}
 }
