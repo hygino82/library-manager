@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.dev.hygino.dto.RequestUserDto;
 import br.dev.hygino.dto.ResponseUserDto;
+import br.dev.hygino.mappers.UserMapper;
 import br.dev.hygino.models.User;
 import br.dev.hygino.repositories.UserRepository;
 import br.dev.hygino.services.exceptions.UserHasBookLoanException;
@@ -20,14 +21,16 @@ import jakarta.validation.Valid;
 @Service
 public class UserService {
 	private final UserRepository userRepository;
+	private final UserMapper userMapper;
 
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, UserMapper userMapper) {
 		this.userRepository = userRepository;
+		this.userMapper = userMapper;
 	}
 
 	@Transactional(readOnly = true)
 	public Page<ResponseUserDto> findAllUsers(Pageable pageable) {
-		return userRepository.findAll(pageable).map(ResponseUserDto::from);
+		return userRepository.findAll(pageable).map(userMapper::toResponseUserDto);
 	}
 
 	@Transactional
@@ -60,7 +63,7 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public ResponseUserDto findUser(UUID id) {
 		final User entity = userRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Não existe usuario com o Id: " + id));
+				.orElseThrow(() -> new UserNotFoundException("Não existe usuario com o Id: " + id));
 		return ResponseUserDto.from(entity);
 	}
 
