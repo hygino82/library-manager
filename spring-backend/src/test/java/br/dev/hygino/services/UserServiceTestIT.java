@@ -4,6 +4,7 @@ import br.dev.hygino.dto.ResponseUserDto;
 import br.dev.hygino.mappers.UserMapper;
 import br.dev.hygino.models.SchoolAtribute;
 import br.dev.hygino.repositories.UserRepository;
+import br.dev.hygino.services.exceptions.UserHasBookLoanException;
 import br.dev.hygino.services.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,5 +75,19 @@ public class UserServiceTestIT {
         final var result = assertThrows(UserNotFoundException.class, () -> userService.findUser(invalidId));
 
         assertEquals("Não existe usuário com o Id: " + invalidId, result.getMessage());
+    }
+
+    @Test
+    @DisplayName("Delete deve lançar UserHasBookLoanException quando id for dependente")
+    public void deleteShouldThrowUserHasBookLoanExceptionWhenDependentId() {
+        final var result = assertThrows(UserHasBookLoanException.class, () -> userService.removeUser(dependentId));
+
+        assertEquals("Não é possível excluir o usuário, pois ele está associado a empréstimos.", result.getMessage());
+    }
+
+    @Test
+    @DisplayName("Delete não deve lançar UserHasBookLoanException quando id não for dependente")
+    public void deleteShouNotThrowExceptionWhenUserAsNoLoan() {
+        assertDoesNotThrow(() -> userService.removeUser(validId));
     }
 }

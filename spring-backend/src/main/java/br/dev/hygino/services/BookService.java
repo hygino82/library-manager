@@ -3,6 +3,7 @@ package br.dev.hygino.services;
 import br.dev.hygino.dto.BookReportDto;
 import br.dev.hygino.mappers.BookMapper;
 import br.dev.hygino.models.BookStatus;
+import br.dev.hygino.services.exceptions.BookNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,7 @@ public class BookService {
     @Transactional(readOnly = true)
     public ResponseBookDetailsDto findById(UUID id) {
         final Book res = bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Não existe livro com o id: " + id));
+                .orElseThrow(() -> new BookNotFoundException("Não existe livro com o id: " + id));
         return bookMapper.toBookResponse(res);
     }
 
@@ -78,6 +79,7 @@ public class BookService {
     public void remove(UUID id) {
         try {
             bookRepository.deleteById(id);
+            bookRepository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new BorrowBookException("Não pode excluir um livro com empréstimo");
         }
