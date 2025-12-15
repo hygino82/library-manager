@@ -63,7 +63,7 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public ResponseUserDto findUser(UUID id) {
 		final User entity = userRepository.findById(id)
-				.orElseThrow(() -> new UserNotFoundException("Não existe usuario com o Id: " + id));
+				.orElseThrow(() -> new UserNotFoundException("Não existe usuário com o Id: " + id));
 		return ResponseUserDto.from(entity);
 	}
 
