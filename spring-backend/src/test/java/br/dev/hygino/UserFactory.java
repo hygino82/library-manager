@@ -102,4 +102,22 @@ public final class UserFactory {
                 )
         );
     }
+
+    public static RequestUserDto createUpdateUserRequest() {
+        return new RequestUserDto(
+                "Godofredo Silva",
+                SchoolAtribute.SEGUNDA,
+                "godofredo@email.com",
+                "4632320045");
+    }
+
+    public static User createUpdatedUserEntity() {
+        return new User(
+                userEntityWithoutLoanId,
+                "Godofredo Silva",
+                SchoolAtribute.SEGUNDA,
+                "godofredo@email.com",
+                "4632320045",
+                false);
+    }
 }
