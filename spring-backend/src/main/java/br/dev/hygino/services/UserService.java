@@ -74,7 +74,7 @@ public class UserService {
 				.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado: " + id));
 
 		try {
-			userRepository.deleteById(user.getId());
+			userRepository.delete(user);
 			userRepository.flush(); // <-- faz a exceção acontecer AQUI
 		} catch (DataIntegrityViolationException e) {
 			throw new UserHasBookLoanException(

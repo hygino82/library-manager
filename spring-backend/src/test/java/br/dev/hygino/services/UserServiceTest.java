@@ -1,16 +1,14 @@
 package br.dev.hygino.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import br.dev.hygino.UserFactory;
+import br.dev.hygino.dto.RequestUserDto;
 import br.dev.hygino.dto.ResponseUserDto;
+import br.dev.hygino.mappers.UserMapper;
+import br.dev.hygino.models.SchoolAtribute;
+import br.dev.hygino.models.User;
+import br.dev.hygino.repositories.UserRepository;
 import br.dev.hygino.services.exceptions.UserHasBookLoanException;
+import br.dev.hygino.services.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,13 +22,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import br.dev.hygino.UserFactory;
-import br.dev.hygino.dto.RequestUserDto;
-import br.dev.hygino.mappers.UserMapper;
-import br.dev.hygino.models.SchoolAtribute;
-import br.dev.hygino.models.User;
-import br.dev.hygino.repositories.UserRepository;
-import br.dev.hygino.services.exceptions.UserNotFoundException;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public final class UserServiceTest {
@@ -55,6 +54,7 @@ public final class UserServiceTest {
         dependentId = UUID.fromString("35fb65bd-43f9-4794-8b8f-8e7c3e143c04");
         updateUserRequest = UserFactory.createUpdateUserRequest();
 
+        final User userWithLoans = UserFactory.createUserEntityWithBookLoan();
         final User userUpdated = UserFactory.createUpdatedUserEntity();
         final User userEntityWithoutLoans = UserFactory.createUserEntityWithoutBookLoan();
         final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
@@ -66,7 +66,7 @@ public final class UserServiceTest {
 
         when(userRepository.findById(userIdWithoutLoan)).thenReturn(Optional.of(userEntityWithoutLoans));
         when(userRepository.findById(nonExistingId)).thenReturn(Optional.empty());
-        when(userRepository.findById(dependentId)).thenReturn(Optional.of(UserFactory.createUserEntityWithBookLoan()));
+        when(userRepository.findById(dependentId)).thenReturn(Optional.of(userWithLoans));
 
         when(userRepository.findUsersByName(null, pageRequest))
                 .thenReturn(
@@ -82,7 +82,7 @@ public final class UserServiceTest {
 
         doThrow(DataIntegrityViolationException.class)
                 .when(userRepository)
-                .deleteById(dependentId);
+                .delete(userWithLoans);
 
         userService = new UserService(userRepository, userMapper);
     }
