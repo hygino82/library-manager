@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,8 +56,8 @@ public class UserService {
 			dtoToEntity(dto, entity);
 			entity = userRepository.save(entity);
 			return ResponseUserDto.from(entity);
-		} catch (EntityNotFoundException e) {
-			throw new IllegalArgumentException("Não existe usuario com o Id: " + id);
+		} catch (EntityNotFoundException | JpaObjectRetrievalFailureException e) {
+			throw new UserNotFoundException("Não existe usuario com o Id: " + id);
 		}
 	}
 
