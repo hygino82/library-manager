@@ -66,9 +66,7 @@ public class BookServiceTestIT {
     @Test
     @DisplayName("Deve lançar Exception quando o Id do livro for inválido")
     public void removeShouldThrowBorrowBookExceptionWhenInvalidBookId() {
-        final BorrowBookException res = assertThrows(BorrowBookException.class, () -> {
-            bookService.remove(dependentId);
-        });
+        final BorrowBookException res = assertThrows(BorrowBookException.class, () -> bookService.remove(dependentId));
 
         assertEquals("Não pode excluir um livro com empréstimo", res.getMessage());
     }
@@ -93,12 +91,9 @@ public class BookServiceTestIT {
                 availableBooks = 9L;
 
         assertEquals(totalBooks, result.totalBooks());
-        assertEquals(borrowedBooks,
-                result.borrowedBooks());
-        assertEquals(availableBooks,
-                result.availableBooks());
-        assertEquals(result.totalBooks(),
-                result.borrowedBooks() + result.availableBooks());
+        assertEquals(borrowedBooks, result.borrowedBooks());
+        assertEquals(availableBooks, result.availableBooks());
+        assertEquals(result.totalBooks(), result.borrowedBooks() + result.availableBooks());
         assertNotNull(result.searchDate());
     }
 }

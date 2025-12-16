@@ -1,5 +1,7 @@
 package br.dev.hygino.services;
 
+import br.dev.hygino.UserFactory;
+import br.dev.hygino.dto.RequestUserDto;
 import br.dev.hygino.dto.ResponseUserDto;
 import br.dev.hygino.mappers.UserMapper;
 import br.dev.hygino.models.SchoolAtribute;
@@ -34,11 +36,15 @@ public class UserServiceTestIT {
 
     private UUID validId, dependentId, invalidId;
 
+    private RequestUserDto requestUserDto;
+
     @BeforeEach
     public void setup() {
         validId = UUID.fromString("c7b2c61a-ff37-4a76-94ef-9c4d0b701005");
         dependentId = UUID.fromString("c7b2c61a-ff37-4a76-94ef-9c4d0b701002");
         invalidId = UUID.fromString("45ed9797-f0e5-424a-9a4c-e51952c91d71");
+
+        requestUserDto = UserFactory.createUpdateUserRequest();
     }
 
     @Test
@@ -89,5 +95,18 @@ public class UserServiceTestIT {
     @DisplayName("Delete não deve lançar UserHasBookLoanException quando id não for dependente")
     public void deleteShouNotThrowExceptionWhenUserAsNoLoan() {
         assertDoesNotThrow(() -> userService.removeUser(validId));
+    }
+
+    @Test
+    @DisplayName("Update deve atualizar Usuário quando o Id e os dados da requisição forem válidos")
+    public void updateShouldModifyUserDateWhenIdAndRequestDataIsValid() {
+        final var result = userService.updateUser(validId, requestUserDto);
+
+        assertNotNull(result);
+        assertEquals("Godofredo Silva", result.name());
+        assertEquals(SchoolAtribute.SEGUNDA.name(), result.schoolAtribute());
+        assertEquals("godofredo@email.com", result.email());
+        assertEquals("4632320045", result.phoneNumber());
+        assertFalse(result.hasLoan());
     }
 }
