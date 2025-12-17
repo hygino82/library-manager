@@ -113,6 +113,32 @@ public class UserServiceTestIT {
 		final var result = assertThrows(UserNotFoundException.class,
 				() -> userService.updateUser(invalidId, requestUserDto));
 
-		assertEquals("Não existe usuario com o Id: " + invalidId, result.getMessage());
+		assertEquals("Não existe usuário com o Id: " + invalidId, result.getMessage());
+	}
+
+	@Test
+	@DisplayName("Insert deve inserir um novo usuário quando os dados forem válidos")
+	public void insertShouldReturnResponseUserDtoWhenValidData() {
+		final var result = userService.insert(requestUserDto);
+
+		assertNotNull(result);
+		assertEquals("Godofredo Silva", result.name());
+		assertEquals(SchoolAtribute.SEGUNDA.name(), result.schoolAtribute());
+		assertEquals("godofredo@email.com", result.email());
+		assertEquals("4632320045", result.phoneNumber());
+		assertFalse(result.hasLoan());
+	}
+
+	@Test
+	@DisplayName("FindAll deve retornar uma página")
+	public void findAllShouldReturnPage() {
+		final var result = userService.findAllUsers(PageRequest.of(0, 5));
+
+		assertNotNull(result);
+		assertEquals("Juvenal Santos", result.getContent().get(0).name());
+		assertEquals("Maria Oliveira", result.getContent().get(1).name());
+		assertEquals("Carlos Souza", result.getContent().get(2).name());
+		assertEquals("Ana Pereira", result.getContent().get(3).name());
+		assertEquals("Rafael Lima", result.getContent().get(4).name());
 	}
 }

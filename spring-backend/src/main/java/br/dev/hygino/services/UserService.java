@@ -57,7 +57,7 @@ public class UserService {
 			entity = userRepository.save(entity);
 			return ResponseUserDto.from(entity);
 		} catch (EntityNotFoundException | JpaObjectRetrievalFailureException e) {
-			throw new UserNotFoundException("Não existe usuario com o Id: " + id);
+			throw new UserNotFoundException("Não existe usuário com o Id: " + id);
 		}
 	}
 
