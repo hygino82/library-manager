@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,58 +19,60 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public  class Book implements BookReturn {
+public class Book implements BookReturn {
 
-    @EqualsAndHashCode.Include
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
-    @NotBlank
-    @Size(max = 100, min = 3)
-    private String title;
+	@NotBlank
+	@Size(max = 100, min = 3)
+	private String title;
 
-    @NotBlank
-    @Size(max = 100, min = 3)
-    private String author;
+	@NotBlank
+	@Size(max = 100, min = 3)
+	private String author;
 
-    @NotBlank
-    @Size(max = 30, min = 3)
-    private String personalCode;
+	@NotBlank
+	@Size(max = 30, min = 3)
+	private String personalCode;
 
-    @NotNull
-    private Integer edition;
+	@NotNull
+	private Integer edition;
 
-    @NotBlank
-    @Size(max = 100, min = 3)
-    private String publisher;
+	@NotBlank
+	@Size(max = 100, min = 3)
+	private String publisher;
 
-    @NotNull
-    private Integer totalPages;
+	@NotNull
+	private Integer totalPages;
 
-    @NotNull
-    private BookStatus bookStatus = BookStatus.AVAILABLE;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private BookStatus bookStatus = BookStatus.AVAILABLE;
 
-    @OneToMany(mappedBy = "book")
-    private final List<BookLoan> bookLoans = new ArrayList<>();
+	@OneToMany(mappedBy = "book")
+	private final List<BookLoan> bookLoans = new ArrayList<>();
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt;
+	private LocalDateTime createdAt = LocalDateTime.now();
+	private LocalDateTime updatedAt;
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return Objects.equals(id, book.id);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Book book = (Book) o;
+		return Objects.equals(id, book.id);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
 
-    @Override
-    public void executeReturn() {
-        bookStatus = BookStatus.AVAILABLE;
-    }
+	@Override
+	public void executeReturn() {
+		bookStatus = BookStatus.AVAILABLE;
+	}
 }

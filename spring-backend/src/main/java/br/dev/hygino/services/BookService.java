@@ -34,8 +34,8 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseBookDto> findAll(String title, String author, Pageable pageable) {
-        return bookRepository.findBooksByTitleAndAuthor(title, author, pageable).map(ResponseBookDto::new);
+    public Page<ResponseBookDto> findAll(String title, String author, Pageable pageable, BookStatus status) {
+        return bookRepository.findBooksByTitleAndAuthor(title, author, status, pageable).map(ResponseBookDto::new);
     }
 
     @Transactional(readOnly = true)

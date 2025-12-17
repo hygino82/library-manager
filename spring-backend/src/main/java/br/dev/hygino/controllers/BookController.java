@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.dev.hygino.dto.RequestBookDto;
 import br.dev.hygino.dto.ResponseBookDetailsDto;
 import br.dev.hygino.dto.ResponseBookDto;
+import br.dev.hygino.models.BookStatus;
 import br.dev.hygino.services.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,12 +43,13 @@ public class BookController {
     public ResponseEntity<Page<ResponseBookDto>> findAll(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author,
+            @RequestParam(required = false) BookStatus bookStatus,
             Pageable pageable) {
 
         String searchTitle = (title == null || title.isBlank()) ? "" : title.trim();
         String searchAuthor = (author == null || author.isBlank()) ? "" : author.trim();
 
-        Page<ResponseBookDto> res = service.findAll(searchTitle, searchAuthor, pageable);
+        Page<ResponseBookDto> res = service.findAll(searchTitle, searchAuthor, pageable, bookStatus);
         return ResponseEntity.ok(res);
     }
 

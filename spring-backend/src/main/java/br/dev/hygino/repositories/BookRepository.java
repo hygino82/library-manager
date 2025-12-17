@@ -1,6 +1,7 @@
 package br.dev.hygino.repositories;
 
 import br.dev.hygino.models.Book;
+import br.dev.hygino.models.BookStatus;
 
 import java.util.UUID;
 
@@ -11,15 +12,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BookRepository extends JpaRepository<Book, UUID> {
-    @Query("""
-    SELECT u FROM Book u
-    WHERE (:title IS NULL OR :title = '' OR UPPER(u.title) LIKE CONCAT('%', UPPER(:title), '%'))
-        AND
-        (:author IS NULL OR :author = '' OR UPPER(u.author) LIKE CONCAT('%', UPPER(:author), '%'))
-    """)
-    Page<Book> findBooksByTitleAndAuthor(
-            @Param("title") String title,
-            @Param("author") String author,
-            Pageable pageable);
+	@Query("""
+		    SELECT u FROM Book u
+		    WHERE (:title IS NULL OR :title = '' 
+		           OR UPPER(u.title) LIKE CONCAT('%', UPPER(:title), '%'))
+		      AND (:author IS NULL OR :author = '' 
+		           OR UPPER(u.author) LIKE CONCAT('%', UPPER(:author), '%'))
+		      AND (:bookStatus IS NULL OR u.bookStatus = :bookStatus)
+		""")
+		Page<Book> findBooksByTitleAndAuthor(
+		        @Param("title") String title,
+		        @Param("author") String author,
+		        @Param("bookStatus") BookStatus bookStatus,
+		        Pageable pageable
+		);
+
 
 }

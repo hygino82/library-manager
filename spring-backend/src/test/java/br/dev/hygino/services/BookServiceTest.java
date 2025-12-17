@@ -28,6 +28,7 @@ import br.dev.hygino.dto.ResponseBookDto;
 import br.dev.hygino.mappers.BookMapper;
 import br.dev.hygino.models.Book;
 import br.dev.hygino.repositories.BookRepository;
+import br.dev.hygino.services.exceptions.BookNotFoundException;
 import br.dev.hygino.services.exceptions.BorrowBookException;
 
 @ExtendWith(SpringExtension.class)
@@ -94,9 +95,9 @@ class BookServiceTest {
 	}
 
 	@Test
-	@DisplayName("Deve lançar IllegalArgumentException quando o Id for inválido")
-	void findByIdShouldThrowIllegalArgumentExceptionWhenIdDoesNotExists() {
-		final IllegalArgumentException res = assertThrows(IllegalArgumentException.class,
+	@DisplayName("Deve lançar BookNotFoundException quando o Id for inválido")
+	void findByIdShouldThrowBookNotFoundExceptionWhenIdDoesNotExists() {
+		final var res = assertThrows(BookNotFoundException.class,
 				() -> bookService.findById(nonExistingId));
 		assertEquals("Não existe livro com o id: " + nonExistingId, res.getMessage());
 	}
