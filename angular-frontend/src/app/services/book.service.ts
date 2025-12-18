@@ -11,8 +11,8 @@ export class BookService {
   constructor(private http: HttpClient) {
   }
 
-  getBooks(title: string, author: string): Observable<BookPage> {
-    return this.http.get<BookPage>(`${BASE_URL}/book?title=${title}&author=${author}`, {});
+  getBooks(title: string, author: string, status: string): Observable<BookPage> {
+    return this.http.get<BookPage>(`${BASE_URL}/book?title=${title}&author=${author}&bookStatus=${status}`, {});
   }
 
   removeBook(id: number) {

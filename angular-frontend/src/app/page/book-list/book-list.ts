@@ -1,17 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import {TableModule} from 'primeng/table';
-import {App} from '../../app';
 import {BookService} from '../../services/book.service';
 import {Book} from '../../../custom.types';
 import {FormsModule} from '@angular/forms';
 import {Tooltip} from 'primeng/tooltip';
-import {NgIf} from '@angular/common';
-import {Checkbox} from 'primeng/checkbox';
 
 @Component({
   selector: 'app-book-list',
-  imports: [TableModule, ButtonModule, FormsModule, Tooltip, Checkbox],
+  imports: [TableModule, ButtonModule, FormsModule, Tooltip],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
   standalone: true
@@ -26,15 +23,16 @@ export class BookList implements OnInit {
   }
 
   getBooks() {
-    this.service.getBooks(this.title, this.author).subscribe({
+    this.service.getBooks(this.title, this.author, this.status).subscribe({
       next: (result) => {
         this.books = result.content; // atualiza o array
-        console.log(this.books);
+        //console.log(this.books);
       },
       error: (err) => {
         console.error('Erro ao carregar livros', err);
       }
     });
+    console.log(`BookStatus: ${this.status}`);
   }
 
   removeBook(id: number) {
@@ -68,13 +66,12 @@ export class BookList implements OnInit {
     console.log(`Livro ${book.title} emprestado!`);
   }
 
-  showAvailableOnly = true;
   selectedBook?: Book;  // A linha selecionada
   title: string = '';
   author: string = '';
+  status: string = '';
 
   books: Book[] = [];
-
 }
 
 
