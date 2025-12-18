@@ -1,0 +1,21 @@
+<form>
+  <label for="title">Título</label><br>
+  <input type="text" name="title" id="title" [(ngModel)]="title"> <br>
+
+  <label for="author">Autor</label><br>
+  <input type="text" name="author" id="author" [(ngModel)]="author"> <br>
+
+  <label for="personalCode">Código</label><br>
+  <input type="text" name="personalCode" id="personalCode" [(ngModel)]="personalCode"> <br>
+
+  <label for="edition">Edição</label><br>
+  <input type="number" name="edition" id="edition" [(ngModel)]="edition"> <br>
+
+  <label for="publisher">Editora</label><br>
+  <input type="text" name="publisher" id="publisher" [(ngModel)]="publisher"> <br>
+
+  <label for="totalPages">Páginas</label><br>
+  <input type="number" name="totalPages" id="totalPages" [(ngModel)]="totalPages"> <br>
+
+  <p-button label="Salvar" (onClick)="saveBook()"/>
+</form>

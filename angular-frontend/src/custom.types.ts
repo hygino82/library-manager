@@ -22,3 +22,13 @@ export type Page = {
   totalPages: number;
   totalElements: number;
 }
+
+export type BookRequest = {
+  title: string;
+  author: string;
+  personalCode: string;
+  edition: number;
+  publisher: string;
+  totalPages: number;
+};
+

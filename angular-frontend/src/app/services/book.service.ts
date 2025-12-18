@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {BASE_URL} from '../../utils';
-import {Book, BookPage} from '../../custom.types';
+import {Book, BookPage, BookRequest} from '../../custom.types';
+
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +22,9 @@ export class BookService {
 
   getBook(id: number) {
     return this.http.get<Book>(`${BASE_URL}/book/${id}`);
+  }
+
+  saveBook(bookRequest: BookRequest) {
+    return this.http.post(`${BASE_URL}/book`, bookRequest, {});
   }
 }
