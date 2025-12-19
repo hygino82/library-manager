@@ -5,10 +5,11 @@ import {BookService} from '../../services/book.service';
 import {Book} from '../../../custom.types';
 import {FormsModule} from '@angular/forms';
 import {Tooltip} from 'primeng/tooltip';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
-  imports: [TableModule, ButtonModule, FormsModule, Tooltip],
+  imports: [TableModule, ButtonModule, FormsModule, Tooltip, RouterLink],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
   standalone: true
@@ -35,7 +36,7 @@ export class BookList implements OnInit {
     console.log(`BookStatus: ${this.status}`);
   }
 
-  removeBook(id: number) {
+  removeBook(id: string) {
     this.service.removeBook(id).subscribe({
       next: () => {
         // A remoção foi bem-sucedida! Agora, vamos recarregar a lista.
@@ -50,7 +51,7 @@ export class BookList implements OnInit {
     });
   }
 
-  getBook(id: number) {
+  getBook(id: string) {
     this.service.getBook(id).subscribe({
       next: (book) => {
         this.selectedBook = book;

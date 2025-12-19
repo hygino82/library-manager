@@ -48,7 +48,7 @@
     <!-- Cabeçalho -->
     <ng-template pTemplate="header">
       <tr>
-        <th>#</th>
+        <!--th>#</th-->
         <th>Título</th>
         <th>Autor</th>
         <th>Páginas</th>
@@ -60,7 +60,7 @@
     <!-- Corpo -->
     <ng-template pTemplate="body" let-book>
       <tr [pSelectableRow]="book">
-        <td>{{ book.id }}</td>
+        <!--<td>{{ book.id }}</td-->
         <td>{{ book.title }}</td>
         <td>{{ book.author }}</td>
         <td>{{ book.totalPages }}</td>
@@ -73,6 +73,15 @@
                       (click)="getBook(book.id)">
               <i class="pi pi-question-circle"></i>
             </p-button>
+
+            <p-button
+              [style]="{'background-color': 'orange', 'border': 'none', 'color': 'white'}"
+              styleClass="p-button-icon-only"
+              pTooltip="Editar livro"
+              tooltipPosition="top"
+              [routerLink]="['/livros/cadastro', book.id]">
+              <i class="pi pi-file-edit"></i>
+            </p-button>
             <p-button styleClass="p-button-danger p-button-icon-only"
                       pTooltip="Remover"
                       tooltipPosition="top"
@@ -82,7 +91,7 @@
 
             @if (book.bookStatus === 'AVAILABLE') {
               <p-button
-                [style]="{'background-color': 'orange', 'border': 'none', 'color': 'white'}"
+                [style]="{'background-color': 'blue', 'border': 'none', 'color': 'white'}"
                 styleClass="p-button-icon-only"
                 pTooltip="Emprestar livro"
                 tooltipPosition="top"

@@ -1,5 +1,5 @@
 export type Book = {
-  id: number;
+  id: string;
   title: string;
   author: string;
   personalCode: string;
@@ -24,6 +24,7 @@ export type Page = {
 }
 
 export type BookRequest = {
+  id?: string;
   title: string;
   author: string;
   personalCode: string;

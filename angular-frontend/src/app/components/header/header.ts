@@ -38,7 +38,7 @@ export class Header {
         {
           label: 'Cadastrar',
           icon: 'pi pi-plus',
-          routerLink: '/livros/novo'
+          routerLink: '/livros/cadastro'
         },
         {
           label: 'Listar',
