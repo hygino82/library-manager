@@ -1,0 +1,22 @@
+<div>
+  <label for="name">Nome</label><br>
+  <input type="text" [(ngModel)]="name" name="name" id="name"><br>
+  <button (click)="getUsersPage()">Buscar</button>
+</div>
+
+<p-table [value]="users" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Nome</th>
+      <th>Atributo</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.schoolAtribute }}</td>
+      <td>{{ user.hasLoan ? 'Sim' : 'Não' }}</td>
+    </tr>
+  </ng-template>
+</p-table>

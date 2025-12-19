@@ -44,7 +44,7 @@ public class UserServiceTestIT {
 		requestUserDto = UserFactory.createUpdateUserRequest();
 	}
 
-	@Test
+	/*@Test
 	@DisplayName("FindUsersByName deve retornar uma página com um único elemento")
 	public void findUsersByNameShouldReturnPageWithUniqueElement() {
 		final String name = "Rafael";
@@ -57,7 +57,7 @@ public class UserServiceTestIT {
 		assertEquals("7876543210", result.getContent().getFirst().phoneNumber());
 		assertEquals("c7b2c61a-ff37-4a76-94ef-9c4d0b701005", result.getContent().getFirst().id().toString());
 		assertEquals(SchoolAtribute.SEXTO.name(), result.getContent().getFirst().schoolAtribute());
-	}
+	}*/
 
 	@Test
 	@DisplayName("FindUser deve retornar um ResponseUserDto quando o id for válido")

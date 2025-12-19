@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import {BookList} from './page/book-list/book-list';
 import {BookForm} from './page/book-form/book-form';
+import {UserList} from './page/user-list/user-list';
 
 export const routes: Routes = [
   {
@@ -10,14 +11,14 @@ export const routes: Routes = [
   },
 
   /* Usuários */
-  /*{
+  {
     path: 'usuarios',
-    component: UsuarioListComponent
+    component: UserList
   },
   {
-    path: 'usuarios/novo',
-    component: UsuarioFormComponent
-  },*/
+    path: 'usuarios/form',
+    component: UserList
+  },
 
   /* Livros */
   {

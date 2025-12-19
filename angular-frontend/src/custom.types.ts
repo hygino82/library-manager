@@ -33,3 +33,23 @@ export type BookRequest = {
   totalPages: number;
 };
 
+export type User = {
+  id?: string;
+  name: string;
+  schoolAtribute: string;
+  email: string;
+  phoneNumber: string;
+  hasLoan: boolean;
+}
+
+export type MinUserResponse = {
+  id: string;
+  name: string;
+  schoolAtribute: string;
+  hasLoan: boolean;
+}
+
+export type MinUserPage = {
+  content: MinUserResponse[];
+  page: Page;
+}

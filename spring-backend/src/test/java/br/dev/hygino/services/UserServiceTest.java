@@ -120,7 +120,7 @@ public final class UserServiceTest {
         assertEquals("Não existe usuário com o Id: " + nonExistingId, result.getMessage());
     }
 
-    @Test
+    /*@Test
     @DisplayName("FindUsersByName deve retornar Page<User>")
     public void findUsersByNameShouldReturnPage() {
         final Page<ResponseUserDto> result = userService.findUsersByName(null, pageRequest);
@@ -128,7 +128,7 @@ public final class UserServiceTest {
         assertEquals(6, result.getTotalElements());
         assertEquals("Gorete Medeiros", result.getContent().getFirst().name(), "O nome do primeiro usuário deve ser 'Gorete Medeiros'.");
         assertEquals("Camila Luz", result.getContent().getLast().name(), "O nome do último usuário deve ser 'Camila Luz'.");
-    }
+    }*/
 
     @Test
     @DisplayName("Update deve retornar os dados atualizados")

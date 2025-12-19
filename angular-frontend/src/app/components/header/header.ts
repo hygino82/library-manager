@@ -22,7 +22,7 @@ export class Header {
         {
           label: 'Cadastrar',
           icon: 'pi pi-plus',
-          routerLink: '/usuarios/novo'
+          routerLink: '/usuarios/form'
         },
         {
           label: 'Listar',
