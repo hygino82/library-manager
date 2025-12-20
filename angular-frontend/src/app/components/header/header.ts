@@ -59,9 +59,9 @@ export class Header {
         {
           label: 'Listar',
           icon: 'pi pi-list',
-          routerLink: '/emprestimos'
         }
       ]
     }
   ];
 }
+          routerLink: '/emprestimos'

@@ -8,7 +8,7 @@ import java.util.UUID;
 import br.dev.hygino.dto.MinBookLoanResponseDto;
 import br.dev.hygino.dto.RequestUserDto;
 import br.dev.hygino.dto.ResponseUserDto;
-import br.dev.hygino.models.SchoolAtribute;
+import br.dev.hygino.models.SchoolAttribute;
 import br.dev.hygino.models.User;
 
 public final class UserFactory {
@@ -23,24 +23,24 @@ public final class UserFactory {
     }
 
     public static User createUserEntityWithoutBookLoan() {
-        return new User(userEntityWithoutLoanId, "Gorete Medeiros", SchoolAtribute.SETIMO, "goretinha@email.com",
+        return new User(userEntityWithoutLoanId, "Gorete Medeiros", SchoolAttribute.SETIMO, "goretinha@email.com",
                 "4712345678", false);
     }
 
     public static User createUserEntityWithBookLoan() {
-        return new User(userEntityWithLoanId, "Juvenal Mendes", SchoolAtribute.OITAVO, "juvenal@email.com",
+        return new User(userEntityWithLoanId, "Juvenal Mendes", SchoolAttribute.OITAVO, "juvenal@email.com",
                 "4687459731", true);
     }
 
     public static RequestUserDto createUserRequest() {
-        return new RequestUserDto("Gorete Medeiros", SchoolAtribute.SETIMO, "goretinha@email.com", "4712345678");
+        return new RequestUserDto("Gorete Medeiros", SchoolAttribute.SETIMO, "goretinha@email.com", "4712345678");
     }
 
     public static ResponseUserDto createUserResponse() {
         return new ResponseUserDto(
                 userEntityWithoutLoanId,
                 "Gorete Medeiros",
-                SchoolAtribute.SETIMO.name(),
+                SchoolAttribute.SETIMO.name(),
                 "goretinha@email.com",
                 "4712345678",
                 false,
@@ -54,7 +54,7 @@ public final class UserFactory {
                         new User(
                                 userEntityWithoutLoanId,
                                 "Gorete Medeiros",
-                                SchoolAtribute.SETIMO,
+                                SchoolAttribute.SETIMO,
                                 "goretinha@email.com",
                                 "4712345678",
                                 false
@@ -62,7 +62,7 @@ public final class UserFactory {
                         new User(
                                 UUID.fromString("6526bccf-132a-4c77-99c8-10734130a1b8"),
                                 "Roberto Silva",
-                                SchoolAtribute.NONO,
+                                SchoolAttribute.NONO,
                                 "roberto.s@email.com",
                                 "4787654321",
                                 false
@@ -70,7 +70,7 @@ public final class UserFactory {
                         new User(
                                 UUID.fromString("84e9b2d0-837d-4347-87b3-1495d3ee117d"),
                                 "Ana Clara",
-                                SchoolAtribute.TERCEIRA,
+                                SchoolAttribute.TERCEIRA,
                                 "ana.clara@email.com",
                                 "4711223344",
                                 false
@@ -78,7 +78,7 @@ public final class UserFactory {
                         new User(
                                 UUID.fromString("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
                                 "Maria Eduarda",
-                                SchoolAtribute.SEXTO,
+                                SchoolAttribute.SEXTO,
                                 "maria.eduarda@email.com",
                                 "4799887766",
                                 false
@@ -86,7 +86,7 @@ public final class UserFactory {
                         new User(
                                 UUID.fromString("d8c7b6a5-4f3e-2d1c-0b9a-8e7d6f5c4b3a"),
                                 "João Pedro",
-                                SchoolAtribute.PRIMEIRA,
+                                SchoolAttribute.PRIMEIRA,
                                 "joao.pedro@email.com",
                                 "4722334455",
                                 false
@@ -94,7 +94,7 @@ public final class UserFactory {
                         new User(
                                 UUID.fromString("a1b2c3d4-e5f6-a7b8-c9d0-e1f2a3b4c5d6"),
                                 "Camila Luz",
-                                SchoolAtribute.SETIMO,
+                                SchoolAttribute.SETIMO,
                                 "camila.luz@email.com",
                                 "4766778899",
                                 false
@@ -106,7 +106,7 @@ public final class UserFactory {
     public static RequestUserDto createUpdateUserRequest() {
         return new RequestUserDto(
                 "Godofredo Silva",
-                SchoolAtribute.SEGUNDA,
+                SchoolAttribute.SEGUNDA,
                 "godofredo@email.com",
                 "4632320045");
     }
@@ -115,7 +115,7 @@ public final class UserFactory {
         return new User(
                 userEntityWithoutLoanId,
                 "Godofredo Silva",
-                SchoolAtribute.SEGUNDA,
+                SchoolAttribute.SEGUNDA,
                 "godofredo@email.com",
                 "4632320045",
                 false);

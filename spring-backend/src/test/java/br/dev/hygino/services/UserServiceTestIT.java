@@ -8,19 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.UUID;
 
+import br.dev.hygino.models.SchoolAttribute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.dev.hygino.UserFactory;
 import br.dev.hygino.dto.RequestUserDto;
-import br.dev.hygino.dto.ResponseUserDto;
-import br.dev.hygino.models.SchoolAtribute;
 import br.dev.hygino.services.exceptions.UserHasBookLoanException;
 import br.dev.hygino.services.exceptions.UserNotFoundException;
 
@@ -69,7 +67,7 @@ public class UserServiceTestIT {
 		assertEquals("rafael.lima@email.com", result.email());
 		assertEquals("7876543210", result.phoneNumber());
 		assertEquals(validId, result.id());
-		assertEquals(SchoolAtribute.SEXTO.name(), result.schoolAtribute());
+		assertEquals(SchoolAttribute.SEXTO.name(), result.schoolAtribute());
 	}
 
 	@Test
@@ -101,7 +99,7 @@ public class UserServiceTestIT {
 
 		assertNotNull(result);
 		assertEquals("Godofredo Silva", result.name());
-		assertEquals(SchoolAtribute.SEGUNDA.name(), result.schoolAtribute());
+		assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAtribute());
 		assertEquals("godofredo@email.com", result.email());
 		assertEquals("4632320045", result.phoneNumber());
 		assertFalse(result.hasLoan());
@@ -123,7 +121,7 @@ public class UserServiceTestIT {
 
 		assertNotNull(result);
 		assertEquals("Godofredo Silva", result.name());
-		assertEquals(SchoolAtribute.SEGUNDA.name(), result.schoolAtribute());
+		assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAtribute());
 		assertEquals("godofredo@email.com", result.email());
 		assertEquals("4632320045", result.phoneNumber());
 		assertFalse(result.hasLoan());

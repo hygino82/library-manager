@@ -36,10 +36,19 @@ export type BookRequest = {
 export type User = {
   id?: string;
   name: string;
-  schoolAtribute: string;
+  schoolAttribute: string;
   email: string;
   phoneNumber: string;
   hasLoan: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type RequestUserDto = {
+  name: string;
+  schoolAttribute: string;
+  email: string;
+  phoneNumber: string;
 }
 
 export type MinUserResponse = {

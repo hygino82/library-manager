@@ -47,7 +47,7 @@ public class UserService {
         entity.setEmail(dto.email());
         entity.setName(dto.name());
         entity.setPhoneNumber(dto.phoneNumber());
-        entity.setSchoolAtribute(dto.schoolAtribute());
+        entity.setSchoolAttribute(dto.schoolAttribute());
     }
 
     @Transactional

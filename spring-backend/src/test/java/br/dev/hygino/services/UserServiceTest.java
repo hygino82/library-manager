@@ -2,9 +2,8 @@ package br.dev.hygino.services;
 
 import br.dev.hygino.UserFactory;
 import br.dev.hygino.dto.RequestUserDto;
-import br.dev.hygino.dto.ResponseUserDto;
 import br.dev.hygino.mappers.UserMapper;
-import br.dev.hygino.models.SchoolAtribute;
+import br.dev.hygino.models.SchoolAttribute;
 import br.dev.hygino.models.User;
 import br.dev.hygino.repositories.UserRepository;
 import br.dev.hygino.services.exceptions.UserHasBookLoanException;
@@ -17,7 +16,6 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -107,7 +105,7 @@ public final class UserServiceTest {
         assertEquals(userIdWithoutLoan, result.id());
         assertEquals("Gorete Medeiros", result.name());
         assertFalse(result.hasLoan());
-        assertEquals(SchoolAtribute.SETIMO.name(), result.schoolAtribute());
+        assertEquals(SchoolAttribute.SETIMO.name(), result.schoolAtribute());
         assertEquals("goretinha@email.com", result.email());
         assertEquals("4712345678", result.phoneNumber());
     }
@@ -139,7 +137,7 @@ public final class UserServiceTest {
         assertEquals(userIdWithoutLoan, result.id());
         assertEquals("Godofredo Silva", result.name());
         assertEquals("godofredo@email.com", result.email());
-        assertEquals(SchoolAtribute.SEGUNDA.name(), result.schoolAtribute());
+        assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAtribute());
         assertEquals("4632320045", result.phoneNumber());
         assertFalse(result.hasLoan());
     }

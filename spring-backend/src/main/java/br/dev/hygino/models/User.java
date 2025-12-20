@@ -30,7 +30,7 @@ public final class User implements BookReturn {
 	private String name;
 
 	@NotNull
-	private SchoolAtribute schoolAtribute;
+	private SchoolAttribute schoolAttribute;
 
 	@Email
 	@Size(max = 100, min = 3)

@@ -5,14 +5,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import br.dev.hygino.models.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
-import br.dev.hygino.models.Book;
-import br.dev.hygino.models.BookLoan;
-import br.dev.hygino.models.BookStatus;
-import br.dev.hygino.models.SchoolAtribute;
-import br.dev.hygino.models.User;
+import br.dev.hygino.models.SchoolAttribute;
 
 public class BookLoanFactory {
 
@@ -26,10 +23,10 @@ public class BookLoanFactory {
 
 	public static Page<BookLoan> createBookLoanPage() {
 
-		User user1 = new User(UserFactory.userWithLoanId1, "Juvenal Mendes", SchoolAtribute.OITAVO, "juvenal@email.com",
+		User user1 = new User(UserFactory.userWithLoanId1, "Juvenal Mendes", SchoolAttribute.OITAVO, "juvenal@email.com",
 				"4612345678", true);
 
-		User user2 = new User(UserFactory.userWithLoanId2, "Gorete Medeiros", SchoolAtribute.SETIMO, "goretinha@email.com",
+		User user2 = new User(UserFactory.userWithLoanId2, "Gorete Medeiros", SchoolAttribute.SETIMO, "goretinha@email.com",
 				"4712345678", true);
 
 		Book book1 = new Book(bookWithLoanId1, "O Guarani", "José de Alencar", "ptbr01", 2, "Arqueiro", 245,

@@ -18,7 +18,7 @@ public record ResponseUserDto(
         return new ResponseUserDto(
                 obj.getId(),
                 obj.getName(),
-                obj.getSchoolAtribute().name(),
+                obj.getSchoolAttribute().name(),
                 obj.getEmail(),
                 obj.getPhoneNumber(),
                 obj.isHasLoan(),

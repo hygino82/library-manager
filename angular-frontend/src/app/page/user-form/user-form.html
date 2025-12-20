@@ -1,2 +1,61 @@
-<p>user-form works!</p>
-<p-button label="Check" />
+<form (ngSubmit)="insertUser()" class="p-fluid">
+
+  <div class="p-field">
+    <label for="name">Nome</label>
+    <input
+      id="name"
+      type="text"
+      pInputText
+      name="name"
+      [(ngModel)]="name"
+      required
+    />
+  </div>
+
+  <div class="p-field">
+    <label for="schoolAttribute">Atributo</label>
+    <select
+      id="schoolAttribute"
+      name="schoolAttribute"
+      [(ngModel)]="schoolAttribute"
+      class="p-inputtext"
+      required
+    >
+      @for (attr of attributes; track attr.value) {
+        <option [value]="attr.value">{{ attr.label }}</option>
+      }
+    </select>
+  </div>
+
+
+  <div class="p-field">
+    <label for="email">E-mail</label>
+    <input
+      id="email"
+      type="email"
+      pInputText
+      name="email"
+      [(ngModel)]="email"
+      required
+    />
+  </div>
+
+  <div class="p-field">
+    <label for="phoneNumber">Telefone</label>
+    <input
+      id="phoneNumber"
+      type="text"
+      pInputText
+      name="phoneNumber"
+      [(ngModel)]="phoneNumber"
+    />
+  </div>
+
+  <p-button
+    type="submit"
+    label="Salvar"
+    icon="pi pi-save"
+    class="p-mt-3">
+  </p-button>
+
+</form>

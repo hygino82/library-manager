@@ -10,6 +10,7 @@
       <th>Nome</th>
       <th>Atributo</th>
       <th>Status</th>
+      <th>Ações</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-user>
@@ -17,6 +18,30 @@
       <td>{{ user.name }}</td>
       <td>{{ user.schoolAtribute }}</td>
       <td>{{ user.hasLoan ? 'Sim' : 'Não' }}</td>
+      <td>
+        <div class="margem-botao">
+          <p-button styleClass="p-button-primary p-button-icon-only"
+                    pTooltip="Informação"
+                    tooltipPosition="top"
+                    (click)="getUserById(user.id)">
+            <i class="pi pi-question-circle"></i>
+          </p-button>
+
+          <p-button
+            [style]="{'background-color': 'orange', 'border': 'none', 'color': 'white'}"
+            styleClass="p-button-icon-only"
+            pTooltip="Editar livro"
+            tooltipPosition="top"
+            [routerLink]="['/usuario/form', user.id]">
+            <i class="pi pi-file-edit"></i>
+          </p-button>
+          <p-button styleClass="p-button-danger p-button-icon-only"
+                    pTooltip="Remover"
+                    tooltipPosition="top"
+                    (click)="removeUser(user.id)">
+            <i class="pi pi-trash"></i>
+          </p-button>
+        </div>
     </tr>
   </ng-template>
 </p-table>
