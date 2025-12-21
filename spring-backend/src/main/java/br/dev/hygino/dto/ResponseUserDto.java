@@ -8,7 +8,7 @@ import br.dev.hygino.models.User;
 public record ResponseUserDto(
         UUID id,
         String name,
-        String schoolAtribute,
+        String schoolAttribute,
         String email,
         String phoneNumber,
         boolean hasLoan,

@@ -22,4 +22,12 @@ export class UserService {
   insertUser(requestUser: RequestUserDto) {
     return this.http.post<User>(`${BASE_URL}/user`, requestUser, {});
   }
+
+  updateUser(id: string, requestUser: RequestUserDto) {
+    return this.http.put(`${BASE_URL}/user/${id}`, requestUser, {});
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(`${BASE_URL}/user/${id}`, {});
+  }
 }

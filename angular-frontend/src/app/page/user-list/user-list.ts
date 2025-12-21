@@ -30,7 +30,7 @@ export class UserList implements OnInit {
       .subscribe({
         next: page => {
           this.users = page.content;
-          console.log(this.users);
+          //console.log(this.users);
         },
         error: err => console.error('Erro ao buscar usuários', err)
       });
@@ -40,5 +40,13 @@ export class UserList implements OnInit {
     this.userService.getUsers(name).subscribe({})
   }
 
-  removeUser(id: string): void {}
+  removeUser(id: string): void {
+    this.userService.deleteUser(id).subscribe({
+      next: response => {
+        console.log('Usuário removido com sucesso:', id);
+        this.getUsersPage();
+      },
+      error: error => console.error('Erro ao remover usuário:', error)
+    });
+  }
 }

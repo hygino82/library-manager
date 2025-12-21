@@ -33,7 +33,7 @@ public final class UserFactory {
     }
 
     public static RequestUserDto createUserRequest() {
-        return new RequestUserDto("Gorete Medeiros", SchoolAttribute.SETIMO, "goretinha@email.com", "4712345678");
+        return new RequestUserDto("Gorete Medeiros", "SETIMO", "goretinha@email.com", "4712345678");
     }
 
     public static ResponseUserDto createUserResponse() {
@@ -106,7 +106,7 @@ public final class UserFactory {
     public static RequestUserDto createUpdateUserRequest() {
         return new RequestUserDto(
                 "Godofredo Silva",
-                SchoolAttribute.SEGUNDA,
+                "SEGUNDA",
                 "godofredo@email.com",
                 "4632320045");
     }

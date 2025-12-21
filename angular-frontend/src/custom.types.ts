@@ -62,3 +62,8 @@ export type MinUserPage = {
   content: MinUserResponse[];
   page: Page;
 }
+
+export type Attribute = {
+  label: string;
+  value: string;
+}

@@ -105,7 +105,7 @@ public final class UserServiceTest {
         assertEquals(userIdWithoutLoan, result.id());
         assertEquals("Gorete Medeiros", result.name());
         assertFalse(result.hasLoan());
-        assertEquals(SchoolAttribute.SETIMO.name(), result.schoolAtribute());
+        assertEquals(SchoolAttribute.SETIMO.name(), result.schoolAttribute());
         assertEquals("goretinha@email.com", result.email());
         assertEquals("4712345678", result.phoneNumber());
     }
@@ -137,7 +137,7 @@ public final class UserServiceTest {
         assertEquals(userIdWithoutLoan, result.id());
         assertEquals("Godofredo Silva", result.name());
         assertEquals("godofredo@email.com", result.email());
-        assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAtribute());
+        assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAttribute());
         assertEquals("4632320045", result.phoneNumber());
         assertFalse(result.hasLoan());
     }

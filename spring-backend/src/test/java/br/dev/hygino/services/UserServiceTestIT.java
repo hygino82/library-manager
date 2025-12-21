@@ -67,7 +67,7 @@ public class UserServiceTestIT {
 		assertEquals("rafael.lima@email.com", result.email());
 		assertEquals("7876543210", result.phoneNumber());
 		assertEquals(validId, result.id());
-		assertEquals(SchoolAttribute.SEXTO.name(), result.schoolAtribute());
+		assertEquals(SchoolAttribute.SEXTO.name(), result.schoolAttribute());
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class UserServiceTestIT {
 
 		assertNotNull(result);
 		assertEquals("Godofredo Silva", result.name());
-		assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAtribute());
+		assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAttribute());
 		assertEquals("godofredo@email.com", result.email());
 		assertEquals("4632320045", result.phoneNumber());
 		assertFalse(result.hasLoan());
@@ -121,7 +121,7 @@ public class UserServiceTestIT {
 
 		assertNotNull(result);
 		assertEquals("Godofredo Silva", result.name());
-		assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAtribute());
+		assertEquals(SchoolAttribute.SEGUNDA.name(), result.schoolAttribute());
 		assertEquals("godofredo@email.com", result.email());
 		assertEquals("4632320045", result.phoneNumber());
 		assertFalse(result.hasLoan());

@@ -1,7 +1,7 @@
-<form (ngSubmit)="insertUser()" class="p-fluid">
+<form (ngSubmit)="saveUser()" class="p-fluid">
 
   <div class="p-field">
-    <label for="name">Nome</label>
+    <label for="name">Nome</label><br>
     <input
       id="name"
       type="text"
@@ -11,9 +11,10 @@
       required
     />
   </div>
+  <br>
 
   <div class="p-field">
-    <label for="schoolAttribute">Atributo</label>
+    <label for="schoolAttribute">Atributo</label><br>
     <select
       id="schoolAttribute"
       name="schoolAttribute"
@@ -26,10 +27,11 @@
       }
     </select>
   </div>
+  <br>
 
 
   <div class="p-field">
-    <label for="email">E-mail</label>
+    <label for="email">E-mail</label><br>
     <input
       id="email"
       type="email"
@@ -39,9 +41,10 @@
       required
     />
   </div>
+  <br>
 
   <div class="p-field">
-    <label for="phoneNumber">Telefone</label>
+    <label for="phoneNumber">Telefone</label><br>
     <input
       id="phoneNumber"
       type="text"
@@ -50,6 +53,7 @@
       [(ngModel)]="phoneNumber"
     />
   </div>
+  <br>
 
   <p-button
     type="submit"

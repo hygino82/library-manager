@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
-import {RequestUserDto} from '../../../custom.types';
+import {Attribute, RequestUserDto, User} from '../../../custom.types';
 import {UserService} from '../../services/user-service';
-import {NgFor} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SCHOOL_ATTRIBUTES} from '../../../utils';
 
 @Component({
   selector: 'app-user-form',
@@ -17,27 +18,33 @@ import {NgFor} from '@angular/common';
     Button
   ]
 })
-export class UserForm {
+export class UserForm implements OnInit {
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.editMode = true;
+      this.findUser(id);
+      this.id = id;
+    }
+  }
+
+  id = '';
   name = '';
   email = '';
   schoolAttribute = 'SEXTO';
   phoneNumber = '';
+  userResponse?: User;
+  editMode: boolean = false;
 
-  attributes = [
-    { label: 'Sexto', value: 'SEXTO' },
-    { label: 'Sétimo', value: 'SETIMO' },
-    { label: 'Oitavo', value: 'OITAVO' },
-    { label: 'Nono', value: 'NONO' },
-    { label: 'Primeira', value: 'PRIMEIRA' },
-    { label: 'Segunda', value: 'SEGUNDA' },
-    { label: 'Terceira', value: 'TERCEIRA' },
-    { label: 'Funcionário', value: 'FUNCIONARIO' },
-    { label: 'Outro', value: 'OUTRO' }
-  ];
+  attributes: Attribute[] = SCHOOL_ATTRIBUTES;
 
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService,
+              private readonly route: ActivatedRoute,
+              private readonly router: Router) {
+  }
 
-  insertUser(): void {
+  saveUser(): void {
     const requestUser: RequestUserDto = {
       name: this.name,
       email: this.email,
@@ -45,9 +52,45 @@ export class UserForm {
       schoolAttribute: this.schoolAttribute
     };
 
-    this.userService.insertUser(requestUser).subscribe({
-      next: response => console.log('Usuário inserido com sucesso:', response),
-      error: error => console.error('Erro ao inserir usuário:', error)
+    if (this.editMode) {
+      this.userService.updateUser(this.id, requestUser).subscribe({
+        next: response => {
+         // alert('Usuário atualizado com sucesso: '+ response);
+          this.router.navigate(['/usuarios']);
+        },
+        error: error => console.error('Erro ao atualizar usuário:', error)
+      });
+    } else {
+      this.userService.insertUser(requestUser).subscribe({
+        //next: response => alert('Usuário inserido com sucesso: '+ response.name),
+        error: error => console.error('Erro ao inserir usuário:', error)
+      });
+      this.clearFields();
+    }
+  }
+
+  findUser(id: string): void {
+    this.userService.getUserById(id).subscribe({
+      next: (response) => {
+        if (response) {
+          this.userResponse = response;
+          //console.log(response);
+          this.name = response.name;
+          this.email = response.email;
+          this.phoneNumber = response.phoneNumber;
+          this.schoolAttribute = response.schoolAttribute;
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao buscar usuário:', err);
+      }
     });
+  }
+
+  clearFields() {
+    this.name = '';
+    this.email = '';
+    this.phoneNumber = '';
+    this.schoolAttribute = 'SEXTO';
   }
 }
