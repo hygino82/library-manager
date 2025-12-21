@@ -67,3 +67,8 @@ export type Attribute = {
   label: string;
   value: string;
 }
+
+export type RequestBookLoan = {
+  bookId: string;
+  userId: string;
+}

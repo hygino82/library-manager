@@ -54,11 +54,12 @@ export class Header {
         {
           label: 'Cadastrar',
           icon: 'pi pi-plus',
-          routerLink: '/emprestimos/novo'
+          routerLink: '/emprestimos/form'
         },
         {
           label: 'Listar',
           icon: 'pi pi-list',
+          routerLink: '/emprestimos'
         }
       ]
     }

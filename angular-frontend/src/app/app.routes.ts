@@ -3,6 +3,8 @@ import {BookList} from './page/book-list/book-list';
 import {BookForm} from './page/book-form/book-form';
 import {UserList} from './page/user-list/user-list';
 import {UserForm} from './page/user-form/user-form';
+import {BookLoanForm} from './page/book-loan-form/book-loan-form';
+import {BookLoanList} from './page/book-loan-list/book-loan-list';
 
 export const routes: Routes = [
   {
@@ -39,15 +41,15 @@ export const routes: Routes = [
     component: BookForm
   },
 
-  /* Empréstimos */
-  /*{
+   //Empréstimos
+  {
     path: 'emprestimos',
-    component: EmprestimoListComponent
+    component: BookLoanList
   },
   {
-    path: 'emprestimos/novo',
-    component: EmprestimoFormComponent
-  },*/
+    path: 'emprestimos/form',
+    component: BookLoanForm
+  },
 
   /* fallback */
   {
