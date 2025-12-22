@@ -3,6 +3,7 @@ package br.dev.hygino.services;
 import java.util.List;
 import java.util.UUID;
 
+import br.dev.hygino.dto.BookLoanReportDto;
 import br.dev.hygino.mappers.BookLoanMapper;
 import br.dev.hygino.notifies.BookReturn;
 import org.springframework.data.domain.Page;
@@ -39,8 +40,8 @@ public class BookLoanService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponseBookLoanDto> findAllLoans(Pageable pageable) {
-        return bookLoanRepository.findAll(pageable).map(ResponseBookLoanDto::new);
+    public Page<BookLoanReportDto> findAllLoans(Pageable pageable) {
+        return bookLoanRepository.findAll(pageable).map(BookLoanReportDto::new);
     }
 
     @Transactional

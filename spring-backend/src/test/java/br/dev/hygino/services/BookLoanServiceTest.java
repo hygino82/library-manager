@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 import java.util.UUID;
 
+import br.dev.hygino.dto.BookLoanReportDto;
 import br.dev.hygino.mappers.BookLoanMapper;
 import br.dev.hygino.mappers.BookLoanMapperImpl;
 import org.junit.jupiter.api.Assertions;
@@ -136,7 +137,7 @@ class BookLoanServiceTest {
     @DisplayName("O método findAll deve retornar uma página")
     void findAllShouldReturnPage() {
         final PageRequest pageable = PageRequest.of(0, 2);
-        final Page<ResponseBookLoanDto> res = bookLoanService.findAllLoans(pageable);
+        final Page<BookLoanReportDto> res = bookLoanService.findAllLoans(pageable);
         Assertions.assertNotNull(res);
         Assertions.assertEquals(2, res.getContent().size());
         Assertions.assertEquals("O Guarani", res.getContent().get(0).bookTitle());

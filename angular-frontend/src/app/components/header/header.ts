@@ -65,4 +65,3 @@ export class Header {
     }
   ];
 }
-          routerLink: '/emprestimos'

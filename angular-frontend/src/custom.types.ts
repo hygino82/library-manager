@@ -54,7 +54,7 @@ export type RequestUserDto = {
 export type MinUserResponse = {
   id: string;
   name: string;
-  schoolAtribute: string;
+  schoolAttribute: string;
   hasLoan: boolean;
 }
 
@@ -71,4 +71,31 @@ export type Attribute = {
 export type RequestBookLoan = {
   bookId: string;
   userId: string;
+}
+
+export type BookLoan = {
+  id: string;
+  bookId: string;
+  userId: string;
+  bookTitle: string;
+  userName: string;
+  startDate: string;
+  endDate: string;
+  bookStatus: string;
+  userHasLoan: boolean;
+  hasActiveLoan: boolean;
+}
+
+export type ResponseBookLoan = {
+  id: string;
+  bookTitle: string;
+  userName: string;
+  startDate: string;
+  endDate: string;
+  hasActiveLoan: boolean;
+}
+
+export type ResponseLoanPage = {
+  content: ResponseBookLoan[];
+  page: Page;
 }
