@@ -11,7 +11,8 @@ public record BookLoanReportDto(
         String userName,
         LocalDate startDate,
         LocalDate endDate,
-        boolean hasActiveLoan
+        boolean hasActiveLoan,
+        boolean delayed
 ) {
 
     public BookLoanReportDto(BookLoan obj) {
@@ -21,7 +22,8 @@ public record BookLoanReportDto(
                 obj.getUser().getName(),
                 obj.getStartDate(),
                 obj.getEndDate(),
-                obj.isActive()
+                obj.isActive(),
+                LocalDate.now().isAfter(obj.getEndDate())
         );
     }
 }

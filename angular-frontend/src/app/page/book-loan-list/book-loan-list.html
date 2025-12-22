@@ -13,6 +13,7 @@
       <th>Início</th>
       <th>Fim</th>
       <th>Status</th>
+      <th>Atrasado</th>
     </tr>
   </ng-template>
 
@@ -28,6 +29,7 @@
           [value]="loan.hasActiveLoan ? 'Ativo' : 'Inativo'">
         </p-tag>
       </td>
+      <td>{{loan.delayed}}</td>
     </tr>
   </ng-template>
 

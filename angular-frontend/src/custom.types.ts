@@ -93,6 +93,7 @@ export type ResponseBookLoan = {
   startDate: string;
   endDate: string;
   hasActiveLoan: boolean;
+  delayed: boolean;
 }
 
 export type ResponseLoanPage = {
