@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {BookService} from '../../services/book.service';
-import {Book} from '../../../custom.types';
+import {Book, RequestBookLoan} from '../../../custom.types';
 import {FormsModule} from '@angular/forms';
 import {Tooltip} from 'primeng/tooltip';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {BookLoanService} from '../../services/book-loan-service';
 
 @Component({
   selector: 'app-book-list',
@@ -16,11 +17,27 @@ import {RouterLink} from '@angular/router';
 })
 export class BookList implements OnInit {
 
-  constructor(private readonly service: BookService) {
+  userId: string = '';
+  userIsValid = false;
+
+  constructor(private readonly service: BookService,
+              private readonly route: ActivatedRoute,
+              private readonly bookLoanService: BookLoanService) {
   }
 
   ngOnInit(): void {
     this.getBooks();
+
+    const result = this.route.snapshot.paramMap.get('userId');
+
+    if (!result) {
+      throw new Error('userId não informado na rota');
+    }
+
+    this.userId = result;
+    console.log(`userId : ${this.userId}`);
+
+    this.userIsValid = true;
   }
 
   getBooks() {
@@ -63,8 +80,25 @@ export class BookList implements OnInit {
     });
   }
 
-  borrowBook(book: Book) {
-    console.log(`Livro ${book.title} emprestado!`);
+  borrowBook(bookId: string): void {
+    if (!this.userId) {
+      console.error('Usuário inválido');
+      return;
+    }
+
+    const loanRequest: RequestBookLoan = {
+      bookId,
+      userId: this.userId
+    };
+
+    this.bookLoanService.newLoan(loanRequest).subscribe({
+      next: () => {
+        console.log('Livro emprestado com sucesso');
+      },
+      error: err => {
+        console.error('Erro ao emprestar livro', err);
+      }
+    });
   }
 
   selectedBook?: Book;  // A linha selecionada

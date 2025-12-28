@@ -33,6 +33,10 @@ export const routes: Routes = [
     component: BookList
   },
   {
+    path: 'livros/usuario/:userId',
+    component: BookList
+  },
+  {
     path: 'livros/cadastro',
     component: BookForm
   },

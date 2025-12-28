@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BASE_URL} from '../../utils';
 import {Observable} from 'rxjs';
-import {ResponseLoanPage} from '../../custom.types';
+import {BookLoan, RequestBookLoan, ResponseLoanPage} from '../../custom.types';
 
 @Injectable({
   providedIn: 'root',
@@ -13,5 +13,9 @@ export class BookLoanService {
 
   getLoans(): Observable<ResponseLoanPage> {
     return this.http.get<ResponseLoanPage>(`${BASE_URL}/loan`);
+  }
+
+  newLoan(requestBookLoan: RequestBookLoan): Observable<BookLoan> {
+    return this.http.post<BookLoan>(`${BASE_URL}/loan`, requestBookLoan, {});
   }
 }

@@ -41,6 +41,27 @@
                     (click)="removeUser(user.id)">
             <i class="pi pi-trash"></i>
           </p-button>
+
+          @if (!user.hasLoan) {
+            <p-button
+              [style]="{'background-color': 'blue', 'border': 'none', 'color': 'white'}"
+              styleClass="p-button-icon-only"
+              pTooltip="Emprestar livro"
+              tooltipPosition="top"
+            (onClick)="gotoBooklist(user.id)"
+            >
+              <i class="pi pi-book"></i>
+            </p-button>
+          } @else {
+            <p-button
+              [style]="{'background-color': 'brown', 'border': 'none', 'color': 'white'}"
+              styleClass="p-button-secondary p-button-icon-only"
+              pTooltip="Indisponível"
+              tooltipPosition="top"
+              disabled="true">
+              <i class="pi pi-lock"></i>
+            </p-button>
+          }
         </div>
     </tr>
   </ng-template>

@@ -5,7 +5,7 @@ import {TableModule} from 'primeng/table';
 import {FormsModule} from '@angular/forms';
 import {Button} from 'primeng/button';
 import {Tooltip} from 'primeng/tooltip';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-user-list',
@@ -15,7 +15,7 @@ import {RouterLink} from '@angular/router';
 })
 export class UserList implements OnInit {
 
-  constructor(private readonly userService: UserService) {
+  constructor(private readonly userService: UserService,private readonly router:Router) {
   }
 
   ngOnInit(): void {
@@ -48,5 +48,9 @@ export class UserList implements OnInit {
       },
       error: error => console.error('Erro ao remover usuário:', error)
     });
+  }
+
+  gotoBooklist(userId: string): void {
+    this.router.navigate(['/livros/usuario', userId]);
   }
 }
