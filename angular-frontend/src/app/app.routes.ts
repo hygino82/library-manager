@@ -19,6 +19,10 @@ export const routes: Routes = [
     component: UserList
   },
   {
+    path: 'usuarios/livro/:bookId',
+    component: UserList
+  },
+  {
     path: 'usuarios/form',
     component: UserForm
   },

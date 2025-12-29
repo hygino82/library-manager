@@ -22,7 +22,8 @@ export class BookList implements OnInit {
 
   constructor(private readonly service: BookService,
               private readonly route: ActivatedRoute,
-              private readonly bookLoanService: BookLoanService) {
+              private readonly bookLoanService: BookLoanService,
+              private readonly router: Router) {
   }
 
   ngOnInit(): void {
@@ -82,23 +83,25 @@ export class BookList implements OnInit {
 
   borrowBook(bookId: string): void {
     if (!this.userId) {
-      console.error('Usuário inválido');
-      return;
+      //console.error('Usuário inválido');
+      this.router.navigate(['/usuarios/livro', bookId]);
+      //return;
+    } else {
+
+      const loanRequest: RequestBookLoan = {
+        bookId,
+        userId: this.userId
+      };
+
+      this.bookLoanService.newLoan(loanRequest).subscribe({
+        next: () => {
+          console.log('Livro emprestado com sucesso');
+        },
+        error: err => {
+          console.error('Erro ao emprestar livro', err);
+        }
+      });
     }
-
-    const loanRequest: RequestBookLoan = {
-      bookId,
-      userId: this.userId
-    };
-
-    this.bookLoanService.newLoan(loanRequest).subscribe({
-      next: () => {
-        console.log('Livro emprestado com sucesso');
-      },
-      error: err => {
-        console.error('Erro ao emprestar livro', err);
-      }
-    });
   }
 
   selectedBook?: Book;  // A linha selecionada
