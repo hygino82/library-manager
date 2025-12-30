@@ -89,6 +89,7 @@ export class UserList implements OnInit {
       this.bookLoanService.newLoan(loanRequest).subscribe({
         next: () => {
           console.log('Livro emprestado com sucesso');
+          this.router.navigate(['/emprestimos']);
         },
         error: err => {
           console.error('Erro ao emprestar livro', err);
