@@ -1,1 +1,7 @@
-<p>book-loan-form works!</p>
+<div class="container">
+  <label for="user-id">Id do usuário</label><br>
+  <input type="text" name="user-id" id="user-id" [(ngModel)]="userId"><br>
+  <label for="book-id">Id do livro</label><br>
+  <input type="text" name="book-id" id="book-id" [(ngModel)]="bookId"><br>
+  <input type="submit" value="Adicionar" (click)="insertLoan()" class="btn btn-primary botao-adicionar">
+</div>

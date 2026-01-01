@@ -1,5 +1,6 @@
 package br.dev.hygino.repositories;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -17,5 +18,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
         WHERE (:name IS NULL OR :name = '' OR UPPER(u.name) LIKE CONCAT('%', UPPER(:name), '%'))
         """)
     Page<User> findUsersByName(@Param("name") String name, Pageable pageable);
-    
+
+    @Query("""
+            SELECT obj FROM User obj WHERE UPPER(obj.email) = UPPER(:email)
+            """)
+    Optional<User>findByEmail(@Param("email") String email);
 }
