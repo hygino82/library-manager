@@ -35,6 +35,7 @@ public final class User implements BookReturn {
 	@Email
 	@Size(max = 100, min = 3)
 	@NotBlank
+	@Column(unique = true)
 	private String email;
 
 	@NotBlank

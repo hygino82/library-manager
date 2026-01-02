@@ -4,6 +4,7 @@ import br.dev.hygino.dto.BookReportDto;
 
 import java.util.UUID;
 
+import br.dev.hygino.services.exceptions.BookNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -59,7 +60,7 @@ public class BookController {
     public ResponseEntity<?> findById(@PathVariable UUID id) {
         try {
             final ResponseBookDetailsDto res = service.findById(id);
-            return ResponseEntity.status(HttpStatus.CREATED).body(res);
+            return ResponseEntity.status(HttpStatus.OK).body(res);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -94,5 +95,16 @@ public class BookController {
     @Operation(summary = "Relatórios dos livros", description = "Relatórios dos livros cadastrados")
     public ResponseEntity<BookReportDto> getBookReport() {
         return ResponseEntity.ok(service.getBookReport());
+    }
+
+    @GetMapping("code/{code}")
+    @Operation(summary = "Buscar livro pelo código", description = "Busca um livro pelo código")
+    public ResponseEntity<?> findById(@PathVariable String code) {
+        try {
+            final ResponseBookDetailsDto res = service.findByPersonalCode(code);
+            return ResponseEntity.status(HttpStatus.OK).body(res);
+        } catch (BookNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

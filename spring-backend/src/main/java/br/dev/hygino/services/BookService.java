@@ -47,7 +47,7 @@ public class BookService {
 
     @Transactional
     public ResponseBookDto insert(RequestBookDto dto) {
-        Book entity=bookMapper.toBookEntity(dto);
+        Book entity = bookMapper.toBookEntity(dto);
         //Book entity = new Book();
         //dtoToEntity(dto, entity);
         entity = bookRepository.save(entity);
@@ -93,5 +93,13 @@ public class BookService {
         final var borrowedBooks = res.stream().filter(book -> book.getBookStatus() == BookStatus.IN_USE).count();
 
         return new BookReportDto(totalBooks, availableBooks, borrowedBooks, LocalDateTime.now());
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseBookDetailsDto findByPersonalCode(String code) {
+        final var result = this.bookRepository.findByPersonalCode(code)
+                .orElseThrow(() -> new BookNotFoundException("Book Not found!"));
+
+        return bookMapper.toBookResponse(result);
     }
 }

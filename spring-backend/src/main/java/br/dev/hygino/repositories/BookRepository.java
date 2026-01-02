@@ -2,14 +2,14 @@ package br.dev.hygino.repositories;
 
 import br.dev.hygino.models.Book;
 import br.dev.hygino.models.BookStatus;
-
-import java.util.UUID;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
+import java.util.UUID;
 
 public interface BookRepository extends JpaRepository<Book, UUID> {
 	@Query("""
@@ -27,5 +27,8 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 		        Pageable pageable
 		);
 
-
+	@Query("""
+			SELECT obj FROM Book obj WHERE UPPER(obj.personalCode) = UPPER(:code)
+			""")
+	Optional<Book> findByPersonalCode(@Param("code") String code);
 }

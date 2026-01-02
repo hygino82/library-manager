@@ -35,6 +35,7 @@ public class Book implements BookReturn {
 	private String author;
 
 	@NotBlank
+	@Column(unique = true)
 	@Size(max = 30, min = 3)
 	private String personalCode;
 
