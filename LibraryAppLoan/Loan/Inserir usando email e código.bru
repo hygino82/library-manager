@@ -1,0 +1,18 @@
+meta {
+  name: Inserir usando email e código
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/loan/optional
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "carlos.souza@email.com",
+    "personalCode": "BR1006"
+  }
+}

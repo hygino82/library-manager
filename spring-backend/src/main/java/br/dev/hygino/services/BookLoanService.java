@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.UUID;
 
 import br.dev.hygino.dto.BookLoanReportDto;
+import br.dev.hygino.dto.RequestLoanWithEmailAndCodeDto;
 import br.dev.hygino.mappers.BookLoanMapper;
 import br.dev.hygino.notifies.BookReturn;
-import br.dev.hygino.services.exceptions.BookAlreadyLoanedException;
-import br.dev.hygino.services.exceptions.BookNotFoundException;
-import br.dev.hygino.services.exceptions.UserAlreadyBorrowedBookException;
+import br.dev.hygino.services.exceptions.*;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,6 @@ import br.dev.hygino.models.User;
 import br.dev.hygino.repositories.BookLoanRepository;
 import br.dev.hygino.repositories.BookRepository;
 import br.dev.hygino.repositories.UserRepository;
-import br.dev.hygino.services.exceptions.BookLoanNotFoundException;
 
 @Service
 public class BookLoanService {
@@ -123,5 +122,30 @@ public class BookLoanService {
         final BookLoan bookLoan = bookLoanRepository.findById(id)
                 .orElseThrow(() -> new BookLoanNotFoundException("Livro não encontrado!"));
         return bookLoanMapper.toBookLoanResponse(bookLoan);
+    }
+
+    @Transactional
+    public ResponseBookLoanDto insertUsingEmailAndCode(@Valid RequestLoanWithEmailAndCodeDto dto) {
+        User user = userRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado!"));
+
+        if (user.isHasLoan()) {
+            throw new UserAlreadyBorrowedBookException("O usuário já possui um empréstimo ativo!");
+        }
+
+        Book book = bookRepository.findByPersonalCode(dto.personalCode())
+                .orElseThrow(() -> new BookNotFoundException("Livro não encontrado!"));
+
+        if (book.getBookStatus() != BookStatus.AVAILABLE) {
+            throw new BookAlreadyLoanedException("O livro não está disponível para empréstimo!");
+        }
+
+        user.setHasLoan(true);
+        book.setBookStatus(BookStatus.IN_USE);
+
+        BookLoan bookLoan = new BookLoan(user, book);
+        bookLoanRepository.save(bookLoan);
+
+        return new ResponseBookLoanDto(bookLoan);
     }
 }

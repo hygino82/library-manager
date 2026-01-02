@@ -2,6 +2,7 @@ package br.dev.hygino.controllers;
 
 import br.dev.hygino.dto.BookLoanReportDto;
 import br.dev.hygino.dto.RequestLoanDto;
+import br.dev.hygino.dto.RequestLoanWithEmailAndCodeDto;
 import br.dev.hygino.dto.ResponseBookLoanDto;
 import br.dev.hygino.services.BookLoanService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,5 +63,16 @@ public class BookLoanController {
     public ResponseEntity<?> findLoanById(@PathVariable UUID id) {
         final ResponseBookLoanDto res = service.findLoanById(id);
         return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("optional")
+    @Operation(summary = "Emprestar livro", description = "Realiza o empréstimo de um livro com email e código pessoal")
+    public ResponseEntity<?> borrowBookByEmailAndPersonalCode(@RequestBody @Valid RequestLoanWithEmailAndCodeDto dto) {
+        try {
+            final ResponseBookLoanDto res = service.insertUsingEmailAndCode(dto);
+            return ResponseEntity.ok(res);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }
