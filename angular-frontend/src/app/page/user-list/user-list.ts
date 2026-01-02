@@ -86,7 +86,7 @@ export class UserList implements OnInit {
         userId
       };
 
-      this.bookLoanService.newLoan(loanRequest).subscribe({
+      this.bookLoanService.createLoanByUserAndBookId(loanRequest).subscribe({
         next: () => {
           console.log('Livro emprestado com sucesso');
           this.router.navigate(['/emprestimos']);

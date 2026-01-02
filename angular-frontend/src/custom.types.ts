@@ -100,3 +100,9 @@ export type ResponseLoanPage = {
   content: ResponseBookLoan[];
   page: Page;
 }
+
+export type CreateLoanByEmailAndPersonalCodeRequest = {
+  email: string;
+  personalCode: string;
+}
+

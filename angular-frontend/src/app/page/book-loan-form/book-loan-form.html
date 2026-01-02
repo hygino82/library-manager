@@ -1,7 +1,62 @@
 <div class="container">
-  <label for="user-id">Id do usuário</label><br>
-  <input type="text" name="user-id" id="user-id" [(ngModel)]="userId"><br>
-  <label for="book-id">Id do livro</label><br>
-  <input type="text" name="book-id" id="book-id" [(ngModel)]="bookId"><br>
-  <input type="submit" value="Adicionar" (click)="insertLoan()" class="btn btn-primary botao-adicionar">
+
+  <h3>Cadastrar Empréstimo</h3>
+
+  <!-- Escolha do tipo -->
+  <div class="mb-3">
+    <label>
+      <input
+        type="radio"
+        name="loanType"
+        [(ngModel)]="loanType"
+        value="ID">
+      Usar ID do usuário
+    </label>
+
+    <label style="margin-left: 16px;">
+      <input
+        type="radio"
+        name="loanType"
+        [(ngModel)]="loanType"
+        value="CREDENTIALS">
+      Usar email e código pessoal
+    </label>
+  </div>
+
+  <!-- Cadastro usando IDs -->
+  <div *ngIf="loanType === 'ID'">
+    <label for="user-id">Id do usuário</label><br>
+    <input
+      type="text"
+      id="user-id"
+      [(ngModel)]="userId"><br>
+
+    <label for="book-id">Id do livro</label><br>
+    <input
+      type="text"
+      id="book-id"
+      [(ngModel)]="bookId"><br>
+  </div>
+
+  <!-- Cadastro usando email e código -->
+  <div *ngIf="loanType === 'CREDENTIALS'">
+    <label for="email">Email</label><br>
+    <input
+      type="email"
+      id="email"
+      [(ngModel)]="email"><br>
+
+    <label for="personal-code">Código pessoal</label><br>
+    <input
+      type="text"
+      id="personal-code"
+      [(ngModel)]="personalCode"><br>
+  </div>
+
+  <input
+    type="submit"
+    value="Adicionar"
+    (click)="insertLoan()"
+    class="btn btn-primary botao-adicionar">
+
 </div>
