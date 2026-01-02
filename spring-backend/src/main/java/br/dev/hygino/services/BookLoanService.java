@@ -6,6 +6,9 @@ import java.util.UUID;
 import br.dev.hygino.dto.BookLoanReportDto;
 import br.dev.hygino.mappers.BookLoanMapper;
 import br.dev.hygino.notifies.BookReturn;
+import br.dev.hygino.services.exceptions.BookAlreadyLoanedException;
+import br.dev.hygino.services.exceptions.BookNotFoundException;
+import br.dev.hygino.services.exceptions.UserAlreadyBorrowedBookException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,14 +53,14 @@ public class BookLoanService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
 
         if (user.isHasLoan()) {
-            throw new IllegalArgumentException("O usuário já possui um empréstimo ativo!");
+            throw new UserAlreadyBorrowedBookException("O usuário já possui um empréstimo ativo!");
         }
 
         Book book = bookRepository.findById(dto.bookId())
-                .orElseThrow(() -> new IllegalArgumentException("Livro não encontrado!"));
+                .orElseThrow(() -> new BookNotFoundException("Livro não encontrado!"));
 
         if (book.getBookStatus() != BookStatus.AVAILABLE) {
-            throw new IllegalArgumentException("O livro não está disponível para empréstimo!");
+            throw new BookAlreadyLoanedException("O livro não está disponível para empréstimo!");
         }
 
         user.setHasLoan(true);

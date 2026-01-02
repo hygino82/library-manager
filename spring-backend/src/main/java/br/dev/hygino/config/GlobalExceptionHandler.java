@@ -11,13 +11,13 @@ import org.springframework.web.context.request.WebRequest;
 import br.dev.hygino.services.exceptions.BookLoanNotFoundException;
 import br.dev.hygino.services.exceptions.BorrowBookException;
 import br.dev.hygino.services.exceptions.ErrorResponse;
-import br.dev.hygino.services.exceptions.UserHasBookLoanException;
+import br.dev.hygino.services.exceptions.UserAlreadyBorrowedBookException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserHasBookLoanException.class)
-    public ResponseEntity<ErrorResponse> handleUserLoan(UserHasBookLoanException ex, WebRequest request) {
+    @ExceptionHandler(UserAlreadyBorrowedBookException.class)
+    public ResponseEntity<ErrorResponse> handleUserLoan(UserAlreadyBorrowedBookException ex, WebRequest request) {
 
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),

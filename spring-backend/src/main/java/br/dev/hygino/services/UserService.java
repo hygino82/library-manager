@@ -16,7 +16,7 @@ import br.dev.hygino.mappers.UserMapper;
 import br.dev.hygino.models.SchoolAttribute;
 import br.dev.hygino.models.User;
 import br.dev.hygino.repositories.UserRepository;
-import br.dev.hygino.services.exceptions.UserHasBookLoanException;
+import br.dev.hygino.services.exceptions.UserAlreadyBorrowedBookException;
 import br.dev.hygino.services.exceptions.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -80,7 +80,7 @@ public class UserService {
 			userRepository.delete(user);
 			userRepository.flush(); // <-- faz a exceção acontecer AQUI
 		} catch (DataIntegrityViolationException e) {
-			throw new UserHasBookLoanException(
+			throw new UserAlreadyBorrowedBookException(
 					"Não é possível excluir o usuário, pois ele está associado a empréstimos.");
 		}
 	}

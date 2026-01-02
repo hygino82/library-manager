@@ -6,7 +6,7 @@ import br.dev.hygino.mappers.UserMapper;
 import br.dev.hygino.models.SchoolAttribute;
 import br.dev.hygino.models.User;
 import br.dev.hygino.repositories.UserRepository;
-import br.dev.hygino.services.exceptions.UserHasBookLoanException;
+import br.dev.hygino.services.exceptions.UserAlreadyBorrowedBookException;
 import br.dev.hygino.services.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -145,7 +145,7 @@ public final class UserServiceTest {
     @Test
     @DisplayName("RemoveUser deve lançar UserHasBookLoanException quando o usuário tiver empréstimos")
     public void removeUserShouldThrowUserHasBookLoanExceptionWhenDependentId() {
-        final var result = assertThrows(UserHasBookLoanException.class, () -> userService.removeUser(dependentId));
+        final var result = assertThrows(UserAlreadyBorrowedBookException.class, () -> userService.removeUser(dependentId));
         assertEquals("Não é possível excluir o usuário, pois ele está associado a empréstimos.", result.getMessage());
     }
 

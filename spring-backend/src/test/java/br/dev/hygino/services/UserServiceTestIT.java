@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.dev.hygino.UserFactory;
 import br.dev.hygino.dto.RequestUserDto;
-import br.dev.hygino.services.exceptions.UserHasBookLoanException;
+import br.dev.hygino.services.exceptions.UserAlreadyBorrowedBookException;
 import br.dev.hygino.services.exceptions.UserNotFoundException;
 
 @SpringBootTest
@@ -81,7 +81,7 @@ public class UserServiceTestIT {
 	@Test
 	@DisplayName("Delete deve lançar UserHasBookLoanException quando id for dependente")
 	public void deleteShouldThrowUserHasBookLoanExceptionWhenDependentId() {
-		final var result = assertThrows(UserHasBookLoanException.class, () -> userService.removeUser(dependentId));
+		final var result = assertThrows(UserAlreadyBorrowedBookException.class, () -> userService.removeUser(dependentId));
 
 		assertEquals("Não é possível excluir o usuário, pois ele está associado a empréstimos.", result.getMessage());
 	}
