@@ -3,6 +3,7 @@ package br.dev.hygino.controllers;
 import java.util.UUID;
 
 import br.dev.hygino.dto.ResponseMinUserDto;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -38,7 +39,7 @@ public class UserController {
 	@GetMapping
 	@Operation(summary = "Busca de usuários", description = "Retorna uma página de usuários")
 	public ResponseEntity<Page<ResponseMinUserDto>> findUsersByName(@Param(value = "name") String name,
-																	Pageable pageable) {
+																	@ParameterObject Pageable pageable) {
 		return ResponseEntity.status(HttpStatus.OK).body(service.findUsersByName(name, pageable));
 	}
 

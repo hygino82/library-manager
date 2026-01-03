@@ -8,6 +8,7 @@ import br.dev.hygino.services.BookLoanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,10 +30,13 @@ public class BookLoanController {
 
     @GetMapping
     @Operation(summary = "Buscar empréstimos de livros", description = "Busca paginada de empréstimos de livros")
-    public ResponseEntity<Page<BookLoanReportDto>> findAllLoans(Pageable pageable) {
+    public ResponseEntity<Page<BookLoanReportDto>> findAllLoans(
+            @ParameterObject Pageable pageable) {
+
         final Page<BookLoanReportDto> res = service.findAllLoans(pageable);
         return ResponseEntity.ok(res);
     }
+
 
     @PostMapping
     @Operation(summary = "Emprestar livro", description = "Realiza o empréstimo de um livro")

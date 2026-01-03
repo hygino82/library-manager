@@ -5,6 +5,7 @@ import br.dev.hygino.dto.BookReportDto;
 import java.util.UUID;
 
 import br.dev.hygino.services.exceptions.BookNotFoundException;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class BookController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author,
             @RequestParam(required = false) BookStatus bookStatus,
-            Pageable pageable) {
+            @ParameterObject Pageable pageable) {
 
         String searchTitle = (title == null || title.isBlank()) ? "" : title.trim();
         String searchAuthor = (author == null || author.isBlank()) ? "" : author.trim();
