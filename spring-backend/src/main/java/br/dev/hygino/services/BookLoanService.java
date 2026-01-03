@@ -3,18 +3,16 @@ package br.dev.hygino.services;
 import java.util.List;
 import java.util.UUID;
 
-import br.dev.hygino.dto.BookLoanReportDto;
-import br.dev.hygino.dto.RequestLoanWithEmailAndCodeDto;
+import br.dev.hygino.dto.*;
 import br.dev.hygino.mappers.BookLoanMapper;
 import br.dev.hygino.notifies.BookReturn;
+import br.dev.hygino.projections.LoanDetailsProjection;
 import br.dev.hygino.services.exceptions.*;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import br.dev.hygino.dto.RequestLoanDto;
-import br.dev.hygino.dto.ResponseBookLoanDto;
 import br.dev.hygino.models.Book;
 import br.dev.hygino.models.BookLoan;
 import br.dev.hygino.models.BookStatus;
@@ -147,5 +145,10 @@ public class BookLoanService {
         bookLoanRepository.save(bookLoan);
 
         return new ResponseBookLoanDto(bookLoan);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LoanDetailsProjection> findActiveLoans() {
+        return bookLoanRepository.findBooksWithLoans();
     }
 }

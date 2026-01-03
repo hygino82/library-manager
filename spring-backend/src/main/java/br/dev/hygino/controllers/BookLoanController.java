@@ -1,9 +1,7 @@
 package br.dev.hygino.controllers;
 
-import br.dev.hygino.dto.BookLoanReportDto;
-import br.dev.hygino.dto.RequestLoanDto;
-import br.dev.hygino.dto.RequestLoanWithEmailAndCodeDto;
-import br.dev.hygino.dto.ResponseBookLoanDto;
+import br.dev.hygino.dto.*;
+import br.dev.hygino.projections.LoanDetailsProjection;
 import br.dev.hygino.services.BookLoanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -78,5 +77,11 @@ public class BookLoanController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    @GetMapping("active")
+    public ResponseEntity<List<LoanDetailsProjection>> getActiveLoans() {
+        List<LoanDetailsProjection> result = service.findActiveLoans();
+        return ResponseEntity.ok(result);
     }
 }
