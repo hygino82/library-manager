@@ -2,6 +2,7 @@ package br.dev.hygino.services;
 
 import br.dev.hygino.UserFactory;
 import br.dev.hygino.dto.RequestUserDto;
+import br.dev.hygino.dto.ResponseMinUserDto;
 import br.dev.hygino.mappers.UserMapper;
 import br.dev.hygino.models.SchoolAttribute;
 import br.dev.hygino.models.User;
@@ -16,6 +17,7 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -118,15 +120,15 @@ public final class UserServiceTest {
         assertEquals("Não existe usuário com o Id: " + nonExistingId, result.getMessage());
     }
 
-    /*@Test
+    @Test
     @DisplayName("FindUsersByName deve retornar Page<User>")
     public void findUsersByNameShouldReturnPage() {
-        final Page<ResponseUserDto> result = userService.findUsersByName(null, pageRequest);
+        final Page<ResponseMinUserDto> result = userService.findUsersByName(null, pageRequest);
         assertNotNull(result);
         assertEquals(6, result.getTotalElements());
         assertEquals("Gorete Medeiros", result.getContent().getFirst().name(), "O nome do primeiro usuário deve ser 'Gorete Medeiros'.");
         assertEquals("Camila Luz", result.getContent().getLast().name(), "O nome do último usuário deve ser 'Camila Luz'.");
-    }*/
+    }
 
     @Test
     @DisplayName("Update deve retornar os dados atualizados")
