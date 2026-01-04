@@ -45,9 +45,9 @@ public class BookLoanService {
     }
 
     @Transactional
-    public ResponseBookLoanDto insert(RequestLoanDto dto) {
+    public ResponseBookLoanDto insertUsingIds(RequestLoanDto dto) {
         User user = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado!"));
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado!"));
 
         if (user.isHasLoan()) {
             throw new UserAlreadyBorrowedBookException("O usuário já possui um empréstimo ativo!");
@@ -119,7 +119,7 @@ public class BookLoanService {
     public ResponseBookLoanDto findLoanById(UUID id) {
         final BookLoan bookLoan = bookLoanRepository.findById(id)
                 .orElseThrow(() -> new BookLoanNotFoundException("Livro não encontrado!"));
-        return bookLoanMapper.toBookLoanResponse(bookLoan);
+        return new ResponseBookLoanDto(bookLoan);
     }
 
     @Transactional

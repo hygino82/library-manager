@@ -41,7 +41,7 @@ public class BookLoanController {
     @Operation(summary = "Emprestar livro", description = "Realiza o empréstimo de um livro")
     public ResponseEntity<?> insert(@RequestBody @Valid RequestLoanDto dto) {
         try {
-            final ResponseBookLoanDto res = service.insert(dto);
+            final ResponseBookLoanDto res = service.insertUsingIds(dto);
             return ResponseEntity.ok(res);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

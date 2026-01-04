@@ -92,7 +92,7 @@ class BookLoanServiceTest {
     @Test
     @DisplayName("Deve retornar um empréstimo quando o usuário não tiver livros emprestados e o livro estiver disponível")
     void whenUserHasNoLoanAndTheBookIsAvailableReturnLoan() {
-        ResponseBookLoanDto res = bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookAvailableId));
+        ResponseBookLoanDto res = bookLoanService.insertUsingIds(new RequestLoanDto(userWithoutLoanId, bookAvailableId));
         Assertions.assertNotNull(res);
 
         Assertions.assertEquals(BookFactory.activeLoanId, res.bookId());
@@ -105,7 +105,7 @@ class BookLoanServiceTest {
     @DisplayName("Deve lançar IllegalArgumentException quando o id do usuário não existir")
     void shouldThrowExceptionWhenInvalidUserId() throws RuntimeException {
         IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
-                () -> bookLoanService.insert(new RequestLoanDto(userNotExistingId, bookAvailableId)));
+                () -> bookLoanService.insertUsingIds(new RequestLoanDto(userNotExistingId, bookAvailableId)));
         Assertions.assertEquals("Usuário não encontrado!", res.getMessage());
     }
 
@@ -113,7 +113,7 @@ class BookLoanServiceTest {
     @DisplayName("Deve lançar IllegalArgumentException quando o id do livro não existir")
     void shouldThrowExceptionWhenInvalidBookId() throws RuntimeException {
         IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
-                () -> bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookNotExistingId)));
+                () -> bookLoanService.insertUsingIds(new RequestLoanDto(userWithoutLoanId, bookNotExistingId)));
         Assertions.assertEquals("Livro não encontrado!", res.getMessage());
     }
 
@@ -121,7 +121,7 @@ class BookLoanServiceTest {
     @DisplayName("Deve lançar IllegalArgumentException quando o usuário tiver livro emprestado")
     void shouldThrowExceptionWhenUserHasLoan() throws RuntimeException {
         IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
-                () -> bookLoanService.insert(new RequestLoanDto(userAsLoanId, bookAvailableId)));
+                () -> bookLoanService.insertUsingIds(new RequestLoanDto(userAsLoanId, bookAvailableId)));
         Assertions.assertEquals("O usuário já possui um empréstimo ativo!", res.getMessage());
     }
 
@@ -129,7 +129,7 @@ class BookLoanServiceTest {
     @DisplayName("Deve lançar IllegalArgumentException quando o livro estiver emprestado")
     void shouldThrowExceptionWhenBookInUse() throws RuntimeException {
         IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
-                () -> bookLoanService.insert(new RequestLoanDto(userWithoutLoanId, bookInUseId)));
+                () -> bookLoanService.insertUsingIds(new RequestLoanDto(userWithoutLoanId, bookInUseId)));
         Assertions.assertEquals("O livro não está disponível para empréstimo!", res.getMessage());
     }
 
