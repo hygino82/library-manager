@@ -9,6 +9,10 @@ import java.util.UUID;
 import br.dev.hygino.dto.BookLoanReportDto;
 import br.dev.hygino.mappers.BookLoanMapper;
 import br.dev.hygino.mappers.BookLoanMapperImpl;
+import br.dev.hygino.services.exceptions.BookAlreadyLoanedException;
+import br.dev.hygino.services.exceptions.BookNotFoundException;
+import br.dev.hygino.services.exceptions.UserAlreadyBorrowedBookException;
+import br.dev.hygino.services.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -92,7 +96,7 @@ class BookLoanServiceTest {
     @Test
     @DisplayName("Deve retornar um empréstimo quando o usuário não tiver livros emprestados e o livro estiver disponível")
     void whenUserHasNoLoanAndTheBookIsAvailableReturnLoan() {
-        ResponseBookLoanDto res = bookLoanService.insertUsingIds(new RequestLoanDto(userWithoutLoanId, bookAvailableId));
+        final ResponseBookLoanDto res = bookLoanService.insertUsingIds(new RequestLoanDto(userWithoutLoanId, bookAvailableId));
         Assertions.assertNotNull(res);
 
         Assertions.assertEquals(BookFactory.activeLoanId, res.bookId());
@@ -102,17 +106,17 @@ class BookLoanServiceTest {
     }
 
     @Test
-    @DisplayName("Deve lançar IllegalArgumentException quando o id do usuário não existir")
+    @DisplayName("Deve lançar UserNotFoundException quando o id do usuário não existir")
     void shouldThrowExceptionWhenInvalidUserId() throws RuntimeException {
-        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
+        final UserNotFoundException res = Assertions.assertThrows(UserNotFoundException.class,
                 () -> bookLoanService.insertUsingIds(new RequestLoanDto(userNotExistingId, bookAvailableId)));
         Assertions.assertEquals("Usuário não encontrado!", res.getMessage());
     }
 
     @Test
-    @DisplayName("Deve lançar IllegalArgumentException quando o id do livro não existir")
+    @DisplayName("Deve lançar BookNotFoundException quando o id do livro não existir")
     void shouldThrowExceptionWhenInvalidBookId() throws RuntimeException {
-        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
+        final BookNotFoundException res = Assertions.assertThrows(BookNotFoundException.class,
                 () -> bookLoanService.insertUsingIds(new RequestLoanDto(userWithoutLoanId, bookNotExistingId)));
         Assertions.assertEquals("Livro não encontrado!", res.getMessage());
     }
@@ -120,15 +124,15 @@ class BookLoanServiceTest {
     @Test
     @DisplayName("Deve lançar IllegalArgumentException quando o usuário tiver livro emprestado")
     void shouldThrowExceptionWhenUserHasLoan() throws RuntimeException {
-        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
+        final UserAlreadyBorrowedBookException res = Assertions.assertThrows(UserAlreadyBorrowedBookException.class,
                 () -> bookLoanService.insertUsingIds(new RequestLoanDto(userAsLoanId, bookAvailableId)));
         Assertions.assertEquals("O usuário já possui um empréstimo ativo!", res.getMessage());
     }
 
     @Test
     @DisplayName("Deve lançar IllegalArgumentException quando o livro estiver emprestado")
-    void shouldThrowExceptionWhenBookInUse() throws RuntimeException {
-        IllegalArgumentException res = Assertions.assertThrows(IllegalArgumentException.class,
+    void shouldThrowBookAlreadyLoanedExceptionWhenBookInUse() throws RuntimeException {
+        final BookAlreadyLoanedException res = Assertions.assertThrows(BookAlreadyLoanedException.class,
                 () -> bookLoanService.insertUsingIds(new RequestLoanDto(userWithoutLoanId, bookInUseId)));
         Assertions.assertEquals("O livro não está disponível para empréstimo!", res.getMessage());
     }
