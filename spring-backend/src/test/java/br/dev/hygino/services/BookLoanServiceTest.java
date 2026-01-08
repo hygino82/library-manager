@@ -1,14 +1,18 @@
 package br.dev.hygino.services;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-import java.util.UUID;
-
+import br.dev.hygino.BookFactory;
+import br.dev.hygino.BookLoanFactory;
+import br.dev.hygino.UserFactory;
 import br.dev.hygino.dto.BookLoanReportDto;
-import br.dev.hygino.mappers.BookLoanMapper;
-import br.dev.hygino.mappers.BookLoanMapperImpl;
+import br.dev.hygino.dto.RequestLoanDto;
+import br.dev.hygino.dto.ResponseBookLoanDto;
+import br.dev.hygino.models.Book;
+import br.dev.hygino.models.BookLoan;
+import br.dev.hygino.models.BookStatus;
+import br.dev.hygino.models.User;
+import br.dev.hygino.repositories.BookLoanRepository;
+import br.dev.hygino.repositories.BookRepository;
+import br.dev.hygino.repositories.UserRepository;
 import br.dev.hygino.services.exceptions.BookAlreadyLoanedException;
 import br.dev.hygino.services.exceptions.BookNotFoundException;
 import br.dev.hygino.services.exceptions.UserAlreadyBorrowedBookException;
@@ -24,18 +28,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import br.dev.hygino.BookFactory;
-import br.dev.hygino.BookLoanFactory;
-import br.dev.hygino.UserFactory;
-import br.dev.hygino.dto.RequestLoanDto;
-import br.dev.hygino.dto.ResponseBookLoanDto;
-import br.dev.hygino.models.Book;
-import br.dev.hygino.models.BookLoan;
-import br.dev.hygino.models.BookStatus;
-import br.dev.hygino.models.User;
-import br.dev.hygino.repositories.BookLoanRepository;
-import br.dev.hygino.repositories.BookRepository;
-import br.dev.hygino.repositories.UserRepository;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class BookLoanServiceTest {
@@ -50,7 +47,7 @@ class BookLoanServiceTest {
 
     @InjectMocks
     private BookLoanService bookLoanService;
-    private BookLoanMapper bookLoanMapper;
+    //private BookLoanMapper bookLoanMapper;
 
     private UUID bookInUseId, bookAvailableId, bookNotExistingId, userAsLoanId, userWithoutLoanId, userNotExistingId;
 
@@ -90,7 +87,7 @@ class BookLoanServiceTest {
         when(bookLoanRepository.findLoanByBook(bookEntityInUse))
                 .thenReturn(Optional.of(BookLoanFactory.createBookLoanActive()));
 
-        bookLoanService = new BookLoanService(bookLoanRepository, userRepository, bookRepository, new BookLoanMapperImpl());
+        bookLoanService = new BookLoanService(bookLoanRepository, userRepository, bookRepository);
     }
 
     @Test

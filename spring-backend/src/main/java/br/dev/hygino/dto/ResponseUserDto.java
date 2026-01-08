@@ -24,7 +24,11 @@ public record ResponseUserDto(
                 obj.isHasLoan(),
                 obj.getBookLoans()
                         .stream()
-                        .map(x -> new MinBookLoanResponseDto(x.getId(), x.getBook().getTitle(), x.getStartDate()))
+                        .map(x -> new MinBookLoanResponseDto(
+                                x.getId(),
+                                x.getBook().getTitle(),
+                                x.getUser().getName(),
+                                x.getStartDate()))
                         .toList()
         );
     }

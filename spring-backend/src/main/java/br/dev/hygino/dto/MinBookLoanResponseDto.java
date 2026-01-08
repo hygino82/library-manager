@@ -6,6 +6,7 @@ import java.util.UUID;
 public record MinBookLoanResponseDto(
         UUID id,
         String title,
+        String username,
         LocalDate startAt
 ) {
 }

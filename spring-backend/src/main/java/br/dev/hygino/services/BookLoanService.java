@@ -1,25 +1,29 @@
 package br.dev.hygino.services;
 
-import java.util.List;
-import java.util.UUID;
-
-import br.dev.hygino.dto.*;
+import br.dev.hygino.dto.BookLoanReportDto;
+import br.dev.hygino.dto.RequestLoanDto;
+import br.dev.hygino.dto.RequestLoanWithEmailAndCodeDto;
+import br.dev.hygino.dto.ResponseBookLoanDto;
 import br.dev.hygino.mappers.BookLoanMapper;
+import br.dev.hygino.mappers.BookLoanMapperImpl;
+import br.dev.hygino.models.Book;
+import br.dev.hygino.models.BookLoan;
+import br.dev.hygino.models.BookStatus;
+import br.dev.hygino.models.User;
 import br.dev.hygino.notifies.BookReturn;
 import br.dev.hygino.projections.LoanDetailsProjection;
+import br.dev.hygino.repositories.BookLoanRepository;
+import br.dev.hygino.repositories.BookRepository;
+import br.dev.hygino.repositories.UserRepository;
 import br.dev.hygino.services.exceptions.*;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import br.dev.hygino.models.Book;
-import br.dev.hygino.models.BookLoan;
-import br.dev.hygino.models.BookStatus;
-import br.dev.hygino.models.User;
-import br.dev.hygino.repositories.BookLoanRepository;
-import br.dev.hygino.repositories.BookRepository;
-import br.dev.hygino.repositories.UserRepository;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BookLoanService {
@@ -27,16 +31,14 @@ public class BookLoanService {
     private final BookLoanRepository bookLoanRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
-    private final BookLoanMapper bookLoanMapper;
+    private final BookLoanMapper bookLoanMapper = new BookLoanMapperImpl();
 
     public BookLoanService(BookLoanRepository bookLoanRepository,
                            UserRepository userRepository,
-                           BookRepository bookRepository,
-                           BookLoanMapper bookLoanMapper) {
+                           BookRepository bookRepository) {
         this.bookLoanRepository = bookLoanRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
-        this.bookLoanMapper = bookLoanMapper;
     }
 
     @Transactional(readOnly = true)
@@ -66,7 +68,7 @@ public class BookLoanService {
         BookLoan bookLoan = new BookLoan(user, book);
         bookLoanRepository.save(bookLoan);
 
-        return new ResponseBookLoanDto(bookLoan);
+        return bookLoanMapper.toBookLoanResponse(bookLoan);
     }
 
     @Transactional
