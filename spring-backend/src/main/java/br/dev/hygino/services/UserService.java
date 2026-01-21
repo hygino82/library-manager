@@ -3,6 +3,8 @@ package br.dev.hygino.services;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -66,5 +68,12 @@ public class UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(roleBasic);
         user.setRoles(roles);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResponseUserDto> findAll(Pageable pageable) {
+        Page<User> page = userRepository.findAll(pageable);
+
+        return page.map(userMapper::toResponseUserDto);
     }
 }
