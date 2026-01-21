@@ -2,15 +2,28 @@ package br.dev.hygino.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import br.dev.hygino.dto.LoginRequestDto;
 import br.dev.hygino.notifies.BookReturn;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_user")
@@ -27,12 +40,17 @@ public class User implements BookReturn {
 
     private String password;
 
-    private Role role;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private SchoolAttribute schoolAttribute;
 
     private boolean loanActive = false;
 
+    @OneToMany(mappedBy = "user")
     private final List<BookLoan> bookLoans = new ArrayList<>();
 
     public UUID getId() {
@@ -67,12 +85,12 @@ public class User implements BookReturn {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public SchoolAttribute getSchoolAttribute() {
@@ -123,5 +141,9 @@ public class User implements BookReturn {
     @Override
     public void executeReturn() {
         loanActive = false;
+    }
+
+    public boolean isLoginCorrect(LoginRequestDto loginRequest, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(loginRequest.password(), this.password);
     }
 }
