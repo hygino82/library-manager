@@ -1,0 +1,19 @@
+##Login
+POST http://localhost:8080/login
+
+{
+    "username": "admin",
+    "password": "123"
+}
+
+
+##Insert user
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "name": "Juvenal Mendes",
+    "username": "juvenal@example.com",
+    "password": "password123",
+    "schoolAttribute":"SEXTO"
+}
