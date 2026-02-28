@@ -6,6 +6,7 @@ import br.dev.hygino.dto.ResponseUserMinDto;
 import br.dev.hygino.dto.UpdateUserDto;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.services.UserService;
+
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -17,7 +18,21 @@ public class BibliotecaEscolar {
         //listarUsuarios();
         //inserirUsuario();
         //buscarPorId();
-        atualizarUsuario();
+        //atualizarUsuario();
+        testeRetornoLivro();
+    }
+
+    private static void testeRetornoLivro() {
+        final var userId = 2L;
+        service.changeLoanStatus(userId, true);
+        System.out.println("Status alualizado!");
+
+        try {
+            final var result = service.getUserById(userId);
+            System.out.println(result);
+        } catch (ResourceNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }
 
     private static void listarUsuarios() {

@@ -16,7 +16,7 @@ public record ResponseUserMinDto(
                 user.getName(),
                 user.getContact(),
                 user.getAttribute(),
-                user.isAcitiveLoan()
+                user.isActiveLoan()
         );
     }
 }

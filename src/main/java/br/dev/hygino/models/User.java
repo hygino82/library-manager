@@ -12,6 +12,6 @@ public final class User {
     private String attribute;
     private String contact;
     //private final List<Book> books = new ArrayList<>();
-    private boolean acitiveLoan = false;
+    private boolean activeLoan = false;
    // private Book currentBook = null;
 }

@@ -5,6 +5,7 @@ import br.dev.hygino.dto.InsertUserDto;
 import br.dev.hygino.dto.UpdateUserDto;
 import br.dev.hygino.jdbc.DatabaseConnection;
 import br.dev.hygino.models.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.swing.JOptionPane;
 
-public final class UserDao {
+public final class UserDao implements ReturnBook {
 
     private final Connection connection;
 
@@ -25,9 +26,9 @@ public final class UserDao {
     public void salvarNovoUsuario(InsertUserDto dto) {
 
         final String sql = """
-                      INSERT INTO tb_user(name, attribute, contact)
-                      VALUES (?,?,?);
-                      """;
+                INSERT INTO tb_user(name, attribute, contact)
+                VALUES (?,?,?);
+                """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             // 1. Atribuir os valores do objeto Cliente aos parâmetros da SQL
@@ -46,9 +47,9 @@ public final class UserDao {
     public List<User> findUsers(String name) {
         List<User> users = new ArrayList<>();
         var sql = """
-        SELECT * FROM tb_user
-        WHERE UPPER(name) LIKE CONCAT('%', UPPER(?), '%')
-        """;
+                SELECT * FROM tb_user
+                WHERE UPPER(name) LIKE CONCAT('%', UPPER(?), '%')
+                """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -61,7 +62,7 @@ public final class UserDao {
                 user.setId(rs.getLong("id"));
                 user.setName(rs.getString("name"));
                 user.setAttribute(rs.getString("attribute"));
-                user.setAcitiveLoan(rs.getBoolean("active_loan"));
+                user.setActiveLoan(rs.getBoolean("active_loan"));
                 user.setContact(rs.getString("contact"));
                 users.add(user);
             }
@@ -81,10 +82,10 @@ public final class UserDao {
         }
 
         final String sql = """
-            SELECT id, name, attribute, active_loan, contact
-            FROM tb_user
-            WHERE id = ?
-            """;
+                SELECT id, name, attribute, active_loan, contact
+                FROM tb_user
+                WHERE id = ?
+                """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, id);
@@ -95,7 +96,7 @@ public final class UserDao {
                     user.setId(rs.getLong("id"));
                     user.setName(rs.getString("name"));
                     user.setAttribute(rs.getString("attribute"));
-                    user.setAcitiveLoan(rs.getBoolean("active_loan"));
+                    user.setActiveLoan(rs.getBoolean("active_loan"));
                     user.setContact(rs.getString("contact"));
 
                     return Optional.of(user);
@@ -112,9 +113,9 @@ public final class UserDao {
 
     public boolean removeUser(long id) {
         final String sql = """
-            DELETE FROM tb_user
-            WHERE id = ?
-            """;
+                DELETE FROM tb_user
+                WHERE id = ?
+                """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, id);
@@ -134,12 +135,12 @@ public final class UserDao {
         }
 
         final String sql = """
-            UPDATE tb_user
-            SET name = ?,
-                attribute = ?,
-                contact = ?
-            WHERE id = ?
-            """;
+                UPDATE tb_user
+                SET name = ?,
+                    attribute = ?,
+                    contact = ?
+                WHERE id = ?
+                """;
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
@@ -150,6 +151,28 @@ public final class UserDao {
 
             return stmt.executeUpdate() > 0;
 
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar usuário", e);
+        }
+    }
+
+
+    @Override
+    public boolean changeLoanStatus(long id, boolean status) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID inválido");
+        }
+
+        final String sql = """
+                UPDATE tb_user
+                SET active_loan = ?
+                WHERE id = ?
+                """;
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBoolean(1, status);
+            stmt.setLong(2, id);
+
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao atualizar usuário", e);
         }
