@@ -10,6 +10,7 @@ public final class User {
     private Long id;
     private String name;
     private String attribute;
+    private String contact;
     //private final List<Book> books = new ArrayList<>();
     private boolean acitiveLoan = false;
    // private Book currentBook = null;
