@@ -14,5 +14,5 @@ public final class Book {
     private Integer pages;
     private String publisher;
     private Integer edition = 1;
-    private boolean acitiveLoan = false;
+    private boolean activeLoan = false;
 }

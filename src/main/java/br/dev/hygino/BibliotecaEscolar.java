@@ -1,17 +1,20 @@
 package br.dev.hygino;
 
+import br.dev.hygino.dao.BookDao;
 import br.dev.hygino.dao.UserDao;
+import br.dev.hygino.dto.InsertBookDto;
 import br.dev.hygino.dto.InsertUserDto;
 import br.dev.hygino.dto.ResponseUserMinDto;
 import br.dev.hygino.dto.UpdateUserDto;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
+import br.dev.hygino.services.BookService;
 import br.dev.hygino.services.UserService;
 
 import java.util.List;
 import javax.swing.JOptionPane;
 
 public class BibliotecaEscolar {
-
+    final static BookService bookService = new BookService(new BookDao());
     final static UserService service = new UserService(new UserDao());
 
     public static void main(String[] args) {
@@ -19,7 +22,13 @@ public class BibliotecaEscolar {
         //inserirUsuario();
         //buscarPorId();
         //atualizarUsuario();
-        testeRetornoLivro();
+        //testeRetornoLivro();
+        //inserirLivro();
+    }
+
+    private static void inserirLivro() {
+        InsertBookDto dto = new InsertBookDto("As pupilas do senhor reitor", "Julio Dinis", "pt-julio01", 355, "Martin Claret", 2);
+        bookService.insertBook(dto);
     }
 
     private static void testeRetornoLivro() {
