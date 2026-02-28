@@ -1,5 +1,9 @@
 package br.dev.hygino.dto;
 
-public class UpdateUserDto {
-    
+public record UpdateUserDto(
+        long id,
+        String name,
+        String contact,
+        String attribute) {
+
 }

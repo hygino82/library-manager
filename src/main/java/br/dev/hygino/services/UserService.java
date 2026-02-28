@@ -3,8 +3,10 @@ package br.dev.hygino.services;
 import br.dev.hygino.dao.UserDao;
 import br.dev.hygino.dto.InsertUserDto;
 import br.dev.hygino.dto.ResponseUserMinDto;
+import br.dev.hygino.dto.UpdateUserDto;
 import br.dev.hygino.exceptions.ResourceNotFoundException;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public final class UserService {
 
@@ -29,5 +31,14 @@ public final class UserService {
         final var result = userDao.getUserById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
         return new ResponseUserMinDto(result);
+    }
+
+    public boolean updateUser(UpdateUserDto dto) {
+        try {
+            return userDao.updateUser(dto);
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return false;
     }
 }
