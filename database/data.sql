@@ -39,7 +39,7 @@ VALUES ('Fernanda Lima', 'TERCEIRO', '789547921');
 INSERT INTO tb_user(name, attribute, contact)
 VALUES ('Roberto Souza', 'QUARTO', '47963578124');
 
-CREATE TABLE tb_book (
+CREATE TABLE  IF NOT EXISTS tb_book (
                          id BIGINT NOT NULL AUTO_INCREMENT,
                          title VARCHAR(100) NOT NULL,
                          author VARCHAR(100) NOT NULL,

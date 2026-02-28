@@ -1,14 +1,20 @@
 package br.dev.hygino.dao;
 
 import br.dev.hygino.dto.InsertBookDto;
+import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.jdbc.DatabaseConnection;
+import br.dev.hygino.models.Book;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookDao {
+
     private final Connection connection;
 
     public BookDao() {
@@ -34,6 +40,41 @@ public class BookDao {
             JOptionPane.showMessageDialog(null, "Livro " + dto.title() + " salvo com sucesso!");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao salvar usuário: " + e.getMessage());
+        }
+    }
+
+    public List<Book> findBooks(String title) {
+        List<Book> books = new ArrayList<>();
+        var sql = """
+                SELECT * FROM tb_book
+                WHERE UPPER(title) LIKE CONCAT('%', UPPER(?), '%')
+                """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, title == null ? "" : title);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Book book = new Book();
+                book.setId(rs.getLong("id"));
+                book.setTitle(rs.getString("title"));
+                book.setAuthor(rs.getString("author"));
+                book.setPublisher(rs.getString("publisher"));
+                book.setPages(rs.getInt("pages"));
+                book.setEdition(rs.getInt("edition"));
+                book.setActiveLoan(rs.getBoolean("active_loan"));
+                book.setCode(rs.getString("code"));
+                books.add(book);
+            }
+
+            return books;
+
+        } catch (SQLException e) {
+            throw new ResourceNotFoundException(
+                    "Erro ao buscar livros: " + e.getMessage()
+            );
         }
     }
 }
