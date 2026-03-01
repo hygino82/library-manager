@@ -4,6 +4,7 @@ import br.dev.hygino.dao.UserDao;
 import br.dev.hygino.dto.InsertUserDto;
 import br.dev.hygino.dto.ResponseUserMinDto;
 import br.dev.hygino.dto.UpdateUserDto;
+import br.dev.hygino.exceptions.DatabaseException;
 
 import java.util.List;
 
@@ -16,10 +17,14 @@ public final class UserService {
     }
 
     public List<ResponseUserMinDto> getUsers(String name) {
-        return userDao.findUsers(name)
-                .stream()
-                .map(ResponseUserMinDto::new)
-                .toList();
+        try {
+            return userDao.findUsers(name)
+                    .stream()
+                    .map(ResponseUserMinDto::new)
+                    .toList();
+        } catch (DatabaseException e) {
+            throw e;
+        }
     }
 
     public boolean insertUser(InsertUserDto dto) {
