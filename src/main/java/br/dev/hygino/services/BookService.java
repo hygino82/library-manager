@@ -32,4 +32,14 @@ public class BookService {
             throw e;
         }
     }
+
+    public ResponseBookDto getBookById(long id) {
+        try {
+            final var result = bookDao.getBookById(id)
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+            return new ResponseBookDto(result);
+        } catch (DatabaseException e) {
+            throw new RuntimeException("Usuário não encontrado!");
+        }
+    }
 }

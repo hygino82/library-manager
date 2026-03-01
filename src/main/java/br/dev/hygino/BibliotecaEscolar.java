@@ -30,14 +30,15 @@ public class BibliotecaEscolar {
 
     public static void main(String[] args) {
         new BibliotecaEscolar();
-        
+
         //listarUsuarios();
         //inserirUsuario();
         //buscarPorId();
         //atualizarUsuario();
         //testeRetornoLivro();
         //inserirLivro();  
-         listarLivros();
+        //listarLivros();
+        buscarLivroPorId();
     }
 
     private static void inserirLivro() {
@@ -91,6 +92,15 @@ public class BibliotecaEscolar {
             final var result = bookService.getBooks("ing");
             result.forEach(System.out::println);
         } catch (DatabaseException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
+    private static void buscarLivroPorId() {
+        try {
+            final var result = bookService.getBookById(2L);
+            System.out.println(result);
+        } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
