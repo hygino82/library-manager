@@ -1,10 +1,10 @@
 package br.dev.hygino.dao;
 
 import br.dev.hygino.dto.InsertBookDto;
+import br.dev.hygino.dto.UpdateBookDto;
 import br.dev.hygino.exceptions.DatabaseException;
 import br.dev.hygino.jdbc.DatabaseConnection;
 import br.dev.hygino.models.Book;
-import br.dev.hygino.models.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BookDao {
+public class BookDao implements ReturnBook {
 
     public boolean insertBook(InsertBookDto dto) {
         final var sql = """
@@ -104,5 +104,76 @@ public class BookDao {
         }
 
         return Optional.empty();
+    }
+
+    public boolean removeBook(long id) {
+        final String sql = """
+                DELETE FROM tb_book
+                WHERE id = ?
+                """;
+
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+
+            int affectedRows = stmt.executeUpdate();
+
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Erro ao remover livro!");
+        }
+    }
+
+    public boolean updateBook(UpdateBookDto dto) {
+        if (dto.id() <= 0) {
+            throw new IllegalArgumentException("ID inválido!");
+        }
+        final String sql = """
+                            UPDATE tb_book
+                            SET title = ?,
+                                author = ?,
+                                code = ?,
+                                pages = ?,
+                                publisher = ?,
+                                edition = ?
+                            WHERE id = ?
+                           """;
+
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, dto.title());
+            stmt.setString(2, dto.author());
+            stmt.setString(3, dto.code());
+            stmt.setInt(4, dto.pages());
+            stmt.setString(5, dto.publisher());
+            stmt.setInt(6, dto.edition());
+            stmt.setLong(7, dto.id());
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Erro ao atualizar livro!");
+        }
+    }
+
+    @Override
+    public boolean changeLoanStatus(long id, boolean status) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID inválido");
+        }
+
+        final String sql = """
+                UPDATE tb_book
+                SET active_loan = ?
+                WHERE id = ?
+                """;
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setBoolean(1, status);
+            stmt.setLong(2, id);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DatabaseException("Erro ao atualizar o status do livro!");
+        }
     }
 }

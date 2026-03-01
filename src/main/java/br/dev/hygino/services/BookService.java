@@ -3,6 +3,7 @@ package br.dev.hygino.services;
 import br.dev.hygino.dao.BookDao;
 import br.dev.hygino.dto.InsertBookDto;
 import br.dev.hygino.dto.ResponseBookDto;
+import br.dev.hygino.dto.UpdateBookDto;
 import br.dev.hygino.exceptions.DatabaseException;
 import java.util.List;
 
@@ -40,6 +41,30 @@ public class BookService {
             return new ResponseBookDto(result);
         } catch (DatabaseException e) {
             throw new RuntimeException("Usuário não encontrado!");
+        }
+    }
+
+    public boolean updateBook(UpdateBookDto updateBook) {
+        try {
+            return bookDao.updateBook(updateBook);
+        } catch (DatabaseException e) {
+            throw e;
+        }
+    }
+
+    public boolean removeBook(long id) {
+        try {
+            return bookDao.removeBook(id);
+        } catch (DatabaseException e) {
+            throw e;
+        }
+    }
+
+    public boolean changeLoanStatus(long id, boolean status) {
+        try {
+            return bookDao.changeLoanStatus(id, status);
+        } catch (DatabaseException e) {
+            throw e;
         }
     }
 }

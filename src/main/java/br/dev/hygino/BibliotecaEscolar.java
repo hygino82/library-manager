@@ -5,6 +5,7 @@ import br.dev.hygino.dao.UserDao;
 import br.dev.hygino.dto.InsertBookDto;
 import br.dev.hygino.dto.InsertUserDto;
 import br.dev.hygino.dto.ResponseUserMinDto;
+import br.dev.hygino.dto.UpdateBookDto;
 import br.dev.hygino.dto.UpdateUserDto;
 import br.dev.hygino.exceptions.DatabaseException;
 import br.dev.hygino.services.BookService;
@@ -38,7 +39,10 @@ public class BibliotecaEscolar {
         //testeRetornoLivro();
         //inserirLivro();  
         //listarLivros();
-        buscarLivroPorId();
+        //buscarLivroPorId();
+        //atualizarLivro();
+        //removerLivro();
+        mudarStatusDoLivro();
     }
 
     private static void inserirLivro() {
@@ -95,12 +99,53 @@ public class BibliotecaEscolar {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
-    
+
     private static void buscarLivroPorId() {
         try {
             final var result = bookService.getBookById(2L);
             System.out.println(result);
         } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    private static void atualizarLivro() {
+        final UpdateBookDto updateBook = new UpdateBookDto(300L, "Memórias Póstumas de Brás Cubas", "Machado de Assis", "BR-Machado01", 296, " Editora Antofágica", 1);
+        try {
+            if (bookService.updateBook(updateBook)) {
+                final var result = bookService.getBookById(300L);
+                System.out.println(result);
+            } else {
+                JOptionPane.showMessageDialog(null, "Id não encontrado!");
+            }
+        } catch (DatabaseException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    private static void removerLivro() {
+        try {
+            if (bookService.removeBook(1L)) {
+                JOptionPane.showMessageDialog(null, "Livro removido com sucesso!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Id não encontrado!");
+            }
+        } catch (DatabaseException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+
+    private static void mudarStatusDoLivro() {
+        try {
+            var id = 2L;
+            if (bookService.changeLoanStatus(id, true)) {
+                JOptionPane.showMessageDialog(null, "Status do livro alterado com sucesso!");
+                final var result = bookService.getBookById(id);
+                System.out.println(result);
+            } else {
+                JOptionPane.showMessageDialog(null, "Id não encontrado!");
+            }
+        } catch (DatabaseException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
