@@ -4,10 +4,8 @@ import br.dev.hygino.dao.UserDao;
 import br.dev.hygino.dto.InsertUserDto;
 import br.dev.hygino.dto.ResponseUserMinDto;
 import br.dev.hygino.dto.UpdateUserDto;
-import br.dev.hygino.exceptions.ResourceNotFoundException;
 
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public final class UserService {
 
@@ -24,13 +22,17 @@ public final class UserService {
                 .toList();
     }
 
-    public void insertUser(InsertUserDto dto) {
-        userDao.salvarNovoUsuario(dto);
+    public boolean insertUser(InsertUserDto dto) {
+        try {
+            return userDao.salvarNovoUsuario(dto);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
 
     public ResponseUserMinDto getUserById(long id) {
         final var result = userDao.getUserById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
         return new ResponseUserMinDto(result);
     }
 
@@ -38,17 +40,15 @@ public final class UserService {
         try {
             return userDao.updateUser(dto);
         } catch (RuntimeException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            throw e;
         }
-        return false;
     }
 
     public boolean changeLoanStatus(long id, boolean status) {
         try {
             return userDao.changeLoanStatus(id, status);
         } catch (RuntimeException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            throw e;
         }
-        return false;
     }
 }

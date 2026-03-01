@@ -1,8 +1,8 @@
 package br.dev.hygino.dao;
 
-import br.dev.hygino.exceptions.ResourceNotFoundException;
 import br.dev.hygino.dto.InsertUserDto;
 import br.dev.hygino.dto.UpdateUserDto;
+import br.dev.hygino.exceptions.DatabaseException;
 import br.dev.hygino.jdbc.DatabaseConnection;
 import br.dev.hygino.models.User;
 
@@ -13,34 +13,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.JOptionPane;
 
 public final class UserDao implements ReturnBook {
 
-    private final Connection connection;
-
-    public UserDao() {
-        this.connection = new DatabaseConnection().getConnection();
-    }
-
-    public void salvarNovoUsuario(InsertUserDto dto) {
+    public boolean salvarNovoUsuario(InsertUserDto dto) {
 
         final String sql = """
                 INSERT INTO tb_user(name, attribute, contact)
                 VALUES (?,?,?);
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); 
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             // 1. Atribuir os valores do objeto Cliente aos parâmetros da SQL
             stmt.setString(1, dto.name());
             stmt.setString(2, dto.attribute());
             stmt.setString(3, dto.contact());
 
             // 2. Executar a consulta
-            stmt.execute();
-            JOptionPane.showMessageDialog(null, "Usuário " + dto.name() + " salvo com sucesso!");
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar usuário: " + e.getMessage());
+            throw new DatabaseException("Erro ao inserir usuário!");
         }
     }
 
@@ -51,7 +44,8 @@ public final class UserDao implements ReturnBook {
                 WHERE UPPER(name) LIKE CONCAT('%', UPPER(?), '%')
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); 
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, name == null ? "" : name);
 
@@ -70,7 +64,7 @@ public final class UserDao implements ReturnBook {
             return users;
 
         } catch (SQLException e) {
-            throw new ResourceNotFoundException(
+            throw new DatabaseException(
                     "Erro ao buscar usuários: " + e.getMessage()
             );
         }
@@ -87,7 +81,8 @@ public final class UserDao implements ReturnBook {
                 WHERE id = ?
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); 
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
             try (ResultSet rs = stmt.executeQuery()) {
@@ -104,8 +99,7 @@ public final class UserDao implements ReturnBook {
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Erro ao buscar usuário: " + e.getMessage());
+            throw new DatabaseException("Erro ao buscar usuário: " + e.getMessage());
         }
 
         return Optional.empty();
@@ -117,7 +111,8 @@ public final class UserDao implements ReturnBook {
                 WHERE id = ?
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); 
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
 
             int affectedRows = stmt.executeUpdate();
@@ -125,13 +120,13 @@ public final class UserDao implements ReturnBook {
             return affectedRows > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao remover usuário", e);
+            throw new DatabaseException("Erro ao remover usuário!");
         }
     }
 
     public boolean updateUser(UpdateUserDto dto) {
         if (dto.id() <= 0) {
-            throw new IllegalArgumentException("ID inválido");
+            throw new IllegalArgumentException("ID inválido!");
         }
 
         final String sql = """
@@ -142,7 +137,8 @@ public final class UserDao implements ReturnBook {
                 WHERE id = ?
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); 
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, dto.name());
             stmt.setString(2, dto.attribute());
@@ -152,10 +148,9 @@ public final class UserDao implements ReturnBook {
             return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao atualizar usuário", e);
+            throw new DatabaseException("Erro ao atualizar usuário!");
         }
     }
-
 
     @Override
     public boolean changeLoanStatus(long id, boolean status) {
@@ -168,13 +163,14 @@ public final class UserDao implements ReturnBook {
                 SET active_loan = ?
                 WHERE id = ?
                 """;
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); 
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setBoolean(1, status);
             stmt.setLong(2, id);
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao atualizar usuário", e);
+            throw new DatabaseException("Erro ao atualizar o status do usuário!");
         }
     }
 }

@@ -1,11 +1,9 @@
 package br.dev.hygino.dao;
 
 import br.dev.hygino.dto.InsertBookDto;
-import br.dev.hygino.exceptions.ResourceNotFoundException;
+import br.dev.hygino.exceptions.DatabaseException;
 import br.dev.hygino.jdbc.DatabaseConnection;
 import br.dev.hygino.models.Book;
-
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,18 +13,13 @@ import java.util.List;
 
 public class BookDao {
 
-    private final Connection connection;
-
-    public BookDao() {
-        this.connection = new DatabaseConnection().getConnection();
-    }
-
-    public void insertBook(InsertBookDto dto) {
+    public boolean insertBook(InsertBookDto dto) {
         final var sql = """
                 INSERT INTO tb_book(title,author,code,pages,publisher,edition)
                 VALUES (?,?,?,?,?,?)
                 """;
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection(); 
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             // 1. Atribuir os valores do objeto Livro aos parâmetros da SQL
             stmt.setString(1, dto.title());
             stmt.setString(2, dto.author());
@@ -36,10 +29,9 @@ public class BookDao {
             stmt.setInt(6, dto.edition());
 
             // 2. Executar a consulta
-            stmt.execute();
-            JOptionPane.showMessageDialog(null, "Livro " + dto.title() + " salvo com sucesso!");
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar usuário: " + e.getMessage());
+            throw new DatabaseException("Erro ao salvar usuário: " + e.getMessage());
         }
     }
 
@@ -50,7 +42,8 @@ public class BookDao {
                 WHERE UPPER(title) LIKE CONCAT('%', UPPER(?), '%')
                 """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setString(1, title == null ? "" : title);
 
@@ -72,7 +65,7 @@ public class BookDao {
             return books;
 
         } catch (SQLException e) {
-            throw new ResourceNotFoundException(
+            throw new DatabaseException(
                     "Erro ao buscar livros: " + e.getMessage()
             );
         }

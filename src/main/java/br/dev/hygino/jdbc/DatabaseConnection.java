@@ -1,22 +1,24 @@
 package br.dev.hygino.jdbc;
 
+import br.dev.hygino.exceptions.DatabaseException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
-
 
 public final class DatabaseConnection {
-    private final String url = "jdbc:mysql://localhost/biblioteca";
-    private final String username = "root";
-    private final String password = "89631139";
 
-    public Connection getConnection() {
+    private static final String URL = "jdbc:mysql://localhost/biblioteca";
+    private static final String USER = "root";
+    private static final String PASSWORD = "89631139";
+
+    private DatabaseConnection() {
+    }
+
+    public static Connection getConnection() {
         try {
-            return DriverManager.getConnection(url, username, password);
+            return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao tentar se conectar com o banco de dados!\n" + e);
+            throw new DatabaseException("Erro ao conectar ao banco de dados!");
         }
-        return null;
     }
 }
