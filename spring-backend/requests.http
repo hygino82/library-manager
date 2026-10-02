@@ -1,0 +1,28 @@
+### Listar categorias
+GET http://localhost:8080/api/v1/category
+Accept: application/json
+
+### Buscar categoria
+GET http://localhost:8080/api/v1/category/1
+Accept: application/json
+
+### Criar categoria
+POST http://localhost:8080/api/v1/category
+Content-Type: application/json
+
+{
+    "name": "Limpeza",
+    "description": "Produtos de limpeza"
+}
+
+### Atualizar categoria
+PUT http://localhost:8080/api/v1/category/1
+Content-Type: application/json
+
+{
+    "name": "Higiene",
+    "description": "Produtos de higiene"
+}
+
+### Excluir categoria
+DELETE http://localhost:8080/api/v1/category/1
