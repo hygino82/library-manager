@@ -2,16 +2,16 @@ package br.dev.hygino.services;
 
 import java.util.UUID;
 
-import br.dev.hygino.dto.ResponseMinUserDto;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import br.dev.hygino.dto.RequestUserDto;
+import br.dev.hygino.dto.ResponseMinUserDto;
 import br.dev.hygino.dto.ResponseUserDto;
 import br.dev.hygino.mappers.UserMapper;
 import br.dev.hygino.models.SchoolAttribute;
@@ -23,6 +23,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @Service
+@Validated
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
