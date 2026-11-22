@@ -3,6 +3,7 @@ package br.dev.hygino.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -17,8 +18,8 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import br.dev.hygino.BookFactory;
 import br.dev.hygino.dto.BookReportDto;
@@ -31,7 +32,7 @@ import br.dev.hygino.repositories.BookRepository;
 import br.dev.hygino.services.exceptions.BookNotFoundException;
 import br.dev.hygino.services.exceptions.BorrowBookException;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class BookServiceTest {
 
 	private Book newBookEntity;
@@ -62,7 +63,10 @@ class BookServiceTest {
 
 		when(bookRepository.findAll()).thenReturn(BookFactory.createBookList());
 
-		doThrow(DataIntegrityViolationException.class).when(bookRepository).deleteById(dependentId);
+		doNothing().when(bookRepository).deleteById(dependentId);
+
+		doThrow(DataIntegrityViolationException.class)
+		    .when(bookRepository).flush();
 
 		bookMapper = Mappers.getMapper(BookMapper.class);
 		bookService = new BookService(bookRepository, bookMapper);
