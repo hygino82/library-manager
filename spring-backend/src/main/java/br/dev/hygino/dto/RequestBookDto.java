@@ -4,11 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.UUID;
+
 public record RequestBookDto(
-		@NotBlank @Size(max = 100, min = 3) String title,
-		@NotBlank @Size(max = 100, min = 3) String author, 
-		@NotBlank @Size(max = 30, min = 3) String personalCode,
-		@NotNull Integer edition, 
-		@NotBlank @Size(max = 100, min = 3) String publisher, 
-		@NotNull Integer totalPages) {
+        @NotBlank @Size(max = 100, min = 3) String title,
+        @NotBlank @Size(max = 100, min = 3) String author,
+        @NotBlank @Size(max = 30, min = 3) String personalCode,
+        @NotNull Integer edition,
+        @NotBlank @Size(max = 100, min = 3) String publisher,
+        @NotNull Integer totalPages,
+        @NotNull(message = "O Id da categoria deve ser informado!") UUID categoryId) {
 }

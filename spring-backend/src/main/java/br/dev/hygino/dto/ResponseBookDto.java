@@ -12,7 +12,8 @@ public record ResponseBookDto(
         Integer edition,
         String publisher,
         Integer totalPages,
-        String bookStatus
+        String bookStatus,
+        String category
 ) {
 
     public ResponseBookDto(Book obj) {
@@ -24,7 +25,8 @@ public record ResponseBookDto(
                 obj.getEdition(),
                 obj.getPublisher(),
                 obj.getTotalPages(),
-                obj.getBookStatus().name()
+                obj.getBookStatus().name(),
+                obj.getCategory().getName()
         );
     }
 }

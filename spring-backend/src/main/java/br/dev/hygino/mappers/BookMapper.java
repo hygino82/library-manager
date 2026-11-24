@@ -1,10 +1,10 @@
 package br.dev.hygino.mappers;
 
+import org.mapstruct.Mapper;
+
 import br.dev.hygino.dto.RequestBookDto;
 import br.dev.hygino.dto.ResponseBookDetailsDto;
-import br.dev.hygino.dto.ResponseBookDto;
 import br.dev.hygino.models.Book;
-import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
@@ -12,5 +12,5 @@ public interface BookMapper {
 
     Book toBookEntity(RequestBookDto dto);
 
-    ResponseBookDto toBookMinResponse(Book entity);
+    //ResponseBookDto toBookMinResponse(Book entity);
 }

@@ -69,8 +69,8 @@ public class BookController {
 
     @PostMapping
     @Operation(summary = "Inserir livro", description = "Adiciona um livro")
-    public ResponseEntity<ResponseBookDto> insert(@Valid @RequestBody RequestBookDto dto) {
-        final ResponseBookDto res = service.insert(dto);
+    public ResponseEntity<ResponseBookDetailsDto> insert(@Valid @RequestBody RequestBookDto dto) {
+        final var res = service.insert(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 

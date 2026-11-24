@@ -3,7 +3,9 @@ package br.dev.hygino.services;
 import br.dev.hygino.dto.BookReportDto;
 import br.dev.hygino.mappers.BookMapper;
 import br.dev.hygino.models.BookStatus;
+import br.dev.hygino.repositories.CategoryRepository;
 import br.dev.hygino.services.exceptions.BookNotFoundException;
+import br.dev.hygino.services.exceptions.DatabaseException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +28,12 @@ import java.util.UUID;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
     private final BookMapper bookMapper;
 
-    public BookService(BookRepository bookRepository, BookMapper bookMapper) {
+    public BookService(BookRepository bookRepository, CategoryRepository categoryRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
         this.bookMapper = bookMapper;
     }
 
@@ -42,16 +46,20 @@ public class BookService {
     public ResponseBookDetailsDto findById(UUID id) {
         final Book res = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("Não existe livro com o id: " + id));
-        return bookMapper.toBookResponse(res);
+        return new ResponseBookDetailsDto(res);
     }
 
     @Transactional
-    public ResponseBookDto insert(RequestBookDto dto) {
+    public ResponseBookDetailsDto insert(RequestBookDto dto) {
+        final var category = categoryRepository.findById(dto.categoryId())
+                .orElseThrow(() -> new DatabaseException("Categoria não encontrada!"));
+
         Book entity = bookMapper.toBookEntity(dto);
-        //Book entity = new Book();
-        //dtoToEntity(dto, entity);
+        // Book entity = new Book();
+        // dtoToEntity(dto, entity);
+        entity.setCategory(category);
         entity = bookRepository.save(entity);
-        return bookMapper.toBookMinResponse(entity);
+        return bookMapper.toBookResponse(entity);
     }
 
     private void dtoToEntity(RequestBookDto dto, Book entity) {
@@ -66,9 +74,14 @@ public class BookService {
     @Transactional
     public ResponseBookDto update(UUID id, RequestBookDto dto) {
         try {
+            final var category = categoryRepository.findById(dto.categoryId())
+                    .orElseThrow(() -> new DatabaseException("Categoria não encontrada!"));
+
             Book entity = bookRepository.getReferenceById(id);
+            entity.setCategory(category);
             dtoToEntity(dto, entity);
             entity = bookRepository.save(entity);
+
             return new ResponseBookDto(entity);
         } catch (EntityNotFoundException e) {
             throw new IllegalArgumentException("Não encontrodo Livro com id: " + id);

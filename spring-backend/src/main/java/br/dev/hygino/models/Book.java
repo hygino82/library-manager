@@ -56,6 +56,10 @@ public class Book implements BookReturn {
 	@OneToMany(mappedBy = "book")
 	private final List<BookLoan> bookLoans = new ArrayList<>();
 
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
+
 	private LocalDateTime createdAt = LocalDateTime.now();
 	private LocalDateTime updatedAt;
 
@@ -75,5 +79,16 @@ public class Book implements BookReturn {
 	@Override
 	public void executeReturn() {
 		bookStatus = BookStatus.AVAILABLE;
+	}
+
+	public Book(String title, String author, String personalCode, Integer edition, String publisher, Integer totalPages, BookStatus bookStatus, Category category) {
+		this.title = title;
+		this.author = author;
+		this.personalCode = personalCode;
+		this.edition = edition;
+		this.publisher = publisher;
+		this.totalPages = totalPages;
+		this.bookStatus = bookStatus;
+		this.category = category;
 	}
 }

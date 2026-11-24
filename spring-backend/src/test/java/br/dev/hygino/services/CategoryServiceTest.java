@@ -98,7 +98,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("Deve retornar uma página com 12 elementos")
-    public void findAllHouldReturnPage() {
+    public void findAllShouldReturnPage() {
         var pageable = PageRequest.of(0, 12);
         when(categoryRepository.findAll(pageable)).thenReturn(page);
 
@@ -113,7 +113,6 @@ public class CategoryServiceTest {
     @Test
     @DisplayName("Deve remover uma categoria que não tenha livros associados")
     void deleteShouldRemoveCategoryWithoutBooks() {
-
         categoryService.delete(existingId);
 
         verify(categoryRepository).deleteById(existingId);
@@ -121,8 +120,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("Deve lançar DatabaseException ao tentar remover uma categoria que tenha livros associados")
-    void deleteShouldThrowDataIntegrityViolationException() {
-
+    void deleteShouldThrowDatabaseExceptionWhenCategoryHasBooks() {
         doThrow(DataIntegrityViolationException.class).when(categoryRepository).deleteById(dependentId);
 
         final var res = Assertions.assertThrows(DatabaseException.class,
@@ -134,9 +132,7 @@ public class CategoryServiceTest {
 	@Test
 	@DisplayName("Deve atualizar uma categoria quando os dados forem válidos")
 	void updateShouldReturnCategoryWhenValidData() {
-
 		final var existingCategory = CategoryFactory.createNewCategory();
-		final var updatedCategory = CategoryFactory.createUpdatedRequestCategoryDto();
 
 		when(categoryRepository.getReferenceById(existingId))
 				.thenReturn(existingCategory);

@@ -53,7 +53,7 @@ public class BookServiceTestIT {
     @Test
     @DisplayName("Deve retornar um livro quando os dados forem válidos")
     public void insertShouldReturnBookEntityWhenDataIsValid() {
-        final ResponseBookDto res = bookService.insert(bookInsert);
+        final var res = bookService.insert(bookInsert);
         assertNotNull(res.id());
         assertEquals("O Senhor dos anéis", res.title());
         assertEquals(1, res.edition());
