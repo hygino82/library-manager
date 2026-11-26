@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Book, BookRequest } from '../../../custom.types';
+import { Book, BookRequest, CategoryDto } from '../../../custom.types';
 import { BookService } from '../../services/book.service';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-book-form',
@@ -16,6 +17,7 @@ export class BookForm implements OnInit {
 
   editMode = false;
   id?: string;
+  categories: CategoryDto[] = [];
 
   title = '';
   author = '';
@@ -26,9 +28,10 @@ export class BookForm implements OnInit {
 
   constructor(
     private readonly service: BookService,
+    private readonly categoryService: CategoryService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -37,6 +40,12 @@ export class BookForm implements OnInit {
       this.editMode = true;
       this.findBook(id);
     }
+
+    this.getCategories();
+  }
+
+  getCategories() {
+  //this.categories=this.categoryService.getCategories();
   }
 
   // 🔎 Carrega dados para edição

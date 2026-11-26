@@ -62,6 +62,22 @@ export class Header {
           routerLink: '/emprestimos'
         }
       ]
+    },
+     {
+      label: 'Categorias',
+      icon: 'pi pi-eye',
+      items: [
+        {
+          label: 'Cadastrar',
+          icon: 'pi pi-plus',
+          routerLink: '/categorias/form'
+        },
+        {
+          label: 'Listar',
+          icon: 'pi pi-list',
+          routerLink: '/categorias'
+        }
+      ]
     }
   ];
 }

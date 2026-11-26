@@ -106,3 +106,20 @@ export type CreateLoanByEmailAndPersonalCodeRequest = {
   personalCode: string;
 }
 
+export type CategoryDto = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CategoryPage = {
+  content: CategoryDto[];
+  page: Page;
+}
+
+export type RequestCategoryDto={
+  name: string;
+  description: string;
+}

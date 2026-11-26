@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
-public class CategoryServiceIT {
+public class CategoryServiceTestIT {
     private RequestCategoryDto categoryRequest;
 
-    private UUID invalidId, validId, dependentId;
+    private UUID invalidId, validId;
 
     @Autowired
     private CategoryService categoryService;
@@ -33,7 +33,6 @@ public class CategoryServiceIT {
     public void setup() {
         invalidId = UUID.fromString("4d39e0c2-1d31-4ef5-b1c5-4b829d0763b3");
         validId = UUID.fromString("550e8400-e29b-41d4-a716-446655440012");
-        dependentId = UUID.fromString("550e8400-e29b-41d4-a716-446655440001");
         categoryRequest = CategoryFactory.createNewRequestCategoryDto();
     }
 
@@ -81,6 +80,7 @@ public class CategoryServiceIT {
     @Test
     @DisplayName("Deve lançar DatabaseException ao tentar remover uma categoria que tenha livros associados")
     void deleteShouldThrowDatabaseExceptionWhenCategoryHasBooks() {
+        final var dependentId = UUID.fromString("550e8400-e29b-41d4-a716-446655440001");
         final var res = Assertions.assertThrows(DatabaseException.class,
                 () -> categoryService.delete(dependentId));
 
