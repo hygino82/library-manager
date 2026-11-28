@@ -1,0 +1,9 @@
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.selected-row {
+  background-color: #dbeafe !important;
+}

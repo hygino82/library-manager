@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { BookList } from './page/book-list/book-list';
 import { BookForm } from './page/book-form/book-form';
-import { UserList } from './page/user-list/user-list';
-import { UserForm } from './page/user-form/user-form';
+import { BookList } from './page/book-list/book-list';
 import { BookLoanForm } from './page/book-loan-form/book-loan-form';
 import { BookLoanList } from './page/book-loan-list/book-loan-list';
 import { CategoryForm } from './page/category-form/category-form';
 import { CategoryList } from './page/category-list/category-list';
+import { UserForm } from './page/user-form/user-form';
+import { UserList } from './page/user-list/user-list';
 
 export const routes: Routes = [
   {
@@ -38,10 +38,10 @@ export const routes: Routes = [
     path: 'livros',
     component: BookList
   },
-  {
+ /* {
     path: 'livros/usuario/:userId',
     component: BookList
-  },
+  },*/
   {
     path: 'livros/cadastro',
     component: BookForm
@@ -65,6 +65,10 @@ export const routes: Routes = [
     component: CategoryForm
   },
   {
+    path: 'categorias/form/:id',
+    component: CategoryForm
+  },
+  {
     path: 'categorias',
     component: CategoryList
   },
@@ -72,6 +76,6 @@ export const routes: Routes = [
   /* fallback */
   {
     path: '**',
-    redirectTo: 'livros'
+    redirectTo: 'categorias'
   }
 ];

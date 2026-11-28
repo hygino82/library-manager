@@ -119,7 +119,7 @@ export type CategoryPage = {
   page: Page;
 }
 
-export type RequestCategoryDto={
+export type RequestCategoryDto = {
   name: string;
   description: string;
 }
